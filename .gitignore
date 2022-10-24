@@ -49,3 +49,9 @@ crashlytics-build.properties
 
 .DS_Store
 *.DS_Store
+
+UserSettings/
+.vscode/
+.idea/
+.vsconfig
+
