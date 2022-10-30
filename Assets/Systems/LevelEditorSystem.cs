@@ -14,12 +14,10 @@ public class LevelEditorSystem : FSystem {
 	private Family f_levelEditor = FamilyManager.getFamily(new AllOfComponents(typeof(LevelEditor)));
 
 	private LevelEditor levelEditor;
-    private Tilemap tileMap;
     
         protected override void onStart()
     {
 	    levelEditor = f_levelEditor.First().GetComponent<LevelEditor>();
-        tileMap = levelEditor.transform.GetChild(0).GetComponent<Tilemap>();
     }
 
 	public void ReadLevel()
@@ -32,30 +30,31 @@ public class LevelEditorSystem : FSystem {
 
 		XElement xmlMap = new XElement("map");
 		
-        for (int n = tileMap.cellBounds.xMin; n < tileMap.cellBounds.xMax; n++)
+        for (int n = levelEditor.Map.cellBounds.xMin; n < levelEditor.Map.cellBounds.xMax; n++)
         {
 	        XElement xmlLine = new XElement("line");
-	        for (int p = tileMap.cellBounds.yMin; p < tileMap.cellBounds.yMax; p++)
+	        for (int p = levelEditor.Map.cellBounds.yMin; p < levelEditor.Map.cellBounds.yMax; p++)
             {
-                Vector3Int localPlace = (new Vector3Int(n, p, (int)tileMap.transform.position.y));
-                tileMap.SetTileFlags(localPlace, TileFlags.None);
-                Vector3 place = tileMap.CellToWorld(localPlace);
-                if (tileMap.HasTile(localPlace))
+                Vector3Int localPlace = (new Vector3Int(n, p, (int)levelEditor.Map.transform.position.y));
+                levelEditor.Map.SetTileFlags(localPlace, TileFlags.None);
+                Vector3 place = levelEditor.Map.CellToWorld(localPlace);
+                if (levelEditor.Map.HasTile(localPlace))
                 {
-	                Color tileColor = tileMap.GetColor(localPlace);
+	                Color tileColor = levelEditor.Map.GetColor(localPlace);
 	                
-	                Debug.Log(tileMap.GetTile(localPlace));
+	                Debug.Log(levelEditor.Map.GetTile(localPlace));
+	                var tilename = levelEditor.Map.GetTile(localPlace).name;
 
-	                if(ColorEquals(tileColor,levelEditor.Obstacle.color))
+	                if(tilename == "Obstacle")
 		                xmlLine.Add(new XElement("cell",new XAttribute("value", "1")));
-	                else if(ColorEquals(tileColor,levelEditor.Road.color))
+	                else if(tilename == "Road")
 		                xmlLine.Add(new XElement("cell",new XAttribute("value", "0")));
-	                else if (ColorEquals(tileColor, levelEditor.Start.color))
+	                else if (tilename == "Blue")
 	                {
 		                xmlLine.Add(new XElement("cell",new XAttribute("value", "2")));
-		                agentPos = new Vector2(n-tileMap.cellBounds.xMin,p-tileMap.cellBounds.yMin);
+		                agentPos = new Vector2(n-levelEditor.Map.cellBounds.xMin,p-levelEditor.Map.cellBounds.yMin);
 	                }
-	                else if(ColorEquals(tileColor,levelEditor.Goal.color))
+	                else if(tilename == "Red")
 		                xmlLine.Add(new XElement("cell",new XAttribute("value", "3")));
                 }
                 else
@@ -64,7 +63,7 @@ public class LevelEditorSystem : FSystem {
                 }
 	        }
 	        
-	        xmlMap.Add(xmlLine);
+	        xmllevelEditor.Map.Add(xmlLine);
 
 	        // { levelEditor.availablePlaces.Add(place); }
 		}
@@ -92,7 +91,7 @@ public class LevelEditorSystem : FSystem {
         Debug.Log("done");
 	}
         
-        // var tilePos = tileMap.WorldToCell(downFace.transform.position);
+        // var tilePos = tilelevelEditor.Map.WorldToCell(downFace.transform.position);
         
 
 	public static bool ColorEquals(Color a, Color b)

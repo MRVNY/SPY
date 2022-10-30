@@ -183,10 +183,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 523731f0f933a40bab0cfe6dba217d4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Road: {fileID: 11400000, guid: 48a63b73592cf0a4ba47d760cd9f083d, type: 2}
-  Obstacle: {fileID: 11400000, guid: 30a6ae21c4d2b472cb3a393acfa6c432, type: 2}
-  Start: {fileID: 11400000, guid: 8d571fb8fa37b0d48a627b7b38254208, type: 2}
-  Goal: {fileID: 11400000, guid: 193cf01eb8cb94f589ed7d1e8c503f6a, type: 2}
+  Agents: {fileID: 1861060060}
+  Objects: {fileID: 402429565}
+  Map: {fileID: 2093868128}
   haveTwoAgent: 0
   convo: []
   dragdropDisabled: 0

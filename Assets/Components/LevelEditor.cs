@@ -6,12 +6,17 @@ using UnityEngine.Tilemaps;
 
 public class LevelEditor : MonoBehaviour
 {
-
-    public Tile Road;
-    public Tile Obstacle;
-    public Tile Start;
-    public Tile Goal;
+    [Header("Tilemap Layers")]
+    public Tilemap Agents;
+    public Tilemap Objects;
+    public Tilemap Map;
     
+    // [Header("Tile Prefabs")]
+    // public Tile Road;
+    // public Tile Obstacle;
+    // public Tile Start;
+    // public Tile Goal;
+
     public bool haveTwoAgent = false;
     
     public List<String> convo = new List<String>();
