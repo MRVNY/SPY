@@ -44,7 +44,9 @@ public class LevelEditorSystem : FSystem {
                 {
 	                Color tileColor = tileMap.GetColor(localPlace);
 	                
-	                if(ColorEquals(tileColor,levelEditor.Wall.color))
+	                Debug.Log(tileMap.GetTile(localPlace));
+
+	                if(ColorEquals(tileColor,levelEditor.Obstacle.color))
 		                xmlLine.Add(new XElement("cell",new XAttribute("value", "1")));
 	                else if(ColorEquals(tileColor,levelEditor.Road.color))
 		                xmlLine.Add(new XElement("cell",new XAttribute("value", "0")));

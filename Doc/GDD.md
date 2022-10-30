@@ -3,7 +3,7 @@ A robot doesn't remember who they are, the player helps the robot to move forwar
 
 The robots and the player find out that the environment is actually made to train the robot and transfer the knowledge of the player to the robot. There is a communication device that once finished updating, would take aways the player's programming skill and give to the robot.
 
-In the end, the robot gave up his skill in order to let the player to use the knowledge in real life, the robot falls into oblivion. At last he says: "Please, use this power to do something good for the world, and whenever you code, think of me, I'll always be there."
+In the end, the robot gave up his skill in order to let the player to use the knowledge in real life, the robot falls into oblivion. At last they say: "Please, use this power to do something good for the world, and whenever you code, think of me, I'll always be there."
 
 (In the end of the game, the help text disappears because the player and the robot fight again the terminal)
 
@@ -23,7 +23,7 @@ In the end, the robot gave up his skill in order to let the player to use the kn
 
 # Additional mechanics
 - Variables
-- Functions
+- **Functions**
 - OOP (Class: Agent, Terminal, Enemy)
 - Design patterns
 
