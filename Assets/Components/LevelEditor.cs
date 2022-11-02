@@ -7,7 +7,6 @@ using UnityEngine.Tilemaps;
 public class LevelEditor : MonoBehaviour
 {
     [Header("Tilemap Layers")]
-    public Tilemap Agents;
     public Tilemap Objects;
     public Tilemap Map;
     
@@ -17,7 +16,10 @@ public class LevelEditor : MonoBehaviour
     // public Tile Start;
     // public Tile Goal;
 
-    public bool haveTwoAgent = false;
+    //public bool haveTwoAgent = false;
+    
+    public bool AgentsAutoNameing = true;
+    public bool ConsoleAutoLinking = true;
     
     public List<String> convo = new List<String>();
 
