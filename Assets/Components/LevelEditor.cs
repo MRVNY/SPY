@@ -6,6 +6,10 @@ using UnityEngine.Tilemaps;
 
 public class LevelEditor : MonoBehaviour
 {
+    public GameObject InputAgent;
+    public GameObject InputId;
+    public Transform Canvas;
+
     [Header("Tilemap Layers")]
     public Tilemap Objects;
     public Tilemap Map;

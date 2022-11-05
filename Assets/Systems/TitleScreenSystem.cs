@@ -25,16 +25,17 @@ public class TitleScreenSystem : FSystem {
 
 	protected override void onStart()
 	{
-		if (!GameObject.Find("GameData"))
-		{
-			gameData = UnityEngine.Object.Instantiate(prefabGameData);
-			gameData.name = "GameData";
-			GameObjectManager.dontDestroyOnLoadAndRebind(gameData.gameObject);
-		}
-		else
-		{
-			gameData = GameObject.Find("GameData").GetComponent<GameData>();
-		}
+		if (GameData.Instance == null)
+        {
+            gameData = UnityEngine.Object.Instantiate(prefabGameData);
+            gameData.name = "GameData";
+            GameObjectManager.dontDestroyOnLoadAndRebind(gameData.gameObject);
+        }
+        else
+        {
+            gameData = GameData.Instance;
+        }
+	
 
 		gameData.levelList = new Dictionary<string, List<string>>();
 
