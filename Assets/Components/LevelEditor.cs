@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+[Serializable]
 public class LevelEditor : MonoBehaviour
 {
     public GameObject InputAgent;
@@ -25,14 +26,14 @@ public class LevelEditor : MonoBehaviour
     public bool AgentsAutoNameing = true;
     public bool ConsoleAutoLinking = true;
     
-    public List<String> convo = new List<String>();
-
     public bool dragdropDisabled = false;
     public bool fog = false;
 
     public int executionLimit = 1;
+
+    [Header("Block Limits")] 
+    //public List<Limit> blockLimits;
     
-    [Header("blockLimits")]
     public int Forward = 1;
     public int TurnLeft = 0;
     public int TurnRight = 0;
@@ -53,18 +54,14 @@ public class LevelEditor : MonoBehaviour
     public int FieldGate = 0;
     public int Terminal = 0;
     public int Exit = 0;
-    //
-    // public List<Vector2> Coins = new List<Vector2>();
-    // public List<Vector4> Consoles = new List<Vector4>();
 
-    public Script StartPositions;
-    
+    public int TwoStars = 0;
+    public int ThreeStars = 10000;
 }
 
 [System.Serializable]
-public class Script
+public class Limit
 {
-    public string one;
-    public Script child;
-    public string two;
+    public string Command;
+    public int Quota;
 }

@@ -356,7 +356,6 @@ GameObject:
   - component: {fileID: 1983478408195766547}
   - component: {fileID: 1983478408195766546}
   - component: {fileID: 1983478408195766545}
-  - component: {fileID: 3438940480292787316}
   m_Layer: 5
   m_Name: InputAgent
   m_TagString: Untagged
@@ -384,7 +383,7 @@ RectTransform:
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 60, y: 30}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 0}
 --- !u!222 &1983478408195766547
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -521,16 +520,3 @@ MonoBehaviour:
   m_isRichTextEditingAllowed: 0
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}
---- !u!114 &3438940480292787316
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1983478408195766559}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bb0fd97afe1b458f923e2e488ea014f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputField: {fileID: 1983478406656762755}

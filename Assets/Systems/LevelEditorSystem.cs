@@ -22,7 +22,13 @@ public class LevelEditorSystem : FSystem {
 
 	private LevelEditor levelEditor;
 	private List<string> dirs = new List<string>{"N","S","W","E"};
-	private List<string> dorDirs = new List<string>{"V","H"};
+	private List<string> dorDirs = new List<string>{"H","N","V"};
+	private string[] limits = new String[]
+	{
+		"Forward", "TurnLeft", "TurnRight", "Wait", "Activate", "TurnBack", "If", "IfElse", "For", "While",
+		"Forever", "AndOperator", "OrOperator", "NotOperator", "Wall", "Enemie", "RedArea", "FieldGate", "Terminal",
+		"Exit"
+	};
 	
 	private XDocument xml;
 	private XElement xmlLevel;
@@ -30,7 +36,7 @@ public class LevelEditorSystem : FSystem {
 	
 	Hashtable AgentsInputBoxes = new Hashtable();
 	Hashtable ConsoleInputBoxes = new Hashtable();
-	Hashtable DoorOutputBoxes = new Hashtable();
+	Hashtable DoorInputBoxes = new Hashtable();
 	
 	string[] autoNames = new []{"K", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
     
@@ -53,9 +59,6 @@ public class LevelEditorSystem : FSystem {
 	        for (int x = bounds.xMin; x < bounds.xMax; x++)
 	        {
 		        Vector3Int localPlace = (new Vector3Int(x, y, (int)levelEditor.Map.transform.position.y));
-		        
-		        // x = x - bounds.xMin;
-		        // y = y - bounds.yMin;
 
 		        levelEditor.Map.SetTileFlags(localPlace, TileFlags.None);
                 if (levelEditor.Map.HasTile(localPlace))
@@ -80,12 +83,13 @@ public class LevelEditorSystem : FSystem {
 
 	                if (levelEditor.Objects.HasTile(localPlace))
 	                {
-		                Debug.Log(x+","+y);
 		                int xx = bounds.xMax + x;
 		                int yy = bounds.yMax - y;
 		                var objectName = levelEditor.Objects.GetTile(localPlace).name.Split("_");
 		                string objectType = objectName[0];
 		                string objectDir = objectName[objectName.Length - 1];
+		                GameObject inputBox = null;
+		                Vector3 screenPos;
 		                
 		                switch (objectType)
 		                {
@@ -96,21 +100,23 @@ public class LevelEditorSystem : FSystem {
 				                break;
 			                
 			                case "Robot":
-				                if (!levelEditor.AgentsAutoNameing)
-				                {
-					                Vector3 screenPos = Camera.main.WorldToScreenPoint(levelEditor.Objects.CellToWorld(localPlace));
-					                GameObject inputBox = GameObject.Instantiate(levelEditor.InputAgent, screenPos, Quaternion.identity);
-					                inputBox.transform.SetParent(levelEditor.Canvas);
-									AgentsInputBoxes.Add(new Vector3(xx,yy,dirs.IndexOf(objectDir)),
-										inputBox.GetComponent<InputRef>());
+				                if (!levelEditor.AgentsAutoNameing){
+					                screenPos = Camera.main.WorldToScreenPoint(levelEditor.Objects.CellToWorld(localPlace));
+					                inputBox = GameObject.Instantiate(levelEditor.InputAgent, screenPos, Quaternion.identity, levelEditor.Canvas);
+					                AgentsInputBoxes.Add(new Vector3(xx,yy,dirs.IndexOf(objectDir)), inputBox.GetComponent<TMP_InputField>());
 				                }
+				                else
+				                {
+					                AgentsInputBoxes.Add(new Vector3(xx,yy,dirs.IndexOf(objectDir)), null);
+				                }
+				                
 				                break;
 
 			                case "Drone":
 				                xmlLevel.Add(new XElement("enemy",
 					                new XAttribute("associatedScriptName","Guarde"),
-					                new XAttribute("posY",y),
-					                new XAttribute("posX",x),
+					                new XAttribute("posY",yy),
+					                new XAttribute("posX",xx),
 					                new XAttribute("direction", dirs.IndexOf(objectDir).ToString()),
 					                new XAttribute("range","2"),
 					                new XAttribute("selfRange","False"),
@@ -118,19 +124,29 @@ public class LevelEditorSystem : FSystem {
 				                break;
 
 			                case "Console":
-				                xmlLevel.Add(new XElement("console",
-					                new XAttribute("state","1"), //todo
-					                new XAttribute("posY",y),
-					                new XAttribute("posX",x),
-					                new XAttribute("direction", dirs.IndexOf(objectDir).ToString())));
+				                if (!levelEditor.AgentsAutoNameing)
+								{
+					                screenPos = Camera.main.WorldToScreenPoint(levelEditor.Objects.CellToWorld(localPlace));
+					                inputBox = GameObject.Instantiate(levelEditor.InputId, screenPos, Quaternion.identity, levelEditor.Canvas);
+					                ConsoleInputBoxes.Add(new Vector3(xx,yy,dirs.IndexOf(objectDir)), inputBox.GetComponent<TMP_InputField>());
+				                }
+				                else
+				                {
+					                ConsoleInputBoxes.Add(new Vector3(xx,yy,dirs.IndexOf(objectDir)), null);
+				                }
 				                break;
-			                
+
 			                case "Door":
-				                xmlLevel.Add(new XElement("console",
-					                new XAttribute("posY",y),
-					                new XAttribute("posX",x),
-					                new XAttribute("slotId","0"), //todo
-					                new XAttribute("direction", dirs.IndexOf(objectDir).ToString())));
+				                if (!levelEditor.ConsoleAutoLinking)
+				                {
+					                screenPos = Camera.main.WorldToScreenPoint(levelEditor.Objects.CellToWorld(localPlace));
+					                inputBox = GameObject.Instantiate(levelEditor.InputId, screenPos, Quaternion.identity, levelEditor.Canvas);
+					                DoorInputBoxes.Add(new Vector3(xx,yy,dorDirs.IndexOf(objectDir)), inputBox.GetComponent<TMP_InputField>());
+				                }
+				                else
+				                {
+					                DoorInputBoxes.Add(new Vector3(xx,yy,dorDirs.IndexOf(objectDir)), null);
+				                }
 				                break;
 		                }
 	                }
@@ -158,48 +174,86 @@ public class LevelEditorSystem : FSystem {
 		foreach (var box in agents)
 		{
 			string tmpName = "K";
-			if (levelEditor.AgentsAutoNameing)
-			{
-				tmpName = autoNames[agents.IndexOf(box)];
-			}
-			// else { tmpName = ((GameObject)AgentsInputBoxes[box]).transform.Find("Text").GetComponent<InputField>().text; }
-			else
-			{
-				tmpName = ((InputRef)AgentsInputBoxes[box]).inputField.text;
-			}
+			if (levelEditor.AgentsAutoNameing) tmpName = autoNames[agents.IndexOf(box)];
+			else tmpName = ((TMP_InputField)AgentsInputBoxes[box]).text;
+			
+			if (tmpName == "") tmpName = "K";
 
 			xmlLevel.Add(new XElement("player",
-				new XAttribute("associatedScriptName",tmpName), //todo
+				new XAttribute("associatedScriptName",tmpName),
 				new XAttribute("posY",box.y),
 				new XAttribute("posX",box.x),
 				new XAttribute("direction", box.z.ToString())));
-			break;
+		}
+
+		//Console
+		List<Vector3> consoles = ConsoleInputBoxes.Keys.OfType<Vector3>().ToList();
+		foreach (var box in consoles)
+		{
+			XElement tmpConsole = new XElement("console",
+				new XAttribute("state", "1"),
+				new XAttribute("posY", box.y),
+				new XAttribute("posX", box.x),
+				new XAttribute("direction", box.z.ToString()));
+			
+			string tmpId = "0";
+			if (!levelEditor.ConsoleAutoLinking) tmpId = ((TMP_InputField)ConsoleInputBoxes[box]).text;
+			if (tmpId == "") tmpId = "0";
+			tmpConsole.Add(new XElement("slot", new XAttribute("slotId",tmpId)));
+
+			xmlLevel.Add(tmpConsole);
 		}
 		
+		//Door
+		List<Vector3> doors = DoorInputBoxes.Keys.OfType<Vector3>().ToList();
+		foreach (var box in doors)
+		{
+			string tmpId = "0";
+			if (!levelEditor.ConsoleAutoLinking) tmpId = ((TMP_InputField)DoorInputBoxes[box]).text;
+			if (tmpId == "") tmpId = "0";
 
-        
-        // xmlLevel.Add(
-	       //  XDocument.Parse("<dialogs><dialog text=\"23 août 2041...&#xA;&#xA;Vous avez un message...\"/></dialogs>"));
-        // xmlLevel.Add(
-	       //  XDocument.Parse("<blockLimits><blockLimit blockType=\"Forward\" limit=\"1\" /></blockLimits>"));
-        // xmlLevel.Add(
-		      //   XDocument.Parse("<player associatedScriptName=\"Karl\" posY=\"2\" posX=\"1\" direction=\"0\" /><script name='Karl' editMode='0' /><score twoStars='0' threeStars='10500'/>"));
+			xmlLevel.Add( new XElement("door",
+				new XAttribute("slotId", tmpId),
+				new XAttribute("posY", box.y),
+				new XAttribute("posX", box.x),
+				new XAttribute("direction", box.z.ToString())));
+		}
 
-        xml.Add(xmlLevel);
+		XElement blockLimits = new XElement("blockLimits");
+		foreach (string limit in limits)
+		{
+			int value = (int)levelEditor.GetType().GetField(limit).GetValue(levelEditor);
+			//Debug.Log(limit + " " + value);
+			blockLimits.Add(new XElement("blockLmit", new XAttribute("blockType",limit), new XAttribute("limit",value)));
+		}
 
-        string fileName = DateTime.Now.ToString("s") + ".xml";
-        string filePath = Application.streamingAssetsPath + "/Levels/Homemade/";
-        xml.Save(filePath + fileName);
+		xmlLevel.Add(blockLimits);
+
+		xml.Add(xmlLevel);
         
-        Debug.Log(xml);
-        
-        XDocument scenario = XDocument.Load(Application.streamingAssetsPath + "/Levels/Homemade/Scenario.xml");
-        scenario.Element("scenario").Add(new XElement("level", new XAttribute("name",fileName)));
+		Debug.Log(xml);
+
+        ExportXML();
+	}
+
+	public void ExportXML()
+	{
+		string fileName = DateTime.Now.ToString("s") + ".xml";
+		string filePath = Application.streamingAssetsPath + "/Levels/Homemade/";
+		
+		//Save to Homemade folder
+		xml.Save(filePath + fileName);
+
+		//Add to Scenario.xml
+		XDocument scenario = XDocument.Load(Application.streamingAssetsPath + "/Levels/Homemade/Scenario.xml");
+		scenario.Element("scenario").Add(new XElement("level", new XAttribute("name",fileName)));
 		scenario.Save(Application.streamingAssetsPath + "/Levels/Homemade/Scenario.xml");
 		
-		// XmlDocument doc = new XmlDocument();
-		// doc.Load(filePath);
-		// LevelGenerator.instance.XmlToLevel(doc);
+		LoadLevel(filePath + fileName);
+	}
+
+	public void LoadLevel(string levelName)
+	{
 		if (GameData.Instance == null)
 		{
 			GameData.Instance = UnityEngine.Object.Instantiate(prefabGameData);
@@ -208,7 +262,7 @@ public class LevelEditorSystem : FSystem {
 		}
 		
 		GameData.Instance.mode = "Homemade";
-		GameData.Instance.homemadeLevelToLoad = (filePath + fileName);
+		GameData.Instance.homemadeLevelToLoad = (levelName);
 		GameObjectManager.loadScene("MainScene");
 	}
 	
