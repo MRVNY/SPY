@@ -58,10 +58,3 @@ public class LevelEditor : MonoBehaviour
     public int TwoStars = 0;
     public int ThreeStars = 10000;
 }
-
-[System.Serializable]
-public class Limit
-{
-    public string Command;
-    public int Quota;
-}

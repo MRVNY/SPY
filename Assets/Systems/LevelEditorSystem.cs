@@ -51,7 +51,10 @@ public class LevelEditorSystem : FSystem {
 		
 		xmlLevel = new XElement("level");
 		xmlMap = new XElement("map");
+		
+		levelEditor.Map.CompressBounds();
 		var bounds = levelEditor.Map.cellBounds;
+		
 		for (int y = bounds.yMax; y >= bounds.yMin; y--)
 		{
 			XElement xmlLine = new XElement("line");
@@ -83,6 +86,8 @@ public class LevelEditorSystem : FSystem {
 
 	                if (levelEditor.Objects.HasTile(localPlace))
 	                {
+		                var obounds = levelEditor.Objects.cellBounds;
+
 		                int xx = bounds.xMax + x;
 		                int yy = bounds.yMax - y;
 		                var objectName = levelEditor.Objects.GetTile(localPlace).name.Split("_");
@@ -95,11 +100,16 @@ public class LevelEditorSystem : FSystem {
 		                {
 			                case "Coin":
 				                xmlLevel.Add(new XElement("coin",
-					                new XAttribute("posY", y),
-					                new XAttribute("posX", x)));
+					                new XAttribute("posY", yy),
+					                new XAttribute("posX", xx)));
 				                break;
 			                
 			                case "Robot":
+				                Debug.Log("x : " + x + " y : " + y);
+				                Debug.Log("xx : " + xx + " yy : " + yy);
+				                Debug.Log(bounds);
+				                Debug.Log(obounds);
+				                
 				                if (!levelEditor.AgentsAutoNameing){
 					                screenPos = Camera.main.WorldToScreenPoint(levelEditor.Objects.CellToWorld(localPlace));
 					                inputBox = GameObject.Instantiate(levelEditor.InputAgent, screenPos, Quaternion.identity, levelEditor.Canvas);
