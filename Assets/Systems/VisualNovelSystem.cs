@@ -4,160 +4,147 @@ using TMPro;
 using UnityEngine.UI;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
+using UnityEngine.Accessibility;
 
 /// <summary>
 /// Manage dialogs at the begining of the level
 /// </summary>
 public class VisualNovelSystem : FSystem
 {
-	private GameData gameData;
-	public GameObject dialogPanel;
-	private int nDialog = 0;
-	
-	private string currentText;
-	
-	public string firstNode;
-	private JObject convoTree;
+	private Family f_VN = FamilyManager.getFamily(new AllOfComponents(typeof(VisualNovel)));
+	private VisualNovel VN;
 
+	private GameData gameData;
+
+	//convoTree & paths
+	public string node;
+	private JObject convoTree;
+	private string treePath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "ConvoTree";
+	private string imgPath;
+	
+	//Async Typewrtier & Skip
+	private Task writing;
+	public Button skipButton;
+	bool skipped = false;
 
 	protected override void onStart()
 	{
-		GameObject go = GameData.Instance.gameObject;
-		if (go != null)
-			gameData = go.GetComponent<GameData>();
+		VN = f_VN.First().GetComponent<VisualNovel>();
+		skipButton = VN.dialog.transform.parent.GetComponent<Button>();
+		VN.gameObject.SetActive(false);
+		gameData = GameData.Instance;
+		
+		if (gameData != null)
+		{
+			convoTree = JObject.Parse(File.ReadAllText(treePath + Path.DirectorySeparatorChar + "1.json"));
+			node = gameData.convoNode;
 
-		GameObjectManager.setGameObjectState(dialogPanel.transform.parent.gameObject, false);
+			imgPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
+			          Path.DirectorySeparatorChar + gameData.levelToLoad.Item1 + Path.DirectorySeparatorChar +
+			          "Images" + Path.DirectorySeparatorChar;
+
+			gameData.gameLanguage = "en";
+			
+			if (convoTree[node] != null)
+			{
+				VN.gameObject.SetActive(true);
+				setVN();
+			}
+		}
 	}
-
-	// Use to process your families.
-	protected override void onProcess(int familiesUpdateCount)
+	
+	private async void setVN()
 	{
-		//Activate DialogPanel if there is a message
-		if (gameData != null && nDialog < gameData.dialogMessage.Count && !dialogPanel.transform.parent.gameObject.activeSelf)
+		if (convoTree[node] == null) VN.gameObject.SetActive(false);
+
+		for (int i = 0; i < VN.options.Count(); i++)
 		{
-			showDialogPanel();
+			VN.options[i].transform.parent.gameObject.SetActive(false);
 		}
-	}
-	//
-	// IEnumerator PlayText()
-	// {
-	// 	string story = currentText;
-	// 	textMeshPro.text = "";
-	// 	foreach (char c in story) 
-	// 	{
-	// 		textMeshPro.text += c;
-	// 		yield return new WaitForSecondsRealtime(0.02f);
-	// 	}
-	// 	if (fullText.Length==0) SetButtons();
- //            
-	// 	rolling = false;
-	// }
+		node = gameData.convoNode;
 
-
-	// Affiche le panneau de dialoge au d�but de niveau (si besoin)
-	public void showDialogPanel()
-	{
-		GameObjectManager.setGameObjectState(dialogPanel.transform.parent.gameObject, true);
-		nDialog = 0;
-
-		configureDialog();
-
-		if (gameData.dialogMessage.Count > 1)
-		{
-			setActiveOKButton(false);
-			setActiveNextButton(true);
-		}
-		else
-		{
-			setActiveOKButton(true);
-			setActiveNextButton(false);
-		}
-	}
-
-	// See NextButton in editor
-	// Permet d'afficher la suite du dialogue
-	public void nextDialog()
-	{
-		nDialog++; // On incr�mente le nombre de dialogue
-
-		configureDialog();
-
-		// Si il reste des dialogues � afficher ensuite
-		if (nDialog + 1 < gameData.dialogMessage.Count)
-		{
-			setActiveOKButton(false);
-			setActiveNextButton(true);
-		}
-		else
-		{
-			setActiveOKButton(true);
-			setActiveNextButton(false);
-		}
-	}
-
-	private void configureDialog()
-    {
 		// set text
-		GameObject textGO = dialogPanel.transform.Find("Text").gameObject;
-		if (gameData.dialogMessage[nDialog].Item1 != null)
-		{
-			GameObjectManager.setGameObjectState(textGO, true);
-			textGO.GetComponent<TextMeshProUGUI>().text = gameData.dialogMessage[nDialog].Item1;
-			if (gameData.dialogMessage[nDialog].Item2 != -1)
-				((RectTransform)textGO.transform).sizeDelta = new Vector2(((RectTransform)textGO.transform).sizeDelta.x, gameData.dialogMessage[nDialog].Item2);
-			else
-				((RectTransform)textGO.transform).sizeDelta = new Vector2(((RectTransform)textGO.transform).sizeDelta.x, textGO.GetComponent<LayoutElement>().preferredHeight);
-		}
-		else
-			GameObjectManager.setGameObjectState(textGO, false);
+	    writing = TypeWriter(convoTree[node][gameData.gameLanguage].ToString());
+		
 		// set image
-		GameObject imageGO = dialogPanel.transform.Find("Image").gameObject;
-		if (gameData.dialogMessage[nDialog].Item3 != null)
+		if(convoTree[node]["img"] != null)
 		{
-			GameObjectManager.setGameObjectState(imageGO, true);
-			setImageSprite(imageGO.GetComponent<Image>(), Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
-			Path.DirectorySeparatorChar + gameData.levelToLoad.Item1 + Path.DirectorySeparatorChar + "Images" + Path.DirectorySeparatorChar + gameData.dialogMessage[nDialog].Item3);
-			if (gameData.dialogMessage[nDialog].Item4 != -1)
-				((RectTransform)imageGO.transform).sizeDelta = new Vector2(((RectTransform)imageGO.transform).sizeDelta.x, gameData.dialogMessage[nDialog].Item4);
-			else
-				((RectTransform)imageGO.transform).sizeDelta = new Vector2(((RectTransform)imageGO.transform).sizeDelta.x, imageGO.GetComponent<LayoutElement>().preferredHeight);
+			setImageSprite(VN.img, imgPath + convoTree[node]["img"].ToString());
 		}
-		else
-			GameObjectManager.setGameObjectState(imageGO, false);
+
 		// set camera pos
-		if (gameData.dialogMessage[nDialog].Item5 != -1 && gameData.dialogMessage[nDialog].Item6 != -1)
+		// if (gameData.dialogMessage[nDialog].Item5 != -1 && gameData.dialogMessage[nDialog].Item6 != -1)
+  //       {
+		// 	GameObjectManager.addComponent<FocusCamOn>(MainLoop.instance.gameObject, new { camX = gameData.dialogMessage[nDialog].Item5, camY = gameData.dialogMessage[nDialog].Item6 });
+  //       }
+  
+  		// set options
+        if (convoTree[node]["options"] != null)
         {
-			GameObjectManager.addComponent<FocusCamOn>(MainLoop.instance.gameObject, new { camX = gameData.dialogMessage[nDialog].Item5, camY = gameData.dialogMessage[nDialog].Item6 });
+	        var objs = convoTree[node]["options"][gameData.gameLanguage].OfType<JProperty>();
+	        for (int i = 0; i < VN.options.Count(); i++)
+	        {
+		        if (objs.Count() > i - 1)
+		        {
+			        var button = VN.options[i].transform.parent.gameObject;
+			        VN.options[i].text = (string)objs.ElementAt(i).Value;
+			        string nextNode = objs.ElementAt(i).Name;
+
+			        await writing;
+			        button.SetActive(true);
+			        VN.options[i].transform.parent.GetComponent<Button>().onClick.AddListener(
+				        () =>
+				        {
+					        gameData.convoNode = nextNode;
+					        setVN();
+				        });
+		        }
+	        }
+	        skipButton.enabled = false;
         }
+        else skipButton.enabled = true;
+
+        // execute action
 	}
 
-
-	// Active ou non le bouton Ok du panel dialogue
-	public void setActiveOKButton(bool active)
+	//Show text with typewriter effect
+	async Task TypeWriter(string toType)
 	{
-		GameObjectManager.setGameObjectState(dialogPanel.transform.Find("Buttons").Find("OKButton").gameObject, active);
+		skipped = false;
+		skipButton.enabled = true;
+		string story = toType;
+		VN.dialog.text = "";
+		foreach (char c in story) 
+		{
+			if(skipped) break;
+			VN.dialog.text += c;
+			await Task.Delay(10);
+		}
+		skipped = true;
 	}
 
-
-	// Active ou non le bouton next du panel dialogue
-	public void setActiveNextButton(bool active)
+	//Skip Typewriter when it's not finished
+	public async void Skip()
 	{
-		GameObjectManager.setGameObjectState(dialogPanel.transform.Find("Buttons").Find("NextButton").gameObject, active);
-	}
-
-
-	// See OKButton in editor
-	// D�sactive le panel de dialogue
-	public void closeDialogPanel()
-	{
-		GameObjectManager.setGameObjectState(dialogPanel.transform.parent.gameObject, false);
-		nDialog = gameData.dialogMessage.Count;
+		if (convoTree[node]["options"] == null && skipped) VN.gameObject.SetActive(false);
+		
+		if (writing != null)
+		{
+			skipped = true;
+			await writing;
+			VN.dialog.text = convoTree[node][gameData.gameLanguage].ToString();
+			
+			if (convoTree[node]["options"] != null) skipButton.enabled = false;
+		}
 	}
 
 	// Affiche l'image associ�e au dialogue
-	public void setImageSprite(Image img, string path)
+	private void setImageSprite(Image img, string path)
 	{
 		if (Application.platform == RuntimePlatform.WebGLPlayer)
 		{
@@ -168,7 +155,10 @@ public class VisualNovelSystem : FSystem
 			Texture2D tex2D = new Texture2D(2, 2); //create new "empty" texture
 			byte[] fileData = File.ReadAllBytes(path); //load image from SPY/path
 			if (tex2D.LoadImage(fileData))
+			{
 				img.sprite = Sprite.Create(tex2D, new Rect(0, 0, tex2D.width, tex2D.height), new Vector2(0, 0), 100.0f);
+				img.type = Image.Type.Simple;
+			}
 		}
 	}
 

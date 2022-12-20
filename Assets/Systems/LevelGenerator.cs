@@ -71,7 +71,8 @@ public class LevelGenerator : FSystem {
 			if(gameData.mode == "Homemade")
 				levelName.text = Path.GetFileNameWithoutExtension(gameData.homemadeLevelToLoad);
 			else levelName.text = Path.GetFileNameWithoutExtension(gameData.levelList[gameData.levelToLoad.Item1][gameData.levelToLoad.Item2]);
-			
+
+			GameData.Instance = gameData;
 		}
 	}
 

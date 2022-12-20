@@ -24,4 +24,7 @@ public class GameData : MonoBehaviour {
 	public float gameSpeed_default = 1f;
 	public float gameSpeed_current = 1f;
 	public bool dragDropEnabled = true;
+
+	public string gameLanguage = "en";
+	public string convoNode = "0";
 }
