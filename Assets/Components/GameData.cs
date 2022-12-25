@@ -1,6 +1,8 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 
+[Serializable]
 public class GameData : MonoBehaviour {
 	public static GameData Instance;
 	public string mode = "Campagne infiltration"; //Campagne infiltration / Homemade
