@@ -1,16 +1,8 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using FYFY;
-using TMPro;
-using UnityEngine.UI;
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using UnityEngine.Networking;
-using Newtonsoft.Json.Linq;
 using UnityEditor.Tilemaps;
-using UnityEngine.Accessibility;
+using UnityEngine.Tilemaps;
 
 /// <summary>
 /// Manage dialogs at the begining of the level
@@ -24,19 +16,45 @@ public class LevelMapSystem : FSystem
 	protected override void onStart()
 	{
 		LM = f_LM.First().GetComponent<LevelMap>();
-		Grid grid = LM.GetComponent<Grid>();
 
-		GridSelection tmp;
+		LM.CharacPos = new Vector3Int(0, 0, 0);
+		LM.CharacMap.ClearAllTiles();
+		LM.CharacMap.SetTile(LM.CharacPos, LM.Charac);
 
-		Debug.Log(LM.Map.GetTile(Vector3Int.zero).name);
 		LM.Map.SetTile(Vector3Int.right, LM.Road);
 
 		// tmp = LM.TM.GetTileFlags();
 
 	}
 	
-	protected override void onProcess(int familiesUpdateCount)
+	protected override async void onProcess(int familiesUpdateCount)
 	{
-		//Debug.Log("hi");
+		if (Input.GetMouseButton(0))
+		{
+			Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			Vector3Int tilePos = LM.Map.WorldToCell(mousePos);
+			TileBase tile = LM.Map.GetTile(tilePos);
+
+			if (tile != null && tile.name == "Base")
+			{
+				LM.CharacPos = tilePos;
+				LM.CharacMap.ClearAllTiles();
+				LM.CharacMap.SetTile(LM.CharacPos, LM.Charac);
+				await CameraTranstion(new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z));
+				// Camera.main.transform.position = new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z);
+			}
+
+		}
+	}
+	
+	async Task CameraTranstion(Vector3 pos)
+	{
+		await Task.Delay(100);
+		
+		while ((Camera.main.transform.position-pos).magnitude > 0.5f)
+		{
+			Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, pos, 0.1f);
+			await Task.Delay(50);
+		}
 	}
 }

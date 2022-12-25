@@ -7,8 +7,11 @@ using UnityEngine.UI;
 
 public class LevelMap : MonoBehaviour
 {
+    public Vector3Int CharacPos;
+    public Tilemap CharacMap;
     public Tilemap Map;
-    
+
+    public Tile Charac;
     public Tile Base;
     public Tile Road;
     public Tile Split;
