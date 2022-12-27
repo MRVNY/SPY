@@ -1,6 +1,7 @@
 using FYFY;
 using FYFY_plugins.PointerManager;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -191,6 +192,8 @@ public static class EditingUtility
 		computeNext(targetContainer);
 		// On d?truit la copy de la sequence d'action
 		UnityEngine.Object.Destroy(containerCopy);
+
+		ScriptManager.instance.TranslateScript(new XDocument());
 	}
 
 	/**
@@ -395,8 +398,10 @@ public static class EditingUtility
 						// On v?rifie qu'il y a bien un ?l?ment pr?sent, son container doit contenir 3 enfants (icone, une BaseCondition et le ReplacementSlot)
 						if (conditionContainer.childCount == 3)
 						{
+							chaine.Add("(");
 							chaine.Add("NOT");
 							conditionToStrings(conditionContainer.GetComponentInChildren<BaseCondition>().gameObject, chaine);
+							chaine.Add(")");
 						}
 						else
 						{

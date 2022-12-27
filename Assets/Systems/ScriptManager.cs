@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 using UnityEngine;
 using FYFY;
@@ -7,68 +8,16 @@ using FYFY;
 /// This system executes new currentActions
 /// </summary>
 public class ScriptManager : FSystem {
-	private Family f_wall = FamilyManager.getFamily(new AllOfComponents(typeof(Position)), new AnyOfTags("Wall", "Door"), new AnyOfProperties(PropertyMatcher.PROPERTY.ACTIVE_IN_HIERARCHY));
-	private Family f_activableConsole = FamilyManager.getFamily(new AllOfComponents(typeof(Activable),typeof(Position),typeof(AudioSource)));
-    private Family f_newCurrentAction = FamilyManager.getFamily(new AllOfComponents(typeof(CurrentAction), typeof(BasicAction)));
 	private Family f_player = FamilyManager.getFamily(new AllOfComponents(typeof(ScriptRef)), new AnyOfTags("Player"));
 
+	public static ScriptManager instance;
+	private string[] CondOps = new []{"AND", "OR", "NOT"};
+	
 	protected override void onStart()
 	{
-		f_newCurrentAction.addEntryCallback(onNewCurrentAction);
-		Pause = true;
+		instance = this;
 	}
-
-	protected override void onProcess(int familiesUpdateCount)
-	{
-		// count inaction if a robot have no CurrentAction
-		foreach (GameObject robot in f_player)
-			if (robot.GetComponent<ScriptRef>().executableScript.GetComponentInChildren<CurrentAction>() == null)
-				robot.GetComponent<ScriptRef>().nbOfInactions++;
-		Pause = true;
-	}
-
-	// each time a new currentAction is added, 
-	private void onNewCurrentAction(GameObject currentAction) {
-		Pause = false; // activates onProcess to identify inactive robots
-		
-		CurrentAction ca = currentAction.GetComponent<CurrentAction>();	
-
-		// // process action depending on action type
-		// switch (currentAction.GetComponent<BasicAction>().actionType){
-		// 	case BasicAction.ActionType.Forward:
-		// 		ApplyForward(ca.agent);
-		// 		break;
-		// 	case BasicAction.ActionType.TurnLeft:
-		// 		ApplyTurnLeft(ca.agent);
-		// 		break;
-		// 	case BasicAction.ActionType.TurnRight:
-		// 		ApplyTurnRight(ca.agent);
-		// 		break;
-		// 	case BasicAction.ActionType.TurnBack:
-		// 		ApplyTurnBack(ca.agent);
-		// 		break;
-		// 	case BasicAction.ActionType.Wait:
-		// 		break;
-		// 	case BasicAction.ActionType.Activate:
-		// 		Position agentPos = ca.agent.GetComponent<Position>();
-		// 		foreach ( GameObject actGo in f_activableConsole){
-		// 			if(actGo.GetComponent<Position>().x == agentPos.x && actGo.GetComponent<Position>().y == agentPos.y){
-		// 				actGo.GetComponent<AudioSource>().Play();
-		// 				// toggle activable GameObject
-		// 				if (actGo.GetComponent<TurnedOn>())
-		// 					GameObjectManager.removeComponent<TurnedOn>(actGo);
-		// 				else
-		// 					GameObjectManager.addComponent<TurnedOn>(actGo);
-		// 			}
-		// 		}
-		// 		ca.agent.GetComponent<Animator>().SetTrigger("Action");
-		// 		break;
-		// }
-		// notify agent moving
-		if (ca.agent.CompareTag("Drone") && !ca.agent.GetComponent<Moved>())
-			GameObjectManager.addComponent<Moved>(ca.agent);
-	}
-
+	
 	public void TranslateScript(XDocument doc)
 	{
 		foreach (GameObject robot in f_player)
@@ -80,7 +29,11 @@ public class ScriptManager : FSystem {
 				new XAttribute("name", name),
 				new XAttribute("editMode", "2"),
 				new XAttribute("type", "3"));
-			doc.Add(TranslateNode(root.transform.GetChild(0).gameObject, script));
+
+			script = TranslateNode(root.transform.GetChild(0).gameObject, script);
+			doc.Add(script);
+
+			Debug.Log(script);
 		}
 
 	}
@@ -92,28 +45,6 @@ public class ScriptManager : FSystem {
 		{
 			script.Add(new XElement("action", 
 				new XAttribute("type", ((BasicAction)ele).actionType.ToString())));
-			
-			// switch (((BasicAction)ele).actionType)
-			// {
-			// 	case BasicAction.ActionType.Forward:
-			// 		script.Add(new XElement("Forward"));
-			// 		break;
-			// 	case BasicAction.ActionType.TurnLeft:
-			// 		script.Add(new XElement("TurnLeft"));
-			// 		break;
-			// 	case BasicAction.ActionType.TurnRight:
-			// 		script.Add(new XElement("TurnRight"));
-			// 		break;
-			// 	case BasicAction.ActionType.TurnBack:
-			// 		script.Add(new XElement("TurnBack"));
-			// 		break;
-			// 	case BasicAction.ActionType.Wait:
-			// 		script.Add(new XElement("Wait"));
-			// 		break;
-			// 	case BasicAction.ActionType.Activate:
-			// 		script.Add(new XElement("Activate"));
-			// 		break;
-			// }
 		}
 		
 		else if (ele is ControlElement)
@@ -122,20 +53,25 @@ public class ScriptManager : FSystem {
 			
 			if (ele is ForeverControl)
 			{//forever
-				control = new XElement("forever");
-				control.Add(TranslateNode(((ForeverControl)ele).firstChild, control));
+				control = TranslateNode(((ForeverControl)ele).firstChild, new XElement("forever"));
 			}
 			
 			else if (ele is ForControl)
 			{
 				if (ele is WhileControl)
 				{//while
+					WhileControl castEle = (WhileControl)ele;
 					control = new XElement("while");
-					control.Add(TranslateNode(((ForeverControl)ele).firstChild, control));
+
+					
+					control.Add(new XElement("condition", TranslateConditions(castEle.condition)));
+					control.Add(TranslateNode(castEle.firstChild, new XElement("container")));
 				}
 				else
 				{//for
-					
+					ForControl castEle = (ForControl)ele;
+					control = new XElement("forever", new XAttribute("nbFor",castEle.nbFor));
+					control = TranslateNode(castEle.firstChild, control);
 				}
 			}
 			
@@ -143,11 +79,20 @@ public class ScriptManager : FSystem {
 			{
 				if (ele is IfElseControl)
 				{//ifelse
-					
+					IfElseControl castEle = (IfElseControl)ele;
+					control = new XElement("if");
+				
+					control.Add(new XElement("condition", TranslateConditions(castEle.condition)));
+					control.Add(TranslateNode(castEle.firstChild, new XElement("thenContainer")));
+					control.Add(TranslateNode(castEle.elseFirstChild, new XElement("elseContainer")));
 				}
 				else
 				{//if
+					IfControl castEle = (IfControl)ele;
+					control = new XElement("if");
 					
+					control.Add(new XElement("condition", TranslateConditions(castEle.condition)));
+					control.Add(TranslateNode(castEle.firstChild, new XElement("container")));
 				}
 			}
 			
@@ -155,15 +100,56 @@ public class ScriptManager : FSystem {
 				script.Add(control);
 		}
 		
-		if (ele.next != null)
-			TranslateNode(ele.next, script);
+		if (ele.next != null && ele.next != ele.transform.parent.parent.gameObject)
+			script = TranslateNode(ele.next, script);
 		
 		return script;
 	}
 
 	XElement TranslateConditions(List<string> conditions)
 	{
+		if (conditions.Count > 0 && conditions[0] == "(")
+		{
+			int layer = 0;
+			for (int i = 1; i < conditions.Count; i++)
+			{
+				string line = conditions[i];
+
+				if (line == "(")
+					layer++;
+				else if (line == ")")
+					layer--;
+				else if (CondOps.Contains(line) && layer == 0)
+				{
+					XElement cond = new XElement(line.ToLower());
+
+					if (line == "NOT")
+					{
+						cond.Add(TranslateConditions(conditions.GetRange(i+1,conditions.Count-i-2)));
+					}
+					else
+					{
+						XElement left = new XElement("conditionLeft");
+						XElement right = new XElement("conditionRight");
+						
+						left.Add(TranslateConditions(conditions.GetRange(1,i-1)));
+						right.Add(TranslateConditions(conditions.GetRange(i+1,conditions.Count-i-2)));
+						
+						cond.Add(left);
+						cond.Add(right);
+					}
+					
+					return cond;
+				}
+			}
+		}
+		else
+		{
+			return new XElement("captor", new XAttribute("type", conditions[0]));
+		}
 
 		return null;
 	}
+	
+	
 }

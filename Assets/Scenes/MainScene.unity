@@ -5073,6 +5073,7 @@ GameObject:
   - component: {fileID: 361349240}
   - component: {fileID: 361349241}
   - component: {fileID: 361349242}
+  - component: {fileID: 361349243}
   m_Layer: 0
   m_Name: Main_Loop
   m_TagString: Untagged
@@ -5330,6 +5331,10 @@ MonoBehaviour:
   - _typeAssemblyQualifiedName: VisualNovelSystem, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     _typeFullName: VisualNovelSystem
+    _pause: 0
+  - _typeAssemblyQualifiedName: ScriptManager, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    _typeFullName: ScriptManager
     _pause: 0
   _lateUpdateSystemDescriptions:
   - _typeAssemblyQualifiedName: HighLightSystem, Assembly-CSharp, Version=0.0.0.0,
@@ -5650,6 +5655,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   node: 
   skipButton: {fileID: 0}
+--- !u!114 &361349243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 361349215}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fb94ed5c18df493d817124509d7e188, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &371440127
 GameObject:
   m_ObjectHideFlags: 0
