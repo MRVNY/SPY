@@ -18,7 +18,7 @@ public class EndGameManager : FSystem {
 	private Family f_exit = FamilyManager.getFamily(new AllOfComponents(typeof(Position), typeof(AudioSource)), new AnyOfTags("Exit"));
 
 	private Family f_playingMode = FamilyManager.getFamily(new AllOfComponents(typeof(PlayMode)));
-	
+
 	private GameData gameData;
 
 	public GameObject playButtonAmount;
@@ -113,6 +113,7 @@ public class EndGameManager : FSystem {
 		else if (f_requireEndPanel.First().GetComponent<NewEnd>().endType == NewEnd.Win)
 		{
 			int score = (10000 / (gameData.totalActionBlocUsed + 1) + 5000 / (gameData.totalStep + 1) + 6000 / (gameData.totalExecute + 1) + 5000 * gameData.totalCoin);
+			SendStatements.instance.WinLevel(score);
 			Transform verticalCanvas = endPanel.transform.Find("VerticalCanvas");
 			GameObjectManager.setGameObjectState(verticalCanvas.Find("ScoreCanvas").gameObject, true);
 			verticalCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Bravo vous avez gagné !\nScore: " + score;
