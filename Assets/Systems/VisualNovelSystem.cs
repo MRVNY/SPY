@@ -37,7 +37,13 @@ public class VisualNovelSystem : FSystem
 		VN = f_VN.First().GetComponent<VisualNovel>();
 		skipButton = VN.dialog.transform.parent.GetComponent<Button>();
 		VN.gameObject.SetActive(false);
-		gameData = GameData.Instance;
+		//gameData = GameData.Instance;
+		
+		var tmp = GameObject.Find("GameData");
+		if (tmp != null)
+		{
+			gameData = tmp.GetComponent<GameData>();
+		}
 		
 		if (gameData != null)
 		{
@@ -66,7 +72,7 @@ public class VisualNovelSystem : FSystem
 		{
 			VN.options[i].transform.parent.gameObject.SetActive(false);
 		}
-		node = gameData.convoNode;
+		node = GameData.Instance.convoNode;
 
 		// set text
 	    writing = TypeWriter(convoTree[node][gameData.gameLanguage].ToString());

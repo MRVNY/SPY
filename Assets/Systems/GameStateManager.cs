@@ -1,6 +1,10 @@
 using UnityEngine;
 using FYFY;
 using TMPro;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 
 /// <summary>
 /// This manager enables to save the game state and to restore it on demand for instance when the player is detected by drones, he can reset the game on a state just before the previous execution
@@ -25,10 +29,64 @@ public class GameStateManager : FSystem {
 
     public static GameStateManager instance;
 
+    private static string savePath;
+
     public GameStateManager()
 	{
 		instance = this;
+        savePath = Application.persistentDataPath;
 	}
+    
+    public static bool SaveExists(string key)
+    {
+        string path = savePath + "/saves/" + key + ".txt";
+        return File.Exists(path);
+    }
+    
+    public static void Save<T>(T objectToSave, string key)
+    {
+        // chemin du fichier de sauvegarde
+        string path = savePath + "/saves/";
+
+        //création du fichier si il n'existe pas
+        Directory.CreateDirectory(path);
+        
+        // convertion des paramètres de sauvegarde en fichier binaires
+        BinaryFormatter formatter = new BinaryFormatter();
+
+        using(FileStream fileStream = new FileStream(path + key + ".txt", FileMode.Create))
+        {
+            formatter.Serialize(fileStream, objectToSave);
+        }
+    }
+    
+    public static T Load<T>(string key)
+    {
+        if (SaveExists(key))
+        {
+            string path = savePath + "/saves/";
+            BinaryFormatter formatter = new BinaryFormatter();
+            T returnValue = default(T);
+            using (FileStream fileStream = new FileStream(path + key + ".txt", FileMode.Open))
+            {
+                returnValue = (T)formatter.Deserialize(fileStream);
+            }
+
+            return returnValue;
+        }
+        else return default(T);
+    }
+
+    public async static Task SaveGD()
+    {
+        
+    }
+
+    public static async Task LoadGD()
+    {
+        
+    }
+
     protected override void onStart()
     {
         save = new SaveContent();

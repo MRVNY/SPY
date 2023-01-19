@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.IO;
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine.Networking;
 
 /// <summary>
@@ -36,6 +37,8 @@ public class LevelGenerator : FSystem {
 	public GameObject canvas;
 	public GameObject buttonExecute;
 
+	public static Task loadingGD;
+
 	public LevelGenerator()
 	{
 		instance = this;
@@ -49,6 +52,8 @@ public class LevelGenerator : FSystem {
 		else
 		{
 			gameData = gameDataGO.GetComponent<GameData>();
+			GameData.Instance = gameData;
+			
 			gameData.Level = GameObject.Find("Level");
 			XmlDocument doc = new XmlDocument();
 			if (Application.platform == RuntimePlatform.WebGLPlayer)
@@ -71,8 +76,6 @@ public class LevelGenerator : FSystem {
 			if(gameData.mode == "Homemade")
 				levelName.text = Path.GetFileNameWithoutExtension(gameData.homemadeLevelToLoad);
 			else levelName.text = Path.GetFileNameWithoutExtension(gameData.levelList[gameData.levelToLoad.Item1][gameData.levelToLoad.Item2]);
-
-			GameData.Instance = gameData;
 		}
 	}
 
