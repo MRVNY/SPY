@@ -21,6 +21,7 @@ public class HistoryManager : FSystem
 	public GameObject canvas;
 	public GameObject buttonAddEditableContainer;
 	public GameObject buttonExecute;
+	public static GameObject actionsHistory;
 
 	protected override void onStart()
 	{
@@ -62,11 +63,11 @@ public class HistoryManager : FSystem
 	// Add the executed scripts to the containers history
 	public void saveHistory()
 	{
-		if (GameData.actionsHistory == null)
+		if (actionsHistory == null)
 		{
 			// set history as a copy of editable canvas
-			GameData.actionsHistory = GameObject.Instantiate(EditableCanvas.transform.GetChild(0).transform).gameObject;
-			GameData.actionsHistory.SetActive(false); // keep this gameObject as a ghost
+			actionsHistory = GameObject.Instantiate(EditableCanvas.transform.GetChild(0).transform).gameObject;
+			actionsHistory.SetActive(false); // keep this gameObject as a ghost
 			// We don't bind the history to FYFY
 		}
 		else
@@ -81,7 +82,7 @@ public class HistoryManager : FSystem
 					if (child.GetComponent<BaseElement>())
 					{
 						// copy this child inside the appropriate history
-						GameObject.Instantiate(child, GameData.actionsHistory.transform.GetChild(containerCpt).GetChild(0));
+						GameObject.Instantiate(child, actionsHistory.transform.GetChild(containerCpt).GetChild(0));
 						// We don't bind the history to FYFY
 					}
 				}
@@ -123,7 +124,7 @@ public class HistoryManager : FSystem
 				if (minNbOfInaction == 1)
 				{
 					GameObject newWait = EditingUtility.createEditableBlockFromLibrary(libraryWait, canvas);
-					newWait.transform.SetParent(GameData.actionsHistory.transform.GetChild(containerCpt).GetChild(0), false);
+					newWait.transform.SetParent(actionsHistory.transform.GetChild(containerCpt).GetChild(0), false);
 					newWait.transform.SetAsLastSibling();
 				}
 				else if (minNbOfInaction > 1)
@@ -133,7 +134,7 @@ public class HistoryManager : FSystem
 					forCont.currentFor = 0;
 					forCont.nbFor = minNbOfInaction;
 					forCont.transform.GetComponentInChildren<TMP_InputField>().text = forCont.nbFor.ToString();
-					forCont.transform.SetParent(GameData.actionsHistory.transform.GetChild(containerCpt).GetChild(0), false);
+					forCont.transform.SetParent(actionsHistory.transform.GetChild(containerCpt).GetChild(0), false);
 					// Create Wait action
 					Transform forContainer = forCont.transform.Find("Container");
 					GameObject newWait = EditingUtility.createEditableBlockFromLibrary(libraryWait, canvas);
@@ -159,7 +160,7 @@ public class HistoryManager : FSystem
 	// Restore saved scripts in history inside editable script containers
 	private void loadHistory()
 	{
-		if (GameData.actionsHistory != null)
+		if (actionsHistory != null)
 		{
 			// For security, erase all editable containers
 			foreach (Transform viewportForEditableContainer in EditableCanvas.transform.GetChild(0))
@@ -176,9 +177,9 @@ public class HistoryManager : FSystem
 					}
 				}
 			// Restore history
-			for (int i = 0; i < GameData.actionsHistory.transform.childCount; i++)
+			for (int i = 0; i < actionsHistory.transform.childCount; i++)
 			{
-				Transform history_viewportForEditableContainer = GameData.actionsHistory.transform.GetChild(i);
+				Transform history_viewportForEditableContainer = actionsHistory.transform.GetChild(i);
 				// the first child is the script container that contains script elements
 				foreach (Transform history_child in history_viewportForEditableContainer.GetChild(0))
 				{
@@ -206,7 +207,7 @@ public class HistoryManager : FSystem
 					GameObjectManager.addComponent<Dropped>(act.gameObject);
 			}
 			//destroy history
-			GameObject.Destroy(GameData.actionsHistory);
+			GameObject.Destroy(actionsHistory);
 			LayoutRebuilder.ForceRebuildLayoutImmediate(EditableCanvas.GetComponent<RectTransform>());
 			//enable Play button
 			buttonExecute.GetComponent<Button>().interactable = true;

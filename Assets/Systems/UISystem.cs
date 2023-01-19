@@ -206,7 +206,7 @@ public class UISystem : FSystem {
 		GameObjectManager.setGameObjectState(buttonContinue, false);
 		GameObjectManager.setGameObjectState(buttonSpeed, value);
 		GameObjectManager.setGameObjectState(buttonStop, value);
-		if (GameData.actionsHistory != null)
+		if (HistoryManager.actionsHistory != null)
 			foreach (GameObject trash in f_removeButton)
 				trash.GetComponent<Button>().interactable = false;
 	}
@@ -222,7 +222,7 @@ public class UISystem : FSystem {
 	// Permet de revenir à la scéne titre
 	public void returnToTitleScreen(){
 		initZeroVariableLevel();
-		GameData.actionsHistory = null;
+		HistoryManager.actionsHistory = null;
 		GameObjectManager.loadScene("TitleScreen");
 	}
 
@@ -245,7 +245,7 @@ public class UISystem : FSystem {
 		// On imcrémente le numéro du niveau
 		GameData.levelToLoad.Item2++;
 		// On efface l'historique
-		GameData.actionsHistory = null;
+		HistoryManager.actionsHistory = null;
 		// On recharge la scéne (mais avec le nouveau numéro de niveau)
 		restartScene();
 	}
@@ -254,8 +254,8 @@ public class UISystem : FSystem {
 	// See ReloadLevel and RestartLevel buttons in editor
 	// Fait recommencer la scéne mais en gardant l'historique des actions
 	public void retry(){
-		if (GameData.actionsHistory != null)
-			UnityEngine.Object.DontDestroyOnLoad(GameData.actionsHistory);
+		if (HistoryManager.actionsHistory != null)
+			UnityEngine.Object.DontDestroyOnLoad(HistoryManager.actionsHistory);
 		restartScene();
 	}
 

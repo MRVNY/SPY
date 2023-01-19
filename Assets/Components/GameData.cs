@@ -7,7 +7,7 @@ public static class GameData {
 	public static string mode = "Campagne infiltration"; //Campagne infiltration / Homemade
 
 	// Advice: FYFY component aims to contain only public members (according to Entity-Component-System paradigm).
-	public static GameObject Level;
+	// public static GameObject Level;
 	public static Dictionary <string, List<string>> levelList; //key = directory name, value = list of level file name
 	public static (string, int) levelToLoad = ("Campagne infiltration", 1); //directory name, level index
 	public static string homemadeLevelToLoad; 
@@ -21,7 +21,7 @@ public static class GameData {
 	public static int totalActionBlocUsed;
 	public static int totalExecute;
 	public static int totalCoin;
-	public static GameObject actionsHistory; //all actions made in the level, displayed at the end
+	// public static GameObject actionsHistory; //all actions made in the level, displayed at the end
 	public static float gameSpeed_default = 1f;
 	public static float gameSpeed_current = 1f;
 	public static bool dragDropEnabled = true;
