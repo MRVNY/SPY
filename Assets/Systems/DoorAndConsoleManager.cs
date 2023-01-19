@@ -14,18 +14,13 @@ public class DoorAndConsoleManager : FSystem {
 	private Family f_doorPath = FamilyManager.getFamily(new AllOfComponents(typeof(DoorPath)));
 
 	private Family f_gameLoaded = FamilyManager.getFamily(new AllOfComponents(typeof(GameLoaded)));
-
-	private GameData gameData;
-
+	
 	public GameObject doorPathPrefab;
 	public Color pathOn;
 	public Color pathOff;
 
 	protected override void onStart()
 	{
-		GameObject go = GameObject.Find("GameData");
-		if (go != null)
-			gameData = go.GetComponent<GameData>();
 		f_consoleOn.addEntryCallback(onNewConsoleTurnedOn); // Console will enter in this family when TurnedOn component will be added to console (see CurrentActionExecutor)
 		f_consoleOff.addEntryCallback(onNewConsoleTurnedOff); // Console will enter in this family when TurnedOn component will be removed from console (see CurrentActionExecutor)
 		f_gameLoaded.addEntryCallback(connectDoorsAndConsoles);
@@ -46,7 +41,7 @@ public class DoorAndConsoleManager : FSystem {
 					// display door
 					slotGo.transform.parent.GetComponent<AudioSource>().Play();
 					slotGo.transform.parent.GetComponent<Animator>().SetTrigger("Close");
-					slotGo.transform.parent.GetComponent<Animator>().speed = gameData.gameSpeed_current;
+					slotGo.transform.parent.GetComponent<Animator>().speed = GameData.gameSpeed_current;
 					updatePathColor(id, true);
 				}
 			}
@@ -68,7 +63,7 @@ public class DoorAndConsoleManager : FSystem {
 					// hide door
 					slotGo.transform.parent.GetComponent<AudioSource>().Play();
 					slotGo.transform.parent.GetComponent<Animator>().SetTrigger("Open");
-					slotGo.transform.parent.GetComponent<Animator>().speed = gameData.gameSpeed_current;
+					slotGo.transform.parent.GetComponent<Animator>().speed = GameData.gameSpeed_current;
 					updatePathColor(id, false);
 				}
 			}
@@ -105,7 +100,7 @@ public class DoorAndConsoleManager : FSystem {
 					int x = 0;
 					while (consolePos.x + x != doorPos.x)
 					{
-						GameObject path = Object.Instantiate<GameObject>(doorPathPrefab, gameData.Level.transform.position + new Vector3(consolePos.y * 3, 3, (consolePos.x + x + xStep / 2f) * 3), Quaternion.Euler(0, 0, 0), gameData.Level.transform);
+						GameObject path = Object.Instantiate<GameObject>(doorPathPrefab, GameData.Level.transform.position + new Vector3(consolePos.y * 3, 3, (consolePos.x + x + xStep / 2f) * 3), Quaternion.Euler(0, 0, 0), GameData.Level.transform);
 						path.transform.Find("West").gameObject.SetActive(true);
 						path.transform.Find("East").gameObject.SetActive(true);
 						path.GetComponent<DoorPath>().slotId = doorSlot.slotID;
@@ -117,7 +112,7 @@ public class DoorAndConsoleManager : FSystem {
 					int y = 0;
 					while (consolePos.y + y != doorPos.y)
 					{
-						GameObject path = Object.Instantiate<GameObject>(doorPathPrefab, gameData.Level.transform.position + new Vector3((consolePos.y + y + yStep / 2f) * 3, 3, (consolePos.x + x) * 3), Quaternion.Euler(0, 0, 0), gameData.Level.transform);
+						GameObject path = Object.Instantiate<GameObject>(doorPathPrefab, GameData.Level.transform.position + new Vector3((consolePos.y + y + yStep / 2f) * 3, 3, (consolePos.x + x) * 3), Quaternion.Euler(0, 0, 0), GameData.Level.transform);
 						path.transform.Find("South").gameObject.SetActive(true);
 						path.transform.Find("North").gameObject.SetActive(true);
 						path.GetComponent<DoorPath>().slotId = doorSlot.slotID;

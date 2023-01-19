@@ -12,8 +12,7 @@ using Object = UnityEngine.Object;
 /// Manage main menu to launch a specific mission
 /// </summary>
 public class TitleScreenSystem : FSystem {
-	private GameData gameData;
-	public GameData prefabGameData;
+	public GameObject prefabFuncData;
 	public GameObject mainMenu;
 	public GameObject campagneMenu;
 	public GameObject compLevelButton;
@@ -21,23 +20,24 @@ public class TitleScreenSystem : FSystem {
 	public string pathFileParamFunct = "/StreamingAssets/ParamCompFunc/FunctionConstraint.csv"; // Chemin d'acces pour la chargement des paramètres des functions
 	public string pathFileParamRequiermentLibrary = "/StreamingAssets/ParamCompFunc/FunctionalityRequiermentLibrairy.xml"; // Chemin d'acces pour la chargement des paramètres des functions
 
+	private FunctionalityParam funcParam;
+	private FunctionalityInLevel funcLevel;
+	
 	private Dictionary<GameObject, List<GameObject>> levelButtons; //key = directory button,  value = list of level buttons
 
 	protected override void onStart()
 	{
-		if (GameData.Instance == null)
+		if (funcParam == null)
         {
-            gameData = UnityEngine.Object.Instantiate(prefabGameData);
-            gameData.name = "GameData";
-            GameObjectManager.dontDestroyOnLoadAndRebind(gameData.gameObject);
+            GameObject funcData = UnityEngine.Object.Instantiate(prefabFuncData);
+            funcData.name = "FuncData";
+            GameObjectManager.dontDestroyOnLoadAndRebind(funcData);
+            funcParam = funcData.GetComponent<FunctionalityParam>();
+            funcLevel = funcData.GetComponent<FunctionalityInLevel>();
         }
-        else
-        {
-            gameData = GameData.Instance;
-        }
-	
 
-		gameData.levelList = new Dictionary<string, List<string>>();
+
+		GameData.levelList = new Dictionary<string, List<string>>();
 
 		levelButtons = new Dictionary<GameObject, List<GameObject>>();
 
@@ -46,9 +46,9 @@ public class TitleScreenSystem : FSystem {
 		if (Application.platform == RuntimePlatform.WebGLPlayer)
 		{
 			//paramFunction();
-			gameData.levelList["Campagne infiltration"] = new List<string>();
+			GameData.levelList["Campagne infiltration"] = new List<string>();
 			for (int i = 1; i <= 20; i++)
-				gameData.levelList["Campagne infiltration"].Add(Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
+				GameData.levelList["Campagne infiltration"].Add(Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
 			Path.DirectorySeparatorChar + "Campagne infiltration" + Path.DirectorySeparatorChar +"Niveau" + i + ".xml");
 			// Hide Competence button
 			GameObjectManager.setGameObjectState(compLevelButton, false);
@@ -63,12 +63,12 @@ public class TitleScreenSystem : FSystem {
 			{
 				levels = readScenario(directory);
 				if (levels != null)
-					gameData.levelList[Path.GetFileName(directory)] = levels; //key = directory name
+					GameData.levelList[Path.GetFileName(directory)] = levels; //key = directory name
 			}
 		}
 
 		//create level directory buttons
-		foreach (string key in gameData.levelList.Keys)
+		foreach (string key in GameData.levelList.Keys)
 		{
 			GameObject directoryButton = Object.Instantiate<GameObject>(Resources.Load("Prefabs/Button") as GameObject, cList.transform);
 			directoryButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = key;
@@ -77,10 +77,10 @@ public class TitleScreenSystem : FSystem {
 			// add on click
 			directoryButton.GetComponent<Button>().onClick.AddListener(delegate { showLevels(directoryButton); });
 			// create level buttons
-			for (int i = 0; i < gameData.levelList[key].Count; i++)
+			for (int i = 0; i < GameData.levelList[key].Count; i++)
 			{
 				GameObject button = Object.Instantiate<GameObject>(Resources.Load("Prefabs/LevelButton") as GameObject, cList.transform);
-				button.transform.Find("Button").GetChild(0).GetComponent<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(gameData.levelList[key][i]);
+				button.transform.Find("Button").GetChild(0).GetComponent<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(GameData.levelList[key][i]);
 				int delegateIndice = i; // need to use local variable instead all buttons launch the last
 				button.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { launchLevel(key, delegateIndice); });
 				levelButtons[directoryButton].Add(button);
@@ -145,7 +145,7 @@ public class TitleScreenSystem : FSystem {
 						//levelButtons[directory][i].transform.Find("Button").GetComponent<Button>().interactable = false;
 						levelButtons[directory][i].transform.Find("Button").GetComponent<Button>().interactable = true;
 					//scores
-					int scoredStars = PlayerPrefs.GetInt(directoryName + Path.DirectorySeparatorChar + i + gameData.scoreKey, 0); //0 star by default
+					int scoredStars = PlayerPrefs.GetInt(directoryName + Path.DirectorySeparatorChar + i + GameData.scoreKey, 0); //0 star by default
 					Transform scoreCanvas = levelButtons[directory][i].transform.Find("ScoreCanvas");
 					for (int nbStar = 0; nbStar < 4; nbStar++) {
 						if (nbStar == scoredStars)
@@ -165,7 +165,7 @@ public class TitleScreenSystem : FSystem {
 	}
 
 	public void launchLevel(string levelDirectory, int level) {
-		gameData.levelToLoad = (levelDirectory, level);
+		GameData.levelToLoad = (levelDirectory, level);
 		GameObjectManager.loadScene("MainScene");
 	}
 
@@ -210,22 +210,22 @@ public class TitleScreenSystem : FSystem {
 				break;
 			}
 			string[] data = data_string.Split(';');
-			gameData.GetComponent<FunctionalityParam>().active.Add(data[0], Convert.ToBoolean(data[4]));
-			gameData.GetComponent<FunctionalityParam>().levelDesign.Add(data[0], Convert.ToBoolean(data[3]));
+			funcParam.active.Add(data[0], Convert.ToBoolean(data[4]));
+			funcParam.levelDesign.Add(data[0], Convert.ToBoolean(data[3]));
 			List<string> tmp = new List<string>();
 			var data_link = data[1].Split(',');
 			foreach (string value in data_link)
 			{
 				tmp.Add(value);
 			}
-			gameData.GetComponent<FunctionalityParam>().activeFunc.Add(data[0], new List<string>(tmp));
+			funcParam.activeFunc.Add(data[0], new List<string>(tmp));
 			tmp = new List<string>();
 			data_link = data[2].Split(',');
 			foreach (string value in data_link)
 			{
 				tmp.Add(value);
 			}
-			gameData.GetComponent<FunctionalityParam>().enableFunc.Add(data[0], new List<string>(tmp));
+			funcParam.enableFunc.Add(data[0], new List<string>(tmp));
 		}
 	}
 
@@ -252,7 +252,7 @@ public class TitleScreenSystem : FSystem {
             {
 				foreach (XmlNode childEle in child)
                 {
-					gameData.GetComponent<FunctionalityParam>().listCaptor.Add(childEle.Attributes.GetNamedItem("name").Value);
+					funcParam.listCaptor.Add(childEle.Attributes.GetNamedItem("name").Value);
 				}
 			}
 			else if(child.Name == "func")
@@ -262,7 +262,7 @@ public class TitleScreenSystem : FSystem {
 				{
 					listEleTemp.Add(childEle.Attributes.GetNamedItem("name").Value);
 				}
-				gameData.GetComponent<FunctionalityParam>().elementRequiermentLibrary.Add(child.Attributes.GetNamedItem("name").Value, listEleTemp);
+				funcParam.elementRequiermentLibrary.Add(child.Attributes.GetNamedItem("name").Value, listEleTemp);
 			}
 		}
 	}

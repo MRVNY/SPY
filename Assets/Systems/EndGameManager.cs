@@ -19,8 +19,6 @@ public class EndGameManager : FSystem {
 
 	private Family f_playingMode = FamilyManager.getFamily(new AllOfComponents(typeof(PlayMode)));
 	
-	private GameData gameData;
-
 	public GameObject playButtonAmount;
 	public GameObject endPanel;
 
@@ -31,10 +29,6 @@ public class EndGameManager : FSystem {
 
 	protected override void onStart()
 	{
-		GameObject go = GameObject.Find("GameData");
-		if (go != null)
-			gameData = go.GetComponent<GameData>();
-
 		GameObjectManager.setGameObjectState(endPanel.transform.parent.gameObject, false);
 
 		f_requireEndPanel.addEntryCallback(displayEndPanel);
@@ -112,7 +106,7 @@ public class EndGameManager : FSystem {
 		}
 		else if (f_requireEndPanel.First().GetComponent<NewEnd>().endType == NewEnd.Win)
 		{
-			int score = (10000 / (gameData.totalActionBlocUsed + 1) + 5000 / (gameData.totalStep + 1) + 6000 / (gameData.totalExecute + 1) + 5000 * gameData.totalCoin);
+			int score = (10000 / (GameData.totalActionBlocUsed + 1) + 5000 / (GameData.totalStep + 1) + 6000 / (GameData.totalExecute + 1) + 5000 * GameData.totalCoin);
 			Transform verticalCanvas = endPanel.transform.Find("VerticalCanvas");
 			GameObjectManager.setGameObjectState(verticalCanvas.Find("ScoreCanvas").gameObject, true);
 			verticalCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Bravo vous avez gagné !\nScore: " + score;
@@ -126,7 +120,7 @@ public class EndGameManager : FSystem {
 			GameObjectManager.setGameObjectState(endPanel.transform.Find("MainMenu").gameObject, true);
 			GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, true);
 			//Check if next level exists in campaign
-			if (gameData.levelToLoad.Item2 >= gameData.levelList[gameData.levelToLoad.Item1].Count - 1)
+			if (GameData.levelToLoad.Item2 >= GameData.levelList[GameData.levelToLoad.Item1].Count - 1)
 			{
 				GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, false);
 			}
@@ -189,14 +183,14 @@ public class EndGameManager : FSystem {
 	{
 		// Détermine le nombre d'étoile à afficher
 		int scoredStars = 0;
-		if (gameData.levelToLoadScore != null)
+		if (GameData.levelToLoadScore != null)
 		{
 			//check 0, 1, 2 or 3 stars
-			if (score >= gameData.levelToLoadScore[0])
+			if (score >= GameData.levelToLoadScore[0])
 			{
 				scoredStars = 3;
 			}
-			else if (score >= gameData.levelToLoadScore[1])
+			else if (score >= GameData.levelToLoadScore[1])
 			{
 				scoredStars = 2;
 			}
@@ -216,10 +210,10 @@ public class EndGameManager : FSystem {
 		}
 
 		//save score only if better score
-		int savedScore = PlayerPrefs.GetInt(gameData.levelToLoad.Item1 + Path.DirectorySeparatorChar + gameData.levelToLoad.Item2 + gameData.scoreKey, 0);
+		int savedScore = PlayerPrefs.GetInt(GameData.levelToLoad.Item1 + Path.DirectorySeparatorChar + GameData.levelToLoad.Item2 + GameData.scoreKey, 0);
 		if (savedScore < scoredStars)
 		{
-			PlayerPrefs.SetInt(gameData.levelToLoad.Item1 + Path.DirectorySeparatorChar + gameData.levelToLoad.Item2 + gameData.scoreKey, scoredStars);
+			PlayerPrefs.SetInt(GameData.levelToLoad.Item1 + Path.DirectorySeparatorChar + GameData.levelToLoad.Item2 + GameData.scoreKey, scoredStars);
 			PlayerPrefs.Save();
 		}
 	}

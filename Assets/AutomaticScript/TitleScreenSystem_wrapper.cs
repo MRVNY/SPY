@@ -3,7 +3,7 @@ using FYFY;
 
 public class TitleScreenSystem_wrapper : BaseWrapper
 {
-	public GameData prefabGameData;
+	public UnityEngine.GameObject prefabFuncData;
 	public UnityEngine.GameObject mainMenu;
 	public UnityEngine.GameObject campagneMenu;
 	public UnityEngine.GameObject compLevelButton;
@@ -13,7 +13,7 @@ public class TitleScreenSystem_wrapper : BaseWrapper
 	private void Start()
 	{
 		this.hideFlags = HideFlags.NotEditable;
-		MainLoop.initAppropriateSystemField (system, "prefabGameData", prefabGameData);
+		MainLoop.initAppropriateSystemField (system, "prefabFuncData", prefabFuncData);
 		MainLoop.initAppropriateSystemField (system, "mainMenu", mainMenu);
 		MainLoop.initAppropriateSystemField (system, "campagneMenu", campagneMenu);
 		MainLoop.initAppropriateSystemField (system, "compLevelButton", compLevelButton);

@@ -18,9 +18,7 @@ public class VisualNovelSystem : FSystem
 {
 	private Family f_VN = FamilyManager.getFamily(new AllOfComponents(typeof(VisualNovel)));
 	private VisualNovel VN;
-
-	private GameData gameData;
-
+	
 	//convoTree & paths
 	public string node;
 	private JObject convoTree;
@@ -37,24 +35,18 @@ public class VisualNovelSystem : FSystem
 		VN = f_VN.First().GetComponent<VisualNovel>();
 		skipButton = VN.dialog.transform.parent.GetComponent<Button>();
 		VN.gameObject.SetActive(false);
-		//gameData = GameData.Instance;
-		
-		var tmp = GameObject.Find("GameData");
-		if (tmp != null)
-		{
-			gameData = tmp.GetComponent<GameData>();
-		}
-		
-		if (gameData != null)
+		//GameData = GameData.Instance;
+
+		if (GameData.convoNode != null)
 		{
 			convoTree = JObject.Parse(File.ReadAllText(treePath + Path.DirectorySeparatorChar + "1.json"));
-			node = gameData.convoNode;
+			node = GameData.convoNode;
 
 			imgPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
-			          Path.DirectorySeparatorChar + gameData.levelToLoad.Item1 + Path.DirectorySeparatorChar +
+			          Path.DirectorySeparatorChar + GameData.levelToLoad.Item1 + Path.DirectorySeparatorChar +
 			          "Images" + Path.DirectorySeparatorChar;
 
-			gameData.gameLanguage = "en";
+			GameData.gameLanguage = "en";
 			
 			if (convoTree[node] != null)
 			{
@@ -72,10 +64,10 @@ public class VisualNovelSystem : FSystem
 		{
 			VN.options[i].transform.parent.gameObject.SetActive(false);
 		}
-		node = GameData.Instance.convoNode;
+		node = GameData.convoNode;
 
 		// set text
-	    writing = TypeWriter(convoTree[node][gameData.gameLanguage].ToString());
+	    writing = TypeWriter(convoTree[node][GameData.gameLanguage].ToString());
 		
 		// set image
 		if(convoTree[node]["img"] != null)
@@ -84,15 +76,15 @@ public class VisualNovelSystem : FSystem
 		}
 
 		// set camera pos
-		// if (gameData.dialogMessage[nDialog].Item5 != -1 && gameData.dialogMessage[nDialog].Item6 != -1)
+		// if (GameData.dialogMessage[nDialog].Item5 != -1 && GameData.dialogMessage[nDialog].Item6 != -1)
   //       {
-		// 	GameObjectManager.addComponent<FocusCamOn>(MainLoop.instance.gameObject, new { camX = gameData.dialogMessage[nDialog].Item5, camY = gameData.dialogMessage[nDialog].Item6 });
+		// 	GameObjectManager.addComponent<FocusCamOn>(MainLoop.instance.gameObject, new { camX = GameData.dialogMessage[nDialog].Item5, camY = GameData.dialogMessage[nDialog].Item6 });
   //       }
   
   		// set options
         if (convoTree[node]["options"] != null)
         {
-	        var objs = convoTree[node]["options"][gameData.gameLanguage].OfType<JProperty>();
+	        var objs = convoTree[node]["options"][GameData.gameLanguage].OfType<JProperty>();
 	        for (int i = 0; i < VN.options.Count(); i++)
 	        {
 		        if (objs.Count() > i - 1)
@@ -106,7 +98,7 @@ public class VisualNovelSystem : FSystem
 			        VN.options[i].transform.parent.GetComponent<Button>().onClick.AddListener(
 				        () =>
 				        {
-					        gameData.convoNode = nextNode;
+					        GameData.convoNode = nextNode;
 					        setVN();
 				        });
 		        }
@@ -143,7 +135,7 @@ public class VisualNovelSystem : FSystem
 		{
 			skipped = true;
 			await writing;
-			VN.dialog.text = convoTree[node][gameData.gameLanguage].ToString();
+			VN.dialog.text = convoTree[node][GameData.gameLanguage].ToString();
 			
 			if (convoTree[node]["options"] != null) skipButton.enabled = false;
 		}

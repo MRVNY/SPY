@@ -5765,7 +5765,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f71bc251be7f9dd49b4a39d5e466cd2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefabGameData: {fileID: 3833649377614804033, guid: 0c781d4c9bf00bb48ad0e4df8f089e03,
+  prefabFuncData: {fileID: 3833649377614804046, guid: 0c781d4c9bf00bb48ad0e4df8f089e03,
     type: 3}
   mainMenu: {fileID: 1667186165}
   campagneMenu: {fileID: 1418420716}

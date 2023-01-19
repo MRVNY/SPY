@@ -18,8 +18,6 @@ using Random = System.Random;
 public class LevelEditorSystem : FSystem {
 	private Family f_levelEditor = FamilyManager.getFamily(new AllOfComponents(typeof(LevelEditor)));
 	
-	public GameData prefabGameData;
-
 	private LevelEditor levelEditor;
 	private List<string> dirs = new List<string>{"N","S","W","E"};
 	private List<string> dorDirs = new List<string>{"H","N","V"};
@@ -264,15 +262,8 @@ public class LevelEditorSystem : FSystem {
 
 	public void LoadLevel(string levelName)
 	{
-		if (GameData.Instance == null)
-		{
-			GameData.Instance = UnityEngine.Object.Instantiate(prefabGameData);
-			GameData.Instance.name = "GameData";
-			GameObjectManager.dontDestroyOnLoadAndRebind(GameData.Instance.gameObject);
-		}
-		
-		GameData.Instance.mode = "Homemade";
-		GameData.Instance.homemadeLevelToLoad = (levelName);
+		GameData.mode = "Homemade";
+		GameData.homemadeLevelToLoad = (levelName);
 		GameObjectManager.loadScene("MainScene");
 	}
 	

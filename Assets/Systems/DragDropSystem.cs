@@ -42,7 +42,6 @@ public class DragDropSystem : FSystem
 	private Family f_editMode = FamilyManager.getFamily(new AllOfComponents(typeof(EditMode)));
 
 	// Les variables
-	private GameData gameData;
 	private GameObject itemDragged; // L'item (ici bloc d'action) en cours de drag
 	public GameObject mainCanvas; // Le canvas principal
 	public GameObject lastDropZoneUsed; // La dernière dropzone utilisée
@@ -61,10 +60,6 @@ public class DragDropSystem : FSystem
 
     protected override void onStart()
 	{
-		GameObject go = GameObject.Find("GameData");
-		if (go != null)
-			gameData = go.GetComponent<GameData>();
-
 		f_elementToDelete.addEntryCallback(deleteElement);
 		f_defaultDropZone.addEntryCallback(selectNewDefaultDropZone);
 		f_elementToRefresh.addEntryCallback(delegate (GameObject go)
@@ -145,7 +140,7 @@ public class DragDropSystem : FSystem
 	public void beginDragElementFromLibrary(BaseEventData element)
     {
 		// On verifie si c'est un évènement généré par le bouton gauche de la souris
-		if (!Pause && gameData.dragDropEnabled && (element as PointerEventData).button == PointerEventData.InputButton.Left && element.selectedObject != null)
+		if (!Pause && GameData.dragDropEnabled && (element as PointerEventData).button == PointerEventData.InputButton.Left && element.selectedObject != null)
 		{
 			// On active les dropzones
 			setDropZoneState(true);
@@ -168,7 +163,7 @@ public class DragDropSystem : FSystem
 	public void beginDragElementFromEditableScript(BaseEventData element)
     {
 		// On verifie si c'est un évènement généré par le bouton gauche de la souris
-		if (!Pause && gameData.dragDropEnabled && (element as PointerEventData).button == PointerEventData.InputButton.Left && element.selectedObject != null)
+		if (!Pause && GameData.dragDropEnabled && (element as PointerEventData).button == PointerEventData.InputButton.Left && element.selectedObject != null)
 		{
 			itemDragged = element.selectedObject;
 			Transform parent = itemDragged.transform.parent;
@@ -207,7 +202,7 @@ public class DragDropSystem : FSystem
 	// Pendant le drag d'un bloc, permet de lui faire suivre le mouvement de la souris
 	public void dragElement()
 	{
-		if(!Pause && gameData.dragDropEnabled && itemDragged != null) {
+		if(!Pause && GameData.dragDropEnabled && itemDragged != null) {
 			itemDragged.transform.position = Input.mousePosition;
 		}
 	}
@@ -217,7 +212,7 @@ public class DragDropSystem : FSystem
 	// Détruire l'objet si lâché hors d'un container
 	public void endDragElement()
 	{
-		if (!Pause && gameData.dragDropEnabled && itemDragged != null)
+		if (!Pause && GameData.dragDropEnabled && itemDragged != null)
 		{
 			// On désactive les dropzones
 			setDropZoneState(false);
@@ -331,7 +326,7 @@ public class DragDropSystem : FSystem
 	public void deleteElement(GameObject elementToDelete)
 	{
 		// On vérifie qu'il y a bien un objet pointé pour la suppression
-		if(!Pause && gameData.dragDropEnabled && elementToDelete != null)
+		if(!Pause && GameData.dragDropEnabled && elementToDelete != null)
         {
 			// Réactivation d'une EmptyZone si nécessaire
 			EditingUtility.manageEmptyZone(elementToDelete);
@@ -377,7 +372,7 @@ public class DragDropSystem : FSystem
 	// Si double clic sur l'élément de la bibliothèque (voir l'inspector), ajoute le bloc d'action au dernier container utilisé
 	public void checkDoubleClick(BaseEventData element)
     {
-		if (!Pause && gameData.dragDropEnabled && doubleClick() && !itemDragged)
+		if (!Pause && GameData.dragDropEnabled && doubleClick() && !itemDragged)
 		{
 			// if no drop zone used, try to get the last
 			if (lastDropZoneUsed == null)

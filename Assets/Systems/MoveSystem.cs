@@ -12,13 +12,9 @@ public class MoveSystem : FSystem {
 	public float moveSpeed;
 	public AudioClip footSlow;
 	public AudioClip footSpeed;
-	private GameData gameData;
 
 	protected override void onStart()
 	{
-		GameObject go = GameObject.Find("GameData");
-		if (go != null)
-			gameData = go.GetComponent<GameData>();
 		foreach (GameObject movable in f_movable)
 			initAgentDirection(movable);
 		f_movable.addEntryCallback(initAgentDirection);
@@ -51,10 +47,10 @@ public class MoveSystem : FSystem {
 			// Manage position
 			if (Mathf.Abs(go.transform.localPosition.z / 3 - go.GetComponent<Position>().x) > 0.01f || Mathf.Abs(go.transform.localPosition.x / 3 - go.GetComponent<Position>().y) > 0.01f)
 			{
-				go.transform.localPosition = Vector3.MoveTowards(go.transform.localPosition, new Vector3(go.GetComponent<Position>().y * 3, go.transform.localPosition.y, go.GetComponent<Position>().x * 3), moveSpeed * gameData.gameSpeed_current * Time.deltaTime);
+				go.transform.localPosition = Vector3.MoveTowards(go.transform.localPosition, new Vector3(go.GetComponent<Position>().y * 3, go.transform.localPosition.y, go.GetComponent<Position>().x * 3), moveSpeed * GameData.gameSpeed_current * Time.deltaTime);
 				if (go.GetComponent<Animator>() && go.tag == "Player")
 				{
-					if (gameData.gameSpeed_current == gameData.gameSpeed_default)
+					if (GameData.gameSpeed_current == GameData.gameSpeed_default)
 					{
 						go.GetComponent<Animator>().SetFloat("Walk", 1f);
 						go.GetComponent<Animator>().SetFloat("Run", -1f);
@@ -94,7 +90,7 @@ public class MoveSystem : FSystem {
 			}
 			if (target.eulerAngles.y != go.transform.eulerAngles.y)
 			{
-				go.transform.rotation = Quaternion.RotateTowards(go.transform.rotation, target, turnSpeed * gameData.gameSpeed_current * Time.deltaTime);
+				go.transform.rotation = Quaternion.RotateTowards(go.transform.rotation, target, turnSpeed * GameData.gameSpeed_current * Time.deltaTime);
 				if (go.GetComponent<Animator>() && go.tag == "Player")
 					go.GetComponent<Animator>().SetFloat("Rotate", 1f);
 			}

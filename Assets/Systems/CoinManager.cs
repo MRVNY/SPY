@@ -12,15 +12,12 @@ public class CoinManager : FSystem {
 	private Family f_playingMode = FamilyManager.getFamily(new AllOfComponents(typeof(PlayMode)));
 	private Family f_editingMode = FamilyManager.getFamily(new AllOfComponents(typeof(EditMode)));
 
-	private GameData gameData;
     private bool activeCoin;
 
 	protected override void onStart()
     {
 		activeCoin = false;
-		GameObject go = GameObject.Find("GameData");
-		if (go != null)
-			gameData = go.GetComponent<GameData>();
+	
 		f_robotcollision.addEntryCallback(onNewCollision);
 
 		f_playingMode.addEntryCallback(delegate { activeCoin = true; });
@@ -33,7 +30,7 @@ public class CoinManager : FSystem {
 			foreach(GameObject target in trigger.Targets){
 				//Check if the player collide with a coin
                 if(target.CompareTag("Coin")){
-                    gameData.totalCoin++;
+	                GameData.totalCoin++;
                     target.GetComponent<AudioSource>().Play();
                     MainLoop.instance.StartCoroutine(coinDestroy(target));					
 				}

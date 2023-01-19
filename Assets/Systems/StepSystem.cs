@@ -15,7 +15,6 @@ public class StepSystem : FSystem {
     private Family f_editingMode = FamilyManager.getFamily(new AllOfComponents(typeof(EditMode)));
 
     private float timeStepCpt;
-	private GameData gameData;
     private int nbStep;
     private bool newStepAskedByPlayer;
 
@@ -23,20 +22,15 @@ public class StepSystem : FSystem {
     {
         nbStep = 0;
         newStepAskedByPlayer = false;
-        GameObject go = GameObject.Find("GameData");
-        if (go != null)
-        {
-            gameData = go.GetComponent<GameData>();
-            timeStepCpt = 1 / gameData.gameSpeed_current;
-        }
+
         f_newStep.addEntryCallback(onNewStep);
 
         f_playingMode.addEntryCallback(delegate
         {
             // count a new execution
-            gameData.totalExecute++;
-            gameData.totalStep++;
-            timeStepCpt = 1 / gameData.gameSpeed_current;
+            GameData.totalExecute++;
+            GameData.totalStep++;
+            timeStepCpt = 1 / GameData.gameSpeed_current;
             nbStep++;
             Pause = false;
             setToDefaultTimeStep();
@@ -51,7 +45,7 @@ public class StepSystem : FSystem {
     private void onNewStep(GameObject go)
     {
         GameObjectManager.removeComponent(go.GetComponent<NewStep>());  
-        timeStepCpt = (1 / gameData.gameSpeed_current) + timeStepCpt; // le "+ timeStepCpt" permet de prendre en compte le débordement de temps de la frame précédente
+        timeStepCpt = (1 / GameData.gameSpeed_current) + timeStepCpt; // le "+ timeStepCpt" permet de prendre en compte le débordement de temps de la frame précédente
     }
 
     // Use to process your families.
@@ -63,7 +57,7 @@ public class StepSystem : FSystem {
             if (timeStepCpt <= 0)
             {
                 GameObjectManager.addComponent<NewStep>(MainLoop.instance.gameObject);
-                gameData.totalStep++;
+                GameData.totalStep++;
                 nbStep++;
                 if (newStepAskedByPlayer)
                 {
@@ -122,17 +116,17 @@ public class StepSystem : FSystem {
 
     // See StopButton in editor
     public void cancelTotalStep(){ //click on stop button
-        gameData.totalStep -= nbStep;
+        GameData.totalStep -= nbStep;
         nbStep = 0;
     }
 
     // See SpeedButton in editor
     public void speedTimeStep(){
-        gameData.gameSpeed_current = gameData.gameSpeed_default * 3f;
+        GameData.gameSpeed_current = GameData.gameSpeed_default * 3f;
     }
 
     // See ContinueButton in editor
     public void setToDefaultTimeStep(){
-        gameData.gameSpeed_current = gameData.gameSpeed_default;
+        GameData.gameSpeed_current = GameData.gameSpeed_default;
     }
 }

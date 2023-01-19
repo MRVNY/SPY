@@ -42,9 +42,7 @@ public class EditableContainerSystem : FSystem
 	public GameObject EditableCanvas;
 	public GameObject prefabViewportScriptContainer;
 	public Button addContainerButton;
-
-	private GameData gameData;
-
+	
 	// L'instance
 	public static EditableContainerSystem instance;
 
@@ -54,14 +52,9 @@ public class EditableContainerSystem : FSystem
 	}
 	protected override void onStart()
 	{
-		GameObject go = GameObject.Find("GameData");
-		if (go != null)
-			gameData = go.GetComponent<GameData>();
-
 		MainLoop.instance.StartCoroutine(tcheckLinkName());
 		f_gameLoaded.addEntryCallback(delegate {
-			GameObject gameDataGO = GameObject.Find("GameData");
-			if (gameDataGO != null && !gameDataGO.GetComponent<GameData>().dragDropEnabled)
+			if (GameData.dragDropEnabled)
 			{
 				foreach (GameObject container in f_scriptContainer)
 				{
@@ -177,8 +170,8 @@ public class EditableContainerSystem : FSystem
 				{
 					EditingUtility.addItemOnDropArea(script[k], dropArea);
 					// On compte le nombre de bloc utilisé pour l'initialisation
-					gameData.totalActionBlocUsed += script[k].GetComponentsInChildren<BaseElement>().Length;
-					gameData.totalActionBlocUsed += script[k].GetComponentsInChildren<BaseCondition>().Length;
+					GameData.totalActionBlocUsed += script[k].GetComponentsInChildren<BaseElement>().Length;
+					GameData.totalActionBlocUsed += script[k].GetComponentsInChildren<BaseCondition>().Length;
 				}
 				GameObjectManager.addComponent<NeedRefreshPlayButton>(MainLoop.instance.gameObject);
 			}

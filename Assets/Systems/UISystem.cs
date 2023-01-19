@@ -27,9 +27,7 @@ public class UISystem : FSystem {
 	private Family f_editingMode = FamilyManager.getFamily(new AllOfComponents(typeof(EditMode)));
 
 	private Family f_enabledinventoryBlocks = FamilyManager.getFamily(new AllOfComponents(typeof(ElementToDrag)), new AllOfProperties(PropertyMatcher.PROPERTY.ACTIVE_IN_HIERARCHY));
-
-	private GameData gameData;
-
+	
 	public GameObject buttonExecute;
 	public GameObject buttonPause;
 	public GameObject buttonNextStep;
@@ -48,10 +46,6 @@ public class UISystem : FSystem {
 
 	protected override void onStart()
 	{
-		GameObject go = GameObject.Find("GameData");
-		if (go != null)
-			gameData = go.GetComponent<GameData>();
-		
 		f_currentActions.addEntryCallback(keepCurrentActionViewable);
 
 		f_playingMode.addEntryCallback(delegate {
@@ -97,8 +91,8 @@ public class UISystem : FSystem {
 			foreach (GameObject trash in f_removeButton)
 				trash.GetComponent<Button>().interactable = false;
 			// Sauvegarde de l'état d'avancement des niveaux (niveau et étoile)
-			if (PlayerPrefs.GetInt(gameData.levelToLoad.Item1,0) < gameData.levelToLoad.Item2 + 1)
-				PlayerPrefs.SetInt(gameData.levelToLoad.Item1, gameData.levelToLoad.Item2 + 1);
+			if (PlayerPrefs.GetInt(GameData.levelToLoad.Item1,0) < GameData.levelToLoad.Item2 + 1)
+				PlayerPrefs.SetInt(GameData.levelToLoad.Item1, GameData.levelToLoad.Item2 + 1);
 			PlayerPrefs.Save();
 		}
 		// for other end type, nothing to do more
@@ -212,7 +206,7 @@ public class UISystem : FSystem {
 		GameObjectManager.setGameObjectState(buttonContinue, false);
 		GameObjectManager.setGameObjectState(buttonSpeed, value);
 		GameObjectManager.setGameObjectState(buttonStop, value);
-		if (gameData.actionsHistory != null)
+		if (GameData.actionsHistory != null)
 			foreach (GameObject trash in f_removeButton)
 				trash.GetComponent<Button>().interactable = false;
 	}
@@ -228,20 +222,20 @@ public class UISystem : FSystem {
 	// Permet de revenir à la scéne titre
 	public void returnToTitleScreen(){
 		initZeroVariableLevel();
-		gameData.actionsHistory = null;
+		GameData.actionsHistory = null;
 		GameObjectManager.loadScene("TitleScreen");
 	}
 
 
-	// Permet de réinitialiser les variables du niveau dans l'objet gameData
+	// Permet de réinitialiser les variables du niveau dans l'objet GameData
 	public void initZeroVariableLevel()
     {
-		gameData.totalActionBlocUsed = 0;
-		gameData.totalStep = 0;
-		gameData.totalExecute = 0;
-		gameData.totalCoin = 0;
-		gameData.levelToLoadScore = null;
-		gameData.dialogMessage = new List<(string, float, string, float, int, int)>();
+		GameData.totalActionBlocUsed = 0;
+		GameData.totalStep = 0;
+		GameData.totalExecute = 0;
+		GameData.totalCoin = 0;
+		GameData.levelToLoadScore = null;
+		GameData.dialogMessage = new List<(string, float, string, float, int, int)>();
 }
 
 
@@ -249,9 +243,9 @@ public class UISystem : FSystem {
 	// On charge la scéne suivante
 	public void nextLevel(){
 		// On imcrémente le numéro du niveau
-		gameData.levelToLoad.Item2++;
+		GameData.levelToLoad.Item2++;
 		// On efface l'historique
-		gameData.actionsHistory = null;
+		GameData.actionsHistory = null;
 		// On recharge la scéne (mais avec le nouveau numéro de niveau)
 		restartScene();
 	}
@@ -260,8 +254,8 @@ public class UISystem : FSystem {
 	// See ReloadLevel and RestartLevel buttons in editor
 	// Fait recommencer la scéne mais en gardant l'historique des actions
 	public void retry(){
-		if (gameData.actionsHistory != null)
-			UnityEngine.Object.DontDestroyOnLoad(gameData.actionsHistory);
+		if (GameData.actionsHistory != null)
+			UnityEngine.Object.DontDestroyOnLoad(GameData.actionsHistory);
 		restartScene();
 	}
 

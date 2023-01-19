@@ -27,8 +27,9 @@ public class ParamCompetenceSystem : FSystem
 	public GameObject prefabComp; // Prefab de l'affichage d'une comp?tence
 	public GameObject ContentCompMenu; // Panneau qui contient la liste des cat?gories et comp?tences
 	public TMP_Text messageForUser; // Zone de texte pour les messages d'erreur adress?s ? l'utilisateur
-
-	private GameData gameData;
+	
+	private FunctionalityParam funcParam;
+	private FunctionalityInLevel funcLevel;
 	private List<string> listCompSelectUser = new List<string>(); // Enregistre temporairement les comp?tences s?l?ctionn?es par le user
 	private List<string> listCompSelectUserSave = new List<string>(); // Contient les comp?tences selectionn?es par le user
 
@@ -39,7 +40,8 @@ public class ParamCompetenceSystem : FSystem
 
 	protected override void onStart()
 	{
-		gameData = GameObject.Find("GameData").GetComponent<GameData>();
+		funcParam = GameObject.Find("FuncData").GetComponent<FunctionalityParam>();
+		funcLevel = GameObject.Find("FuncData").GetComponent<FunctionalityInLevel>();
 	}
 
 	// used on TitleScreen scene
@@ -262,7 +264,7 @@ public class ParamCompetenceSystem : FSystem
 	// Lit tous les fichiers XML des niveaux de chaque dossier afin de charger quelle fonctionalit? se trouve dans quel niveau  
 	private void readXMLinfo()
 	{
-		foreach (List<string> levels in gameData.levelList.Values)
+		foreach (List<string> levels in GameData.levelList.Values)
 		{
 			foreach (string level in levels)
 			{
@@ -307,26 +309,26 @@ public class ParamCompetenceSystem : FSystem
 	// Associe ? chaque fonctionalit? renseign?e sa pr?sence dans le niveau
 	private void addInfo(XmlNode node, string namelevel)
 	{
-		if(gameData.GetComponent<FunctionalityParam>().levelDesign[node.Attributes.GetNamedItem("name").Value])
+		if(funcParam.levelDesign[node.Attributes.GetNamedItem("name").Value])
         {
 			// Si la fonctionnalit? n'est pas encore connue dans le dictionnaire, on l'ajoute
-			if (!gameData.GetComponent<FunctionalityInLevel>().levelByFuncLevelDesign.ContainsKey(node.Attributes.GetNamedItem("name").Value))
+			if (!funcLevel.levelByFuncLevelDesign.ContainsKey(node.Attributes.GetNamedItem("name").Value))
 			{
-				gameData.GetComponent<FunctionalityInLevel>().levelByFuncLevelDesign.Add(node.Attributes.GetNamedItem("name").Value, new List<string>());
+				funcLevel.levelByFuncLevelDesign.Add(node.Attributes.GetNamedItem("name").Value, new List<string>());
 			}
 			// On r?cup?re la liste d?j? pr?sente
-			List<string> listLevelForFuncLevelDesign = gameData.GetComponent<FunctionalityInLevel>().levelByFuncLevelDesign[node.Attributes.GetNamedItem("name").Value];
+			List<string> listLevelForFuncLevelDesign = funcLevel.levelByFuncLevelDesign[node.Attributes.GetNamedItem("name").Value];
 			listLevelForFuncLevelDesign.Add(namelevel);
 		}
         else
         {
 			// Si la fonctionnalit? n'est pas encore connue dans le dictionnaire, on l'ajoute
-			if (!gameData.GetComponent<FunctionalityInLevel>().levelByFunc.ContainsKey(node.Attributes.GetNamedItem("name").Value))
+			if (!funcLevel.levelByFunc.ContainsKey(node.Attributes.GetNamedItem("name").Value))
 			{
-				gameData.GetComponent<FunctionalityInLevel>().levelByFunc.Add(node.Attributes.GetNamedItem("name").Value, new List<string>());
+				funcLevel.levelByFunc.Add(node.Attributes.GetNamedItem("name").Value, new List<string>());
 			}
 			// On r?cup?re la liste d?j? pr?sente
-			List<string> listLevelForFunc = gameData.GetComponent<FunctionalityInLevel>().levelByFunc[node.Attributes.GetNamedItem("name").Value];
+			List<string> listLevelForFunc = funcLevel.levelByFunc[node.Attributes.GetNamedItem("name").Value];
 			listLevelForFunc.Add(namelevel);
 		}
 	}
@@ -335,9 +337,9 @@ public class ParamCompetenceSystem : FSystem
 	private void desactiveToogleComp()
 	{
 
-		foreach(string nameFunc in gameData.GetComponent<FunctionalityParam>().active.Keys)
+		foreach(string nameFunc in funcParam.active.Keys)
         {
-			if (!gameData.GetComponent<FunctionalityParam>().active[nameFunc])
+			if (!funcParam.active[nameFunc])
 			{
 				foreach (GameObject comp in f_competence)
 				{
@@ -354,13 +356,13 @@ public class ParamCompetenceSystem : FSystem
 	// Permet de selectionn? aussi les functionnalit?s linker avec la fonctionalit? selectionn?e
 	private void addSelectFuncLinkbyFunc(string nameFunc)
     {
-		foreach(string f_name in gameData.GetComponent<FunctionalityParam>().activeFunc[nameFunc])
+		foreach(string f_name in funcParam.activeFunc[nameFunc])
         {
             // Si la fonction na pas encore ?t? selectionn?e
 			// alors on l'ajoute ? la s?l?ction et on fait un appel r?cursif dessus
-            if (f_name != "" && !gameData.GetComponent<FunctionalityParam>().funcActiveInLevel.Contains(f_name))
+            if (f_name != "" && !funcParam.funcActiveInLevel.Contains(f_name))
             {
-				gameData.GetComponent<FunctionalityParam>().funcActiveInLevel.Add(f_name);
+				funcParam.funcActiveInLevel.Add(f_name);
 				addSelectFuncLinkbyFunc(f_name);
 			}
         }
@@ -441,14 +443,14 @@ public class ParamCompetenceSystem : FSystem
             {
 				nbCompActive += 1;
 				// On fait ?a avec le level design
-				foreach (string f_key in gameData.GetComponent<FunctionalityParam>().levelDesign.Keys)
+				foreach (string f_key in funcParam.levelDesign.Keys)
 				{
-                    if (!gameData.GetComponent<FunctionalityParam>().funcActiveInLevel.Contains(f_key) && comp.GetComponent<Competence>().compLinkWhitFunc.Contains(f_key))
+                    if (!funcParam.funcActiveInLevel.Contains(f_key) && comp.GetComponent<Competence>().compLinkWhitFunc.Contains(f_key))
                     {
-						gameData.GetComponent<FunctionalityParam>().funcActiveInLevel.Add(f_key);
+						funcParam.funcActiveInLevel.Add(f_key);
 						addSelectFuncLinkbyFunc(f_key);
 					}
-					if (comp.GetComponent<Competence>().compLinkWhitFunc.Contains(f_key) && gameData.GetComponent<FunctionalityParam>().levelDesign[f_key])
+					if (comp.GetComponent<Competence>().compLinkWhitFunc.Contains(f_key) && funcParam.levelDesign[f_key])
                     {
 						levelLD = true;
                     }
@@ -471,24 +473,24 @@ public class ParamCompetenceSystem : FSystem
 			{
 				// On parcourt le dictionnaires des fonctionnalit?s de level design
 				// Si elle fait partie des fonctionnalit?s selectionn?es, alors on enregistre les levels associ?s ? la fonctionnalit?
-				foreach (string f_key in gameData.GetComponent<FunctionalityInLevel>().levelByFuncLevelDesign.Keys)
+				foreach (string f_key in funcLevel.levelByFuncLevelDesign.Keys)
 				{
-                    if (gameData.GetComponent<FunctionalityParam>().funcActiveInLevel.Contains(f_key))
+                    if (funcParam.funcActiveInLevel.Contains(f_key))
                     {
-						foreach(string level in gameData.GetComponent<FunctionalityInLevel>().levelByFuncLevelDesign[f_key])
+						foreach(string level in funcLevel.levelByFuncLevelDesign[f_key])
                         {
 							copyLevel.Add(level);
 						}
 					}
 				}
 				// On garde ensuite les niveaux qui contienent exclusivement toutes les fonctionalit?s selectionn?es
-				foreach (string f_key in gameData.GetComponent<FunctionalityInLevel>().levelByFuncLevelDesign.Keys)
+				foreach (string f_key in funcLevel.levelByFuncLevelDesign.Keys)
 				{
-					if (gameData.GetComponent<FunctionalityParam>().funcActiveInLevel.Contains(f_key))
+					if (funcParam.funcActiveInLevel.Contains(f_key))
 					{
 						for(int i = 0; i < copyLevel.Count;)
                         {
-                            if (!gameData.GetComponent<FunctionalityInLevel>().levelByFuncLevelDesign[f_key].Contains(copyLevel[i]))
+                            if (!funcLevel.levelByFuncLevelDesign[f_key].Contains(copyLevel[i]))
                             {
 								copyLevel.Remove(copyLevel[i]);
                             }
@@ -504,14 +506,14 @@ public class ParamCompetenceSystem : FSystem
 			{
 				// On parcourt le dictionnaire des fonctionnalit?s level design
 				// On supprime de la liste des niveaux possibles tous les niveaux appellant des fonctionnalit?s de level design
-				foreach (List<string> levels in gameData.levelList.Values)
+				foreach (List<string> levels in GameData.levelList.Values)
 				{
 					// On cr?er une copie de la liste des niveaux disponibles
 					foreach (string level in levels)
 						copyLevel.Add(level);
 				}
 
-				foreach (List<string> levels in gameData.GetComponent<FunctionalityInLevel>().levelByFuncLevelDesign.Values)
+				foreach (List<string> levels in funcLevel.levelByFuncLevelDesign.Values)
 				{
 					foreach(string level in levels)
                     {
@@ -539,7 +541,7 @@ public class ParamCompetenceSystem : FSystem
 				// On split la chaine de caract?re pour pouvoir r?cup?rer le dossier ou se trouve le niveau selectionn?
 				var level = levelSelected.Split('\\');
 				string folder = level[level.Length - 2];
-				gameData.levelToLoad = (folder, gameData.levelList[folder].IndexOf(levelSelected));
+				GameData.levelToLoad = (folder, GameData.levelList[folder].IndexOf(levelSelected));
 			}
             else
             {
@@ -547,7 +549,7 @@ public class ParamCompetenceSystem : FSystem
 				// On split la chaine de caract?re pour pouvoir r?cup?rer le dossier ou se trouve le niveau selectionn?
 				var level = levelSelected.Split('\\');
 				string folder = level[level.Length - 2];
-				gameData.levelToLoad = (folder, gameData.levelList[folder].IndexOf(levelSelected));
+				GameData.levelToLoad = (folder, GameData.levelList[folder].IndexOf(levelSelected));
 			}
 			GameObjectManager.loadScene("MainScene");
 		}
@@ -633,7 +635,7 @@ public class ParamCompetenceSystem : FSystem
 		foreach (string funcNameActive in comp.GetComponent<Competence>().compLinkWhitFunc)
 		{
 			//Pour chaque fonction on regarde si cela emp?che une comp?tence d'?tre selectionn?e
-			foreach (string funcNameDesactive in gameData.GetComponent<FunctionalityParam>().enableFunc[funcNameActive])
+			foreach (string funcNameDesactive in funcParam.enableFunc[funcNameActive])
 			{
 				// Pour chaque fonction non possible, on regarde les comp?tences les utilisant pour en d?sactiver la selection
 				foreach (GameObject c in f_competence)

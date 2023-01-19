@@ -15,14 +15,9 @@ public class BlocLimitationManager : FSystem
 	private Family f_resetBlocLimit = FamilyManager.getFamily(new AllOfComponents(typeof(ResetBlocLimit)));
 	private Family f_gameLoaded = FamilyManager.getFamily(new AllOfComponents(typeof(GameLoaded), typeof(MainLoop)));
 
-	private GameData gameData;
 
 	protected override void onStart()
 	{
-		GameObject gd = GameObject.Find("GameData");
-		if (gd != null)
-			gameData = gd.GetComponent<GameData>();
-
 		f_resetBlocLimit.addEntryCallback(delegate (GameObject go) {
 			destroyScript(go);
 			GameObjectManager.unbind(go);
@@ -88,25 +83,25 @@ public class BlocLimitationManager : FSystem
 		return null;
 	}
 
-	// Met à jour la limite du nombre de fois où l'on peut utiliser un bloc (si il y a une limite)
-	// Le désactive si la limite est atteinte
-	// Met à jour le compteur
+	// Met ï¿½ jour la limite du nombre de fois oï¿½ l'on peut utiliser un bloc (si il y a une limite)
+	// Le dï¿½sactive si la limite est atteinte
+	// Met ï¿½ jour le compteur
 	private void updateBlocLimit(GameObject draggableGO)
 	{
-		if (gameData.actionBlockLimit.ContainsKey(draggableGO.name))
+		if (GameData.actionBlockLimit.ContainsKey(draggableGO.name))
 		{
-			bool isActive = gameData.actionBlockLimit[draggableGO.name] != 0; // negative means no limit
+			bool isActive = GameData.actionBlockLimit[draggableGO.name] != 0; // negative means no limit
 			GameObjectManager.setGameObjectState(draggableGO, isActive);
 			if (isActive)
 			{
-				if (gameData.actionBlockLimit[draggableGO.name] < 0)
+				if (GameData.actionBlockLimit[draggableGO.name] < 0)
 					// unlimited action => hide counter
 					GameObjectManager.setGameObjectState(draggableGO.transform.GetChild(1).gameObject, false);
 				else
 				{
 					// limited action => init and show counter
 					GameObject counterText = draggableGO.transform.GetChild(1).gameObject;
-					counterText.GetComponent<TextMeshProUGUI>().text = "Reste " + gameData.actionBlockLimit[draggableGO.name].ToString();
+					counterText.GetComponent<TextMeshProUGUI>().text = "Reste " + GameData.actionBlockLimit[draggableGO.name].ToString();
 					GameObjectManager.setGameObjectState(counterText, true);
 				}
 			}
@@ -117,24 +112,24 @@ public class BlocLimitationManager : FSystem
 	private void useAction(GameObject go){
 		LibraryItemRef lir = go.GetComponent<LibraryItemRef>();
 		string actionKey = lir.linkedTo.name;
-		if(actionKey != null && gameData.actionBlockLimit.ContainsKey(actionKey))
+		if(actionKey != null && GameData.actionBlockLimit.ContainsKey(actionKey))
 		{
-			if (gameData.actionBlockLimit[actionKey] > 0)
-				gameData.actionBlockLimit[actionKey] -= 1;
+			if (GameData.actionBlockLimit[actionKey] > 0)
+				GameData.actionBlockLimit[actionKey] -= 1;
 			updateBlocLimit(lir.linkedTo);		
 		}
 		GameObjectManager.removeComponent<Dropped>(go);
-		gameData.totalActionBlocUsed++;
+		GameData.totalActionBlocUsed++;
 	}
 	
 	// Restore item in library
 	private void unuseAction(GameObject go){
 		AddOne[] addOnes =  go.GetComponents<AddOne>();
-		if(gameData.actionBlockLimit.ContainsKey(go.name)){
-			if (gameData.actionBlockLimit[go.name] >= 0)
-				gameData.actionBlockLimit[go.name] += addOnes.Length;
+		if(GameData.actionBlockLimit.ContainsKey(go.name)){
+			if (GameData.actionBlockLimit[go.name] >= 0)
+				GameData.actionBlockLimit[go.name] += addOnes.Length;
 			updateBlocLimit(go);
-			gameData.totalActionBlocUsed -= addOnes.Length;
+			GameData.totalActionBlocUsed -= addOnes.Length;
 		}
 		foreach(AddOne a in addOnes){
 			GameObjectManager.removeComponent(a);	
