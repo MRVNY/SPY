@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using FYFY;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using System.IO;
 
@@ -30,6 +31,8 @@ public class EndGameManager : FSystem {
 	protected override void onStart()
 	{
 		GameObjectManager.setGameObjectState(endPanel.transform.parent.gameObject, false);
+
+		GameStateManager.SaveGD();
 
 		f_requireEndPanel.addEntryCallback(displayEndPanel);
 
@@ -120,7 +123,7 @@ public class EndGameManager : FSystem {
 			GameObjectManager.setGameObjectState(endPanel.transform.Find("MainMenu").gameObject, true);
 			GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, true);
 			//Check if next level exists in campaign
-			if (GameData.levelToLoad.Item2 >= GameData.levelList[GameData.levelToLoad.Item1].Count - 1)
+			if (GameData.levelToLoad.Item2 >= ((List<string>)GameData.levelList[GameData.levelToLoad.Item1]).Count - 1)
 			{
 				GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, false);
 			}

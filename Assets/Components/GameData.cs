@@ -1,21 +1,23 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 
 [Serializable]
-public static class GameData {
+public class GameData {
 	public static string mode = "Campagne infiltration"; //Campagne infiltration / Homemade
 
 	// Advice: FYFY component aims to contain only public members (according to Entity-Component-System paradigm).
 	// public static GameObject Level;
-	public static Dictionary <string, List<string>> levelList; //key = directory name, value = list of level file name
+	public static Hashtable levelList; //key = directory name, value = list of level file name
+	// public static Dictionary <string, List<string>> levelList; //key = directory name, value = list of level file name
 	public static (string, int) levelToLoad = ("Campagne infiltration", 1); //directory name, level index
-	public static string homemadeLevelToLoad; 
+	public static string homemadeLevelToLoad = "level1"; 
 	public static int[] levelToLoadScore; //levelToLoadScore[0] = best score (3 stars) ; levelToLoadScore[1] = medium score (2 stars)
 	
 	public static List<(string,float,string,float, int, int)> dialogMessage; //list of (dialogText, dialogHeight, imageName, imageHeight, camX, camY)
-	
-	public static Dictionary<string, int> actionBlockLimit; //Is block available in library?
+	public static Hashtable actionBlockLimit; //Is block available in library?
+	// public static Dictionary<string, int> actionBlockLimit; //Is block available in library?
 	public static string scoreKey = "score";
 	public static int totalStep;
 	public static int totalActionBlocUsed;

@@ -6,6 +6,7 @@ using System.IO;
 using TMPro;
 using System.Xml;
 using System;
+using System.Collections;
 using Object = UnityEngine.Object;
 
 /// <summary>
@@ -37,7 +38,7 @@ public class TitleScreenSystem : FSystem {
         }
 
 
-		GameData.levelList = new Dictionary<string, List<string>>();
+		GameData.levelList = new Hashtable();
 
 		levelButtons = new Dictionary<GameObject, List<GameObject>>();
 
@@ -48,7 +49,7 @@ public class TitleScreenSystem : FSystem {
 			//paramFunction();
 			GameData.levelList["Campagne infiltration"] = new List<string>();
 			for (int i = 1; i <= 20; i++)
-				GameData.levelList["Campagne infiltration"].Add(Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
+				((List<string>)GameData.levelList["Campagne infiltration"]).Add(Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
 			Path.DirectorySeparatorChar + "Campagne infiltration" + Path.DirectorySeparatorChar +"Niveau" + i + ".xml");
 			// Hide Competence button
 			GameObjectManager.setGameObjectState(compLevelButton, false);
@@ -77,10 +78,10 @@ public class TitleScreenSystem : FSystem {
 			// add on click
 			directoryButton.GetComponent<Button>().onClick.AddListener(delegate { showLevels(directoryButton); });
 			// create level buttons
-			for (int i = 0; i < GameData.levelList[key].Count; i++)
+			for (int i = 0; i < ((List<string>)GameData.levelList[key]).Count; i++)
 			{
 				GameObject button = Object.Instantiate<GameObject>(Resources.Load("Prefabs/LevelButton") as GameObject, cList.transform);
-				button.transform.Find("Button").GetChild(0).GetComponent<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(GameData.levelList[key][i]);
+				button.transform.Find("Button").GetChild(0).GetComponent<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(((List<string>)GameData.levelList[key])[i]);
 				int delegateIndice = i; // need to use local variable instead all buttons launch the last
 				button.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { launchLevel(key, delegateIndice); });
 				levelButtons[directoryButton].Add(button);

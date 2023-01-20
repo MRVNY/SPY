@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using FYFY;
 using TMPro;
@@ -27,7 +29,7 @@ public class GameStateManager : FSystem {
 
     public GameObject playButtonAmount;
 
-    public static GameStateManager instance;
+    GameStateManager instance;
 
     private static string savePath;
 
@@ -79,12 +81,44 @@ public class GameStateManager : FSystem {
 
     public async static Task SaveGD()
     {
-        
+        Save(GameData.mode, "mode");
+        Save(GameData.levelList, "levelList");
+        Save(GameData.levelToLoad, "levelToLoad");
+        Save(GameData.homemadeLevelToLoad, "homemadeLevelToLoad");
+        Save(GameData.levelToLoadScore, "levelToLoadScore");
+        Save(GameData.dialogMessage, "dialogMessage");
+        Save(GameData.actionBlockLimit, "actionBlockLimit");
+        Save(GameData.scoreKey, "scoreKey");
+        Save(GameData.totalStep, "totalStep");
+        Save(GameData.totalActionBlocUsed, "totalActionBlocUsed");
+        Save(GameData.totalExecute, "totalExecute");
+        Save(GameData.totalCoin, "totalCoin");
+        Save(GameData.gameSpeed_default, "gameSpeed_default");
+        Save(GameData.gameSpeed_current, "gameSpeed_current");
+        Save(GameData.dragDropEnabled, "dragDropEnabled");
+        Save(GameData.gameLanguage, "gameLanguage");
+        Save(GameData.convoNode, "convoNode");
     }
 
     public static async Task LoadGD()
     {
-        
+        GameData.mode = Load<string>("mode");
+        GameData.levelList = Load<Hashtable>("levelList");
+        GameData.levelToLoad = Load<(string, int)>("levelToLoad");
+        GameData.homemadeLevelToLoad = Load<string>("homemadeLevelToLoad");
+        GameData.levelToLoadScore = Load<int[]>("levelToLoadScore");
+        GameData.dialogMessage = Load<List<(string,float,string,float, int, int)>>("dialogMessage");
+        GameData.actionBlockLimit = Load<Hashtable>("actionBlockLimit");
+        GameData.scoreKey = Load<string>("scoreKey");
+        GameData.totalStep = Load<int>("totalStep");
+        GameData.totalActionBlocUsed = Load<int>("totalActionBlocUsed");
+        GameData.totalExecute = Load<int>("totalExecute");
+        GameData.totalCoin = Load<int>("totalCoin");
+        GameData.gameSpeed_default = Load<float>("gameSpeed_default");
+        GameData.gameSpeed_current = Load<float>("gameSpeed_current");
+        GameData.dragDropEnabled = Load<bool>("dragDropEnabled");
+        GameData.gameLanguage = Load<string>("gameLanguage");
+        GameData.convoNode = Load<string>("convoNode");
     }
 
     protected override void onStart()

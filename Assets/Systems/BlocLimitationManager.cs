@@ -90,18 +90,18 @@ public class BlocLimitationManager : FSystem
 	{
 		if (GameData.actionBlockLimit.ContainsKey(draggableGO.name))
 		{
-			bool isActive = GameData.actionBlockLimit[draggableGO.name] != 0; // negative means no limit
+			bool isActive = ((int)GameData.actionBlockLimit[draggableGO.name]) != 0; // negative means no limit
 			GameObjectManager.setGameObjectState(draggableGO, isActive);
 			if (isActive)
 			{
-				if (GameData.actionBlockLimit[draggableGO.name] < 0)
+				if (((int)GameData.actionBlockLimit[draggableGO.name]) < 0)
 					// unlimited action => hide counter
 					GameObjectManager.setGameObjectState(draggableGO.transform.GetChild(1).gameObject, false);
 				else
 				{
 					// limited action => init and show counter
 					GameObject counterText = draggableGO.transform.GetChild(1).gameObject;
-					counterText.GetComponent<TextMeshProUGUI>().text = "Reste " + GameData.actionBlockLimit[draggableGO.name].ToString();
+					counterText.GetComponent<TextMeshProUGUI>().text = "Reste " + ((int)GameData.actionBlockLimit[draggableGO.name]).ToString();
 					GameObjectManager.setGameObjectState(counterText, true);
 				}
 			}
@@ -114,8 +114,8 @@ public class BlocLimitationManager : FSystem
 		string actionKey = lir.linkedTo.name;
 		if(actionKey != null && GameData.actionBlockLimit.ContainsKey(actionKey))
 		{
-			if (GameData.actionBlockLimit[actionKey] > 0)
-				GameData.actionBlockLimit[actionKey] -= 1;
+			if ((int)GameData.actionBlockLimit[actionKey] > 0)
+				GameData.actionBlockLimit[actionKey] = (int)GameData.actionBlockLimit[actionKey] - 1;
 			updateBlocLimit(lir.linkedTo);		
 		}
 		GameObjectManager.removeComponent<Dropped>(go);
@@ -126,8 +126,8 @@ public class BlocLimitationManager : FSystem
 	private void unuseAction(GameObject go){
 		AddOne[] addOnes =  go.GetComponents<AddOne>();
 		if(GameData.actionBlockLimit.ContainsKey(go.name)){
-			if (GameData.actionBlockLimit[go.name] >= 0)
-				GameData.actionBlockLimit[go.name] += addOnes.Length;
+			if (((int)GameData.actionBlockLimit[go.name]) >= 0)
+				GameData.actionBlockLimit[go.name] = (int)GameData.actionBlockLimit[go.name] + addOnes.Length;
 			updateBlocLimit(go);
 			GameData.totalActionBlocUsed -= addOnes.Length;
 		}

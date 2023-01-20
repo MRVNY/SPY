@@ -541,7 +541,7 @@ public class ParamCompetenceSystem : FSystem
 				// On split la chaine de caract?re pour pouvoir r?cup?rer le dossier ou se trouve le niveau selectionn?
 				var level = levelSelected.Split('\\');
 				string folder = level[level.Length - 2];
-				GameData.levelToLoad = (folder, GameData.levelList[folder].IndexOf(levelSelected));
+				GameData.levelToLoad = (folder, ((List<string>)GameData.levelList[folder]).IndexOf(levelSelected));
 			}
             else
             {
@@ -549,7 +549,7 @@ public class ParamCompetenceSystem : FSystem
 				// On split la chaine de caract?re pour pouvoir r?cup?rer le dossier ou se trouve le niveau selectionn?
 				var level = levelSelected.Split('\\');
 				string folder = level[level.Length - 2];
-				GameData.levelToLoad = (folder, GameData.levelList[folder].IndexOf(levelSelected));
+				GameData.levelToLoad = (folder, ((List<string>)GameData.levelList[folder]).IndexOf(levelSelected));
 			}
 			GameObjectManager.loadScene("MainScene");
 		}

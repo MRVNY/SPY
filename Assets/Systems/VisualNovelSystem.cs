@@ -30,8 +30,13 @@ public class VisualNovelSystem : FSystem
 	public Button skipButton;
 	bool skipped = false;
 
-	protected override void onStart()
+	protected override async void onStart()
 	{
+		if(LevelGenerator.loadingGD != null) await LevelGenerator.loadingGD;
+		
+		if (GameData.levelList == null)
+			return;
+
 		VN = f_VN.First().GetComponent<VisualNovel>();
 		skipButton = VN.dialog.transform.parent.GetComponent<Button>();
 		VN.gameObject.SetActive(false);

@@ -44,9 +44,15 @@ public class LevelGenerator : FSystem {
 		instance = this;
 	}
 
-	protected override void onStart()
-    {
-		if (GameData.levelToLoad.Item1 == null)
+	protected override async void onStart()
+	{
+		if (GameData.levelList == null)
+		{
+			loadingGD = GameStateManager.LoadGD();
+			await loadingGD;
+		}
+		
+		if (GameData.levelList == null)
 			GameObjectManager.loadScene("TitleScreen");
 		else
 		{
@@ -64,20 +70,20 @@ public class LevelGenerator : FSystem {
 				}
 				else
 				{
-					doc.Load(GameData.levelList[GameData.levelToLoad.Item1][GameData.levelToLoad.Item2]);
+					doc.Load(((List<string>)GameData.levelList[GameData.levelToLoad.Item1])[GameData.levelToLoad.Item2]);
 				}
 
 				XmlToLevel(doc);
 			}
 			if(GameData.mode == "Homemade")
 				levelName.text = Path.GetFileNameWithoutExtension(GameData.homemadeLevelToLoad);
-			else levelName.text = Path.GetFileNameWithoutExtension(GameData.levelList[GameData.levelToLoad.Item1][GameData.levelToLoad.Item2]);
+			else levelName.text = Path.GetFileNameWithoutExtension(((List<string>)GameData.levelList[GameData.levelToLoad.Item1])[GameData.levelToLoad.Item2]);
 		}
 	}
 
 	IEnumerator GetLevelWebRequest(XmlDocument doc)
 	{
-		UnityWebRequest www = UnityWebRequest.Get(GameData.levelList[GameData.levelToLoad.Item1][GameData.levelToLoad.Item2]);
+		UnityWebRequest www = UnityWebRequest.Get(((List<string>)GameData.levelList[GameData.levelToLoad.Item1])[GameData.levelToLoad.Item2]);
 		yield return www.SendWebRequest();
 
 		if (www.result != UnityWebRequest.Result.Success)
@@ -99,7 +105,7 @@ public class LevelGenerator : FSystem {
 		GameData.totalCoin = 0;
 		GameData.levelToLoadScore = null;
 		GameData.dialogMessage = new List<(string, float, string, float, int, int)>();
-		GameData.actionBlockLimit = new Dictionary<string, int>();
+		GameData.actionBlockLimit = new Hashtable();
 		map = new List<List<int>>();
 
 		// remove comments
