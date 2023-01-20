@@ -8,4 +8,9 @@ public class LevelMapSystem_wrapper : BaseWrapper
 		this.hideFlags = HideFlags.NotEditable;
 	}
 
+	public void launchLevel()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "launchLevel", null);
+	}
+
 }

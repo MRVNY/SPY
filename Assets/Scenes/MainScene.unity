@@ -5133,6 +5133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a9511957827aa846aba10a11782e576, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Level: {fileID: 0}
 --- !u!114 &361349220
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5152,6 +5153,7 @@ MonoBehaviour:
   levelName: {fileID: 278433493}
   canvas: {fileID: 1410401867}
   buttonExecute: {fileID: 1504297949}
+  Level: {fileID: 0}
 --- !u!114 &361349221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5513,6 +5515,7 @@ MonoBehaviour:
     type: 3}
   pathOn: {r: 0.13519046, g: 0.9245283, b: 0.17165017, a: 1}
   pathOff: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
+  Level: {fileID: 0}
 --- !u!114 &361349233
 MonoBehaviour:
   m_ObjectHideFlags: 0

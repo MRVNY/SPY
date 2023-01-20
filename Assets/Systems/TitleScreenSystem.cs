@@ -91,7 +91,7 @@ public class TitleScreenSystem : FSystem {
 		}
 	}
 
-	private List<string> readScenario(string repositoryPath) {
+	public List<string> readScenario(string repositoryPath) {
 		if (File.Exists(repositoryPath + Path.DirectorySeparatorChar + "Scenario.xml")) {
 			List<string> levelList = new List<string>();
 			XmlDocument doc = new XmlDocument();

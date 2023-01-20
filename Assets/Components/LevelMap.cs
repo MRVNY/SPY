@@ -16,4 +16,13 @@ public class LevelMap : MonoBehaviour
     public Tile Road;
     public Tile Split;
     public Tile Merge;
+
+    public Tile Done;
+    public Tile Undone;
+    public Tile Code;
+    public Tile Exec;
+    public Tile All;
+
+    public TextMeshProUGUI LevelName;
+    public Button StartLevel;
 }
