@@ -5115,7 +5115,6 @@ GameObject:
   - component: {fileID: 361349218}
   - component: {fileID: 361349216}
   - component: {fileID: 361349225}
-  - component: {fileID: 361349233}
   - component: {fileID: 361349217}
   - component: {fileID: 361349235}
   - component: {fileID: 361349222}
@@ -5126,7 +5125,6 @@ GameObject:
   - component: {fileID: 361349239}
   - component: {fileID: 361349236}
   - component: {fileID: 361349232}
-  - component: {fileID: 361349240}
   - component: {fileID: 361349241}
   - component: {fileID: 361349242}
   m_Layer: 0
@@ -5331,10 +5329,6 @@ MonoBehaviour:
       PublicKeyToken=null
     _typeFullName: UISystem
     _pause: 0
-  - _typeAssemblyQualifiedName: HistoryManager, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    _typeFullName: HistoryManager
-    _pause: 1
   - _typeAssemblyQualifiedName: CameraSystem, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
     _typeFullName: CameraSystem
@@ -5355,10 +5349,6 @@ MonoBehaviour:
       Culture=neutral, PublicKeyToken=null
     _typeFullName: CurrentActionManager
     _pause: 0
-  - _typeAssemblyQualifiedName: GameStateManager, Assembly-CSharp, Version=0.0.0.0,
-      Culture=neutral, PublicKeyToken=null
-    _typeFullName: GameStateManager
-    _pause: 1
   - _typeAssemblyQualifiedName: EditableContainerSystem, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     _typeFullName: EditableContainerSystem
@@ -5545,19 +5535,6 @@ MonoBehaviour:
   pathOn: {r: 0.13519046, g: 0.9245283, b: 0.17165017, a: 1}
   pathOff: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
   Level: {fileID: 0}
---- !u!114 &361349233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 361349215}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74c5d84068ea09d41925d99705fff24e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playButtonAmount: {fileID: 0}
 --- !u!114 &361349234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5629,24 +5606,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89ad2e985fc34264ca591497f2e2c403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &361349240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 361349215}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d5c8b26d1d962d46a923c252d1ce2b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EditableCanvas: {fileID: 451020363}
-  libraryFor: {fileID: 2094373091}
-  libraryWait: {fileID: 490968332}
-  canvas: {fileID: 1410401867}
-  buttonAddEditableContainer: {fileID: 2015004020}
-  buttonExecute: {fileID: 0}
 --- !u!114 &361349241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11514,7 +11473,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 361349240}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: HistoryManager_wrapper, Assembly-CSharp
         m_MethodName: saveHistory
         m_Mode: 1
@@ -21358,7 +21317,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 361349233}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameStateManager_wrapper, Assembly-CSharp
         m_MethodName: LoadState
         m_Mode: 1
@@ -22060,7 +22019,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 361349233}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameStateManager_wrapper, Assembly-CSharp
         m_MethodName: LoadState
         m_Mode: 1
