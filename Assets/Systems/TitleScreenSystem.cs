@@ -170,6 +170,11 @@ public class TitleScreenSystem : FSystem {
 		GameObjectManager.loadScene("MainScene");
 	}
 
+	public void launchLevelMap()
+	{
+		GameObjectManager.loadScene("LevelMap");
+	}
+
 	// See Retour button in editor
 	public void backFromCampagneMenu() {
 		foreach (GameObject directory in levelButtons.Keys) {

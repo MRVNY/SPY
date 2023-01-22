@@ -32,6 +32,11 @@ public class TitleScreenSystem_wrapper : BaseWrapper
 		MainLoop.callAppropriateSystemMethod (system, "launchLevel", null);
 	}
 
+	public void launchLevelMap()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "launchLevelMap", null);
+	}
+
 	public void backFromCampagneMenu()
 	{
 		MainLoop.callAppropriateSystemMethod (system, "backFromCampagneMenu", null);

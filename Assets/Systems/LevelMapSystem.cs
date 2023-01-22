@@ -49,7 +49,6 @@ public class LevelMapSystem : FSystem
 			{
 				LoadUI(tilePos, mousePos);
 			}
-
 		}
 	}
 
@@ -64,6 +63,10 @@ public class LevelMapSystem : FSystem
 		if(mousePos.x != Vector2.negativeInfinity.x)
 		{
 			await CameraTranstion(new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z));
+		}
+		else
+		{
+			await CameraTranstion(new Vector3(0, 0, Camera.main.transform.position.z));
 		}
 	}
 	
