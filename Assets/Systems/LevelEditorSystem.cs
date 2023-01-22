@@ -37,6 +37,10 @@ public class LevelEditorSystem : FSystem {
 	Hashtable DoorInputBoxes = new Hashtable();
 	
 	string[] autoNames = new []{"K", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+
+	public static string fileName;
+	public static string xmlPath;
+	public static string scenarioPath;
     
 	protected override void onStart()
     {
@@ -103,10 +107,10 @@ public class LevelEditorSystem : FSystem {
 				                break;
 			                
 			                case "Robot":
-				                Debug.Log("x : " + x + " y : " + y);
-				                Debug.Log("xx : " + xx + " yy : " + yy);
-				                Debug.Log(bounds);
-				                Debug.Log(obounds);
+				                // Debug.Log("x : " + x + " y : " + y);
+				                // Debug.Log("xx : " + xx + " yy : " + yy);
+				                // Debug.Log(bounds);
+				                // Debug.Log(obounds);
 				                
 				                if (!levelEditor.AgentsAutoNameing){
 					                screenPos = Camera.main.WorldToScreenPoint(levelEditor.Objects.CellToWorld(localPlace));
@@ -239,32 +243,38 @@ public class LevelEditorSystem : FSystem {
 
 		xml.Add(xmlLevel);
         
-		Debug.Log(xml);
+		//Debug.Log(xml);
 
         ExportXML();
 	}
 
+	public void ReadXML()
+	{
+		
+	}
+
 	public void ExportXML()
 	{
-		string fileName = DateTime.Now.ToString("s") + ".xml";
-		string filePath = Application.streamingAssetsPath + "/Levels/Homemade/";
+		fileName = DateTime.Now.ToString("s") + ".xml";
+		xmlPath = Application.streamingAssetsPath + "/Levels/Homemade/" + fileName;
+		scenarioPath = Application.streamingAssetsPath + "/Levels/Homemade/Scenario.xml";
 		
 		//Save to Homemade folder
-		xml.Save(filePath + fileName);
+		xml.Save(xmlPath);
 
 		//Add to Scenario.xml
-		XDocument scenario = XDocument.Load(Application.streamingAssetsPath + "/Levels/Homemade/Scenario.xml");
+		XDocument scenario = XDocument.Load(scenarioPath);
 		scenario.Element("scenario").Add(new XElement("level", new XAttribute("name",fileName)));
-		scenario.Save(Application.streamingAssetsPath + "/Levels/Homemade/Scenario.xml");
+		scenario.Save(scenarioPath);
 		
-		LoadLevel(filePath + fileName);
+		LoadLevel(xmlPath);
 	}
 
 	public void LoadLevel(string levelName)
 	{
 		GameData.mode = "Homemade";
 		GameData.homemadeLevelToLoad = (levelName);
-		GameObjectManager.loadScene("MainScene");
+		GameObjectManager.loadScene("ScriptEditor");
 	}
 	
 	

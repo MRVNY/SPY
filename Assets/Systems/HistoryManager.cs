@@ -12,7 +12,7 @@ public class HistoryManager : FSystem
 {
 	private Family f_askToSaveHistory = FamilyManager.getFamily(new AllOfComponents(typeof(AskToSaveHistory)));
 	private Family f_newEnd = FamilyManager.getFamily(new AllOfComponents(typeof(NewEnd)));
-	private Family f_agent = FamilyManager.getFamily(new AllOfComponents(typeof(AgentEdit), typeof(ScriptRef))); // On récupére les agents pouvant être édité
+	private Family f_agent = FamilyManager.getFamily(new AllOfComponents(typeof(AgentEdit), typeof(ScriptRef))); // On r?cup?re les agents pouvant ?tre ?dit?
 	private Family f_removeButton = FamilyManager.getFamily(new AllOfComponents(typeof(Button)), new AnyOfTags("RemoveButton"));
 	
 	public GameObject EditableCanvas;
@@ -42,7 +42,7 @@ public class HistoryManager : FSystem
 		// En cas de fin de niveau
 		if (go.GetComponent<NewEnd>().endType == NewEnd.Win)
 		{
-			// Affichage de l'historique de l'ensemble des actions exécutées
+			// Affichage de l'historique de l'ensemble des actions ex?cut?es
 			saveHistory();
 			loadHistory();
 		}
@@ -149,7 +149,7 @@ public class HistoryManager : FSystem
 
 		// Disable add container button
 		buttonAddEditableContainer.GetComponent<Button>().interactable = false;
-		buttonAddEditableContainer.GetComponent<TooltipContent>().text = "Ajout impossible après avoir\ncommencé à résoudre le niveau";
+		buttonAddEditableContainer.GetComponent<TooltipContent>().text = "Ajout impossible apr?s avoir\ncommenc? ? r?soudre le niveau";
 
 		//Disable remove container buttons
 		foreach (GameObject trash in f_removeButton)

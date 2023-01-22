@@ -13,6 +13,11 @@ public class LevelEditorSystem_wrapper : BaseWrapper
 		MainLoop.callAppropriateSystemMethod (system, "ReadLevel", null);
 	}
 
+	public void ReadXML()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "ReadXML", null);
+	}
+
 	public void ExportXML()
 	{
 		MainLoop.callAppropriateSystemMethod (system, "ExportXML", null);

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// This manager enables to save the game state and to restore it on demand for instance when the player is detected by drones, he can reset the game on a state just before the previous execution
@@ -123,8 +124,11 @@ public class GameStateManager : FSystem {
 
     protected override void onStart()
     {
-        save = new SaveContent();
-        f_playingMode.addEntryCallback(delegate { SaveState(); });
+        if (SceneManager.GetActiveScene().name != "ScriptEditor")
+        {
+            save = new SaveContent();
+            f_playingMode.addEntryCallback(delegate { SaveState(); });
+        }
     }
 
     // Save data of all interactable objects in scene

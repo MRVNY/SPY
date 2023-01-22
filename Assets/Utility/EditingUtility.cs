@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public static class EditingUtility
@@ -193,7 +194,8 @@ public static class EditingUtility
 		// On d?truit la copy de la sequence d'action
 		UnityEngine.Object.Destroy(containerCopy);
 
-		ScriptManager.instance.TranslateScript(new XDocument());
+		if(SceneManager.GetActiveScene().name == "ScriptEditor")
+			ScriptManager.instance.TranslateScript();
 	}
 
 	/**

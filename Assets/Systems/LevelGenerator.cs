@@ -48,8 +48,9 @@ public class LevelGenerator : FSystem {
 	{
 		if (GameData.levelList == null)
 		{
-			loadingGD = GameStateManager.LoadGD();
-			await loadingGD;
+			// loadingGD = GameStateManager.LoadGD();
+			// await loadingGD;
+			LevelMapSystem.ReadLevels();
 		}
 		
 		if (GameData.levelList == null)

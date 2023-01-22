@@ -20,10 +20,12 @@ public class LevelMapSystem : FSystem
 
 	private List<string> LevelList;
 	private Dictionary<Vector3Int, string> LevelNames;
+	private List<Tile> Scores;
 
 	protected override void onStart()
 	{
 		LM = f_LM.First().GetComponent<LevelMap>();
+		Scores = new List<Tile>() { LM.Undone, LM.Done, LM.Code, LM.All, LM.Exec };
 		LevelNames = new Dictionary<Vector3Int, string>();
 
 		ReadLevels();
@@ -32,13 +34,7 @@ public class LevelMapSystem : FSystem
 		
 		LoadLevels();
 		
-		LM.CharacPos = new Vector3Int(0, 0, 0);
-		LM.CharacMap.ClearAllTiles();
-		LM.CharacMap.SetTile(LM.CharacPos, LM.Charac);
-
-		LM.Map.SetTile(Vector3Int.right, LM.Road);
-
-		// tmp = LM.TM.GetTileFlags();
+		LoadUI(Vector3Int.zero,Vector2.negativeInfinity);
 
 	}
 	
@@ -48,20 +44,26 @@ public class LevelMapSystem : FSystem
 		{
 			Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			Vector3Int tilePos = LM.Map.WorldToCell(mousePos);
-			TileBase tile = LM.Map.GetTile(tilePos);
 
-			if (tile != null && LevelList.Contains(tile.name))
+			if (LevelNames.ContainsKey(tilePos))
 			{
-				var tmp = LevelNames[tilePos].Split('/', '.');
-				LM.CharacPos = tilePos;
-				LM.CharacMap.ClearAllTiles();
-				LM.CharacMap.SetTile(LM.CharacPos, LM.Charac);
-				LM.LevelName.text = tmp[tmp.Length-2];
-				LM.StartLevel.onClick.AddListener(delegate { launchLevel(GameData.mode, LevelList.IndexOf(LevelNames[tilePos])); });
-				await CameraTranstion(new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z));
-				// Camera.main.transform.position = new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z);
+				LoadUI(tilePos, mousePos);
 			}
 
+		}
+	}
+
+	private async void LoadUI(Vector3Int tilePos, Vector2 mousePos)
+	{
+		LM.CharacPos = tilePos;
+		LM.CharacMap.ClearAllTiles();
+		LM.CharacMap.SetTile(LM.CharacPos, LM.Charac);
+		LM.LevelName.text = LevelNames[tilePos].Split('/', '.')[^2];
+		LM.StartLevel.onClick.RemoveAllListeners();
+		LM.StartLevel.onClick.AddListener(delegate { launchLevel(GameData.mode, LevelList.IndexOf(LevelNames[tilePos])); });
+		if(mousePos.x != Vector2.negativeInfinity.x)
+		{
+			await CameraTranstion(new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z));
 		}
 	}
 	
@@ -76,7 +78,7 @@ public class LevelMapSystem : FSystem
 		}
 	}
 
-	private void ReadLevels()
+	public static void ReadLevels()
 	{
 		GameData.levelList = new Hashtable();
 		string levelsPath;
@@ -102,7 +104,7 @@ public class LevelMapSystem : FSystem
 			}
 		}
 	}
-	private List<string> readScenario(string repositoryPath) {
+	public static List<string> readScenario(string repositoryPath) {
 		if (File.Exists(repositoryPath + Path.DirectorySeparatorChar + "Scenario.xml")) {
 			List<string> levelList = new List<string>();
 			XmlDocument doc = new XmlDocument();
@@ -128,6 +130,9 @@ public class LevelMapSystem : FSystem
 		int x = 0;
 		foreach (var level in LevelList)
 		{
+			int scoredStars = PlayerPrefs.GetInt(GameData.mode + Path.DirectorySeparatorChar + LevelList.IndexOf(level) + GameData.scoreKey, 0); //0 star by default
+			LM.Stars.SetTile(new Vector3Int(x, 0, 0), Scores[scoredStars]);
+
 			Vector3Int pos = new Vector3Int(x, 0, 0);
 			LM.Map.SetTile(pos, LM.Base);
 			LevelNames.Add(pos, level);

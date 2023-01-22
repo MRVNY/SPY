@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// This system check if the end of the level is reached and display end panel accordingly

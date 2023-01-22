@@ -29,5 +29,5 @@ public class GameData {
 	public static bool dragDropEnabled = true;
 
 	public static string gameLanguage = "en";
-	public static string convoNode = "0";
+	public static string convoNode = "-1";
 }

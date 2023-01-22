@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Xml.Linq;
 using UnityEngine;
 using FYFY;
@@ -11,31 +12,53 @@ public class ScriptManager : FSystem {
 	private Family f_player = FamilyManager.getFamily(new AllOfComponents(typeof(ScriptRef)), new AnyOfTags("Player"));
 
 	public static ScriptManager instance;
+	public XElement script;
+	public XDocument doc;
 	private string[] CondOps = new []{"AND", "OR", "NOT"};
 	
 	protected override void onStart()
 	{
 		instance = this;
+		doc = XDocument.Load(LevelEditorSystem.xmlPath);
 	}
 	
-	public void TranslateScript(XDocument doc)
+	public void TranslateScript()
 	{
 		foreach (GameObject robot in f_player)
 		{
 			GameObject root = robot.GetComponent<ScriptRef>().executableScript;
 			string name = robot.GetComponent<AgentEdit>().associatedScriptName;
 			
-			XElement script = new XElement("script", 
+			script = new XElement("script", 
 				new XAttribute("name", name),
 				new XAttribute("editMode", "2"),
 				new XAttribute("type", "3"));
 
 			script = TranslateNode(root.transform.GetChild(0).gameObject, script);
-			doc.Add(script);
-
-			Debug.Log(script);
 		}
+	}
+	
+	public void SaveScript()
+	{
+		Debug.Log(doc);
+		Debug.Log(script);
+		doc.Element("level").Add(script);
+		Debug.Log(doc);
 
+		doc.Save(LevelEditorSystem.xmlPath);
+		
+		GameObjectManager.loadScene("MainScene");
+	}
+
+	public void DeleteLevel()
+	{
+		System.IO.File.Delete(LevelEditorSystem.xmlPath);
+		
+		XDocument scenario = XDocument.Load(LevelEditorSystem.scenarioPath);
+		scenario.Element("scenario").Elements("level").Where(x => x.Attribute("name").Value == LevelEditorSystem.fileName).Remove();
+		scenario.Save(LevelEditorSystem.scenarioPath);
+		
+		GameObjectManager.loadScene("LevelEditor");
 	}
 
 	public XElement TranslateNode(GameObject node, XElement script)
