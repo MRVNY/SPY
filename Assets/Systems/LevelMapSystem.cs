@@ -24,6 +24,8 @@ public class LevelMapSystem : FSystem
 
 	protected override void onStart()
 	{
+		Camera.main.transform.position = new Vector3(0, 0, Camera.main.transform.position.z);
+			
 		LM = f_LM.First().GetComponent<LevelMap>();
 		Scores = new List<Tile>() { LM.Undone, LM.Done, LM.Code, LM.All, LM.Exec };
 		LevelNames = new Dictionary<Vector3Int, string>();
@@ -64,10 +66,10 @@ public class LevelMapSystem : FSystem
 		{
 			await CameraTranstion(new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z));
 		}
-		else
-		{
-			await CameraTranstion(new Vector3(0, 0, Camera.main.transform.position.z));
-		}
+		// else
+		// {
+		// 	await CameraTranstion(new Vector3(0, 0, Camera.main.transform.position.z));
+		// }
 	}
 	
 	async Task CameraTranstion(Vector3 pos)
@@ -143,4 +145,36 @@ public class LevelMapSystem : FSystem
 			x += 2;
 		}
 	}
+	
+	private void ConstructRoad()
+	{
+		int x = 0;
+		foreach (var level in LevelList)
+		{
+			int scoredStars = PlayerPrefs.GetInt(GameData.mode + Path.DirectorySeparatorChar + LevelList.IndexOf(level) + GameData.scoreKey, 0); //0 star by default
+			LM.Stars.SetTile(new Vector3Int(x, 0, 0), Scores[scoredStars]);
+
+			Vector3Int pos = new Vector3Int(x, 0, 0);
+			LM.Map.SetTile(pos, LM.Base);
+			LevelNames.Add(pos, level);
+			LM.Map.SetTile(new Vector3Int(x+1,0,0), LM.Road);
+			x += 2;
+		}
+	}
+
+	private void RoadFoward()
+	{
+		
+	}
+
+	private void RoadSplit()
+	{
+		
+	}
+	
+	private void RoadMerge()
+	{
+		
+	}
+	
 }

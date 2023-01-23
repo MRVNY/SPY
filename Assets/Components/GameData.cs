@@ -14,7 +14,10 @@ public class GameData {
 	public static (string, int) levelToLoad = ("Campagne infiltration", 1); //directory name, level index
 	public static string homemadeLevelToLoad = "level1"; 
 	public static int[] levelToLoadScore; //levelToLoadScore[0] = best score (3 stars) ; levelToLoadScore[1] = medium score (2 stars)
-	
+
+	public static List<Pool> poolTree;
+	public static List<Level> homemadeList;
+
 	public static List<(string,float,string,float, int, int)> dialogMessage; //list of (dialogText, dialogHeight, imageName, imageHeight, camX, camY)
 	public static Hashtable actionBlockLimit; //Is block available in library?
 	// public static Dictionary<string, int> actionBlockLimit; //Is block available in library?
@@ -30,4 +33,6 @@ public class GameData {
 
 	public static string gameLanguage = "en";
 	public static string convoNode = "-1";
+	
+	
 }

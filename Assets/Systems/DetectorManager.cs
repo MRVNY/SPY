@@ -24,7 +24,6 @@ public class DetectorManager : FSystem {
     protected override void onStart()
     {
         activeRedDetector = false;
-        GameObject go = GameObject.Find("GameData");
 
         f_gameLoaded.addEntryCallback(delegate { updateDetectors(); });
         f_enemyMoved.addEntryCallback(updateDetector);
@@ -38,6 +37,8 @@ public class DetectorManager : FSystem {
             activeRedDetector = false;
             updateDetectors();
         });
+
+        Level = GameObject.Find("Level");
     }
 
     private void onNewCollision(GameObject robot){

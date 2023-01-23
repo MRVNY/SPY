@@ -27,6 +27,7 @@ public class DoorAndConsoleManager : FSystem {
 		f_consoleOn.addEntryCallback(onNewConsoleTurnedOn); // Console will enter in this family when TurnedOn component will be added to console (see CurrentActionExecutor)
 		f_consoleOff.addEntryCallback(onNewConsoleTurnedOff); // Console will enter in this family when TurnedOn component will be removed from console (see CurrentActionExecutor)
 		f_gameLoaded.addEntryCallback(connectDoorsAndConsoles);
+		Level = GameObject.Find("Level");
 	}
 
 	private void onNewConsoleTurnedOn(GameObject consoleGO)
