@@ -33,9 +33,9 @@ public class LevelMapSystem : FSystem
 		Scores = new List<Tile>() { LM.Undone, LM.Done, LM.Code, LM.All, LM.Exec };
 		LevelNames = new Dictionary<Vector3Int, string>();
 
+		GameStateManager.LoadGD();
 		if (Global.GD == null || Global.GD.levelList == null)
 		{
-			//GameStateManager.LoadGD();
 			Global.GD = new GameData();
 			ReadLevels();
 		}
@@ -44,8 +44,15 @@ public class LevelMapSystem : FSystem
 		
 		LoadLevels();
 		
-		LoadUI(Vector3Int.zero,Vector2.negativeInfinity);
+		string level = ((List<string>)Global.GD.levelList[Global.GD.mode])[Global.GD.levelToLoad.Item2];
+		if (LevelList.Contains(level))
+			LM.CharacPos = LevelNames.FirstOrDefault(x => x.Value == level).Key;
+		else
+			LM.CharacPos = Vector3Int.zero;
 
+		Vector3 mousePos = LM.CharacMap.CellToWorld(LM.CharacPos);
+		Camera.main.transform.position = new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z);
+		LoadUI(LM.CharacPos);
 	}
 	
 	protected override async void onProcess(int familiesUpdateCount)
@@ -65,7 +72,7 @@ public class LevelMapSystem : FSystem
 				
 			if (tilePos != Vector3Int.up && LM.Map.HasTile(tilePos) && LevelNames.ContainsKey(tilePos)){
 				LM.CharacPos = tilePos;
-				LoadUI(LM.CharacPos, LM.CharacMap.CellToWorld(LM.CharacPos));
+				LoadUI(LM.CharacPos);
 			}
 		}
 	}
@@ -90,23 +97,17 @@ public class LevelMapSystem : FSystem
 		return v + Vector3Int.down + 2*Vector3Int.right;
 	}
 
-	private async void LoadUI(Vector3Int tilePos, Vector2 mousePos)
+	private async void LoadUI(Vector3Int tilePos)
 	{
+		Vector2 mousePos = LM.CharacMap.CellToWorld(tilePos);
 		LM.CharacPos = tilePos;
 		LM.CharacMap.ClearAllTiles();
 		LM.CharacMap.SetTile(LM.CharacPos, LM.Charac);
 		LM.LevelName.text = LevelNames[tilePos].Split('/', '.')[^2];
 		LM.StartLevel.onClick.RemoveAllListeners();
 		LM.StartLevel.onClick.AddListener(delegate { launchLevel(Global.GD.mode, LevelList.IndexOf(LevelNames[tilePos])); });
-		if(mousePos.x != Vector2.negativeInfinity.x)
-		{
-			toPos = new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z);
-			cameraMoving = CameraTranstion();
-		}
-		// else
-		// {
-		// 	await CameraTranstion(new Vector3(0, 0, Camera.main.transform.position.z));
-		// }
+		toPos = new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z);
+		cameraMoving = CameraTranstion();
 	}
 	
 	async Task CameraTranstion()
