@@ -21,6 +21,9 @@ public class LevelMapSystem : FSystem
 	private List<string> LevelList;
 	private Dictionary<Vector3Int, string> LevelNames;
 	private List<Tile> Scores;
+	
+	private Task cameraMoving;
+	private Vector3 toPos;
 
 	protected override void onStart()
 	{
@@ -32,8 +35,8 @@ public class LevelMapSystem : FSystem
 
 		if (Global.GD == null || Global.GD.levelList == null)
 		{
-			GameStateManager.LoadGD();
-			//Global.GD = new GameData();
+			//GameStateManager.LoadGD();
+			Global.GD = new GameData();
 			ReadLevels();
 		}
 
@@ -47,16 +50,44 @@ public class LevelMapSystem : FSystem
 	
 	protected override async void onProcess(int familiesUpdateCount)
 	{
-		if (Input.GetMouseButton(0))
+		if (Input.anyKeyDown)
 		{
-			Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			Vector3Int tilePos = LM.Map.WorldToCell(mousePos);
-
-			if (LevelNames.ContainsKey(tilePos))
+			Vector3Int tilePos = Vector3Int.up;
+			if (Input.GetMouseButton(0))
 			{
-				LoadUI(tilePos, mousePos);
+				Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+				tilePos = LM.Map.WorldToCell(mousePos);
+			}
+			else if (Input.GetKeyDown(KeyCode.LeftArrow))
+				tilePos = Left(LM.CharacPos);
+			else if (Input.GetKeyDown(KeyCode.RightArrow))
+				tilePos = Right(LM.CharacPos);
+				
+			if (tilePos != Vector3Int.up && LM.Map.HasTile(tilePos) && LevelNames.ContainsKey(tilePos)){
+				LM.CharacPos = tilePos;
+				LoadUI(LM.CharacPos, LM.CharacMap.CellToWorld(LM.CharacPos));
 			}
 		}
+	}
+	
+	private Vector3Int Right(Vector3Int v)
+	{
+		return v + 2*Vector3Int.right;
+	}
+	
+	private Vector3Int Left(Vector3Int v)
+	{
+		return v + 2*Vector3Int.left;
+	}
+	
+	private Vector3Int Up(Vector3Int v)
+	{
+		return v + Vector3Int.up + 2*Vector3Int.right;
+	}
+	
+	private Vector3Int Down(Vector3Int v)
+	{
+		return v + Vector3Int.down + 2*Vector3Int.right;
 	}
 
 	private async void LoadUI(Vector3Int tilePos, Vector2 mousePos)
@@ -69,7 +100,8 @@ public class LevelMapSystem : FSystem
 		LM.StartLevel.onClick.AddListener(delegate { launchLevel(Global.GD.mode, LevelList.IndexOf(LevelNames[tilePos])); });
 		if(mousePos.x != Vector2.negativeInfinity.x)
 		{
-			await CameraTranstion(new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z));
+			toPos = new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z);
+			cameraMoving = CameraTranstion();
 		}
 		// else
 		// {
@@ -77,14 +109,18 @@ public class LevelMapSystem : FSystem
 		// }
 	}
 	
-	async Task CameraTranstion(Vector3 pos)
+	async Task CameraTranstion()
 	{
+		if (cameraMoving != null)
+		{
+			await cameraMoving;
+		}
 		await Task.Delay(100);
 		
-		while ((Camera.main.transform.position-pos).magnitude > 0.5f)
+		while ((Camera.main.transform.position-toPos).magnitude > 0.7f)
 		{
-			Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, pos, 0.1f);
-			await Task.Delay(50);
+			Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, toPos, 0.1f);
+			await Task.Delay(10);
 		}
 	}
 
