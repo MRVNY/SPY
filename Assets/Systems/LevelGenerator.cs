@@ -14,9 +14,6 @@ using UnityEngine.Networking;
 /// Need to be binded before UISystem
 /// </summary>
 public class LevelGenerator : FSystem {
-
-	public static LevelGenerator instance;
-
 	// Famille contenant les agents editables
 	private Family f_level = FamilyManager.getFamily(new AnyOfComponents(typeof(Position), typeof(CurrentAction)));
 	private Family f_drone = FamilyManager.getFamily(new AllOfComponents(typeof(ScriptRef)), new AnyOfTags("Drone")); // On r�cup�re les agents pouvant �tre �dit�s
@@ -39,21 +36,17 @@ public class LevelGenerator : FSystem {
 
 	public static Task loadingGD;
 
-	public LevelGenerator()
-	{
-		instance = this;
-	}
-
 	protected override async void onStart()
 	{
-		if (GameData.levelList == null)
+		if (Global.GD == null || Global.GD.levelList == null)
 		{
 			// loadingGD = GameStateManager.LoadGD();
 			// await loadingGD;
+			Global.GD = new GameData();
 			LevelMapSystem.ReadLevels();
 		}
 		
-		if (GameData.levelList == null)
+		if (Global.GD.levelList == null)
 			GameObjectManager.loadScene("TitleScreen");
 		else
 		{
@@ -65,26 +58,26 @@ public class LevelGenerator : FSystem {
 			}
 			else
 			{
-				if (GameData.mode == "Homemade")
+				if (Global.GD.mode == "Homemade")
 				{
-					doc.Load(GameData.homemadeLevelToLoad);
+					doc.Load(Global.GD.homemadeLevelToLoad);
 				}
 				else
 				{
-					doc.Load(((List<string>)GameData.levelList[GameData.levelToLoad.Item1])[GameData.levelToLoad.Item2]);
+					doc.Load(((List<string>)Global.GD.levelList[Global.GD.levelToLoad.Item1])[Global.GD.levelToLoad.Item2]);
 				}
 
 				XmlToLevel(doc);
 			}
-			if(GameData.mode == "Homemade")
-				levelName.text = Path.GetFileNameWithoutExtension(GameData.homemadeLevelToLoad);
-			else levelName.text = Path.GetFileNameWithoutExtension(((List<string>)GameData.levelList[GameData.levelToLoad.Item1])[GameData.levelToLoad.Item2]);
+			if(Global.GD.mode == "Homemade")
+				levelName.text = Path.GetFileNameWithoutExtension(Global.GD.homemadeLevelToLoad);
+			else levelName.text = Path.GetFileNameWithoutExtension(((List<string>)Global.GD.levelList[Global.GD.levelToLoad.Item1])[Global.GD.levelToLoad.Item2]);
 		}
 	}
 
 	IEnumerator GetLevelWebRequest(XmlDocument doc)
 	{
-		UnityWebRequest www = UnityWebRequest.Get(((List<string>)GameData.levelList[GameData.levelToLoad.Item1])[GameData.levelToLoad.Item2]);
+		UnityWebRequest www = UnityWebRequest.Get(((List<string>)Global.GD.levelList[Global.GD.levelToLoad.Item1])[Global.GD.levelToLoad.Item2]);
 		yield return www.SendWebRequest();
 
 		if (www.result != UnityWebRequest.Result.Success)
@@ -100,13 +93,13 @@ public class LevelGenerator : FSystem {
 	public void XmlToLevel(XmlDocument doc)
 	{
 
-		GameData.totalActionBlocUsed = 0;
-		GameData.totalStep = 0;
-		GameData.totalExecute = 0;
-		GameData.totalCoin = 0;
-		GameData.levelToLoadScore = null;
-		GameData.dialogMessage = new List<(string, float, string, float, int, int)>();
-		GameData.actionBlockLimit = new Hashtable();
+		Global.GD.totalActionBlocUsed = 0;
+		Global.GD.totalStep = 0;
+		Global.GD.totalExecute = 0;
+		Global.GD.totalCoin = 0;
+		Global.GD.levelToLoadScore = null;
+		Global.GD.dialogMessage = new List<(string, float, string, float, int, int)>();
+		Global.GD.actionBlockLimit = new Hashtable();
 		map = new List<List<int>>();
 
 		// remove comments
@@ -115,7 +108,7 @@ public class LevelGenerator : FSystem {
 		XmlNode root = doc.ChildNodes[1];
 
 		// check if dragdropDisabled node exists and set GameData accordingly
-		GameData.dragDropEnabled = doc.GetElementsByTagName("dragdropDisabled").Count == 0;
+		Global.GD.dragDropEnabled = doc.GetElementsByTagName("dragdropDisabled").Count == 0;
 
 		foreach (XmlNode child in root.ChildNodes)
 		{
@@ -187,9 +180,9 @@ public class LevelGenerator : FSystem {
 					MainLoop.instance.StartCoroutine(delayReadXMLScript(child, child.Attributes.GetNamedItem("name").Value, editModeByUser, typeByUser));
 					break;
 				case "score":
-					GameData.levelToLoadScore = new int[2];
-					GameData.levelToLoadScore[0] = int.Parse(child.Attributes.GetNamedItem("threeStars").Value);
-					GameData.levelToLoadScore[1] = int.Parse(child.Attributes.GetNamedItem("twoStars").Value);
+					Global.GD.levelToLoadScore = new int[2];
+					Global.GD.levelToLoadScore[0] = int.Parse(child.Attributes.GetNamedItem("threeStars").Value);
+					Global.GD.levelToLoadScore[1] = int.Parse(child.Attributes.GetNamedItem("twoStars").Value);
 					break;
 			}
 		}
@@ -437,7 +430,7 @@ public class LevelGenerator : FSystem {
 			int camY = -1;
 			if (dialog.Attributes.GetNamedItem("camY") != null)
 				camY = int.Parse(dialog.Attributes.GetNamedItem("camY").Value);
-			GameData.dialogMessage.Add((text, dialogHeight, src, imgHeight, camX, camY));
+			Global.GD.dialogMessage.Add((text, dialogHeight, src, imgHeight, camX, camY));
 		}
 	}
 
@@ -447,8 +440,8 @@ public class LevelGenerator : FSystem {
 		{
 			actionName = limitNode.Attributes.GetNamedItem("blockType").Value;
 			// check if a GameObject exists with the same name
-			if (getLibraryItemByName(actionName) && !GameData.actionBlockLimit.ContainsKey(actionName)){
-				GameData.actionBlockLimit[actionName] = int.Parse(limitNode.Attributes.GetNamedItem("limit").Value);
+			if (getLibraryItemByName(actionName) && !Global.GD.actionBlockLimit.ContainsKey(actionName)){
+				Global.GD.actionBlockLimit[actionName] = int.Parse(limitNode.Attributes.GetNamedItem("limit").Value);
 			}
 		}
 	}

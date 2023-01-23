@@ -28,9 +28,9 @@ public class StepSystem : FSystem {
         f_playingMode.addEntryCallback(delegate
         {
             // count a new execution
-            GameData.totalExecute++;
-            GameData.totalStep++;
-            timeStepCpt = 1 / GameData.gameSpeed_current;
+            Global.GD.totalExecute++;
+            Global.GD.totalStep++;
+            timeStepCpt = 1 / Global.GD.gameSpeed_current;
             nbStep++;
             Pause = false;
             setToDefaultTimeStep();
@@ -45,7 +45,7 @@ public class StepSystem : FSystem {
     private void onNewStep(GameObject go)
     {
         GameObjectManager.removeComponent(go.GetComponent<NewStep>());  
-        timeStepCpt = (1 / GameData.gameSpeed_current) + timeStepCpt; // le "+ timeStepCpt" permet de prendre en compte le débordement de temps de la frame précédente
+        timeStepCpt = (1 / Global.GD.gameSpeed_current) + timeStepCpt; // le "+ timeStepCpt" permet de prendre en compte le débordement de temps de la frame précédente
     }
 
     // Use to process your families.
@@ -57,7 +57,7 @@ public class StepSystem : FSystem {
             if (timeStepCpt <= 0)
             {
                 GameObjectManager.addComponent<NewStep>(MainLoop.instance.gameObject);
-                GameData.totalStep++;
+                Global.GD.totalStep++;
                 nbStep++;
                 if (newStepAskedByPlayer)
                 {
@@ -116,17 +116,17 @@ public class StepSystem : FSystem {
 
     // See StopButton in editor
     public void cancelTotalStep(){ //click on stop button
-        GameData.totalStep -= nbStep;
+        Global.GD.totalStep -= nbStep;
         nbStep = 0;
     }
 
     // See SpeedButton in editor
     public void speedTimeStep(){
-        GameData.gameSpeed_current = GameData.gameSpeed_default * 3f;
+        Global.GD.gameSpeed_current = Global.GD.gameSpeed_default * 3f;
     }
 
     // See ContinueButton in editor
     public void setToDefaultTimeStep(){
-        GameData.gameSpeed_current = GameData.gameSpeed_default;
+        Global.GD.gameSpeed_current = Global.GD.gameSpeed_default;
     }
 }

@@ -45,7 +45,7 @@ public class DoorAndConsoleManager : FSystem {
 					// display door
 					slotGo.transform.parent.GetComponent<AudioSource>().Play();
 					slotGo.transform.parent.GetComponent<Animator>().SetTrigger("Close");
-					slotGo.transform.parent.GetComponent<Animator>().speed = GameData.gameSpeed_current;
+					slotGo.transform.parent.GetComponent<Animator>().speed = Global.GD.gameSpeed_current;
 					updatePathColor(id, true);
 				}
 			}
@@ -67,7 +67,7 @@ public class DoorAndConsoleManager : FSystem {
 					// hide door
 					slotGo.transform.parent.GetComponent<AudioSource>().Play();
 					slotGo.transform.parent.GetComponent<Animator>().SetTrigger("Open");
-					slotGo.transform.parent.GetComponent<Animator>().speed = GameData.gameSpeed_current;
+					slotGo.transform.parent.GetComponent<Animator>().speed = Global.GD.gameSpeed_current;
 					updatePathColor(id, false);
 				}
 			}

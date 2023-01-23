@@ -30,7 +30,7 @@ public class CoinManager : FSystem {
 			foreach(GameObject target in trigger.Targets){
 				//Check if the player collide with a coin
                 if(target.CompareTag("Coin")){
-	                GameData.totalCoin++;
+	                Global.GD.totalCoin++;
                     target.GetComponent<AudioSource>().Play();
                     MainLoop.instance.StartCoroutine(coinDestroy(target));					
 				}

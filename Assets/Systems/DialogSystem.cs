@@ -23,14 +23,14 @@ public class DialogSystem : FSystem
 	protected override void onProcess(int familiesUpdateCount)
 	{
 		//Activate DialogPanel if there is a message
-		if (GameData.dialogMessage != null && nDialog < GameData.dialogMessage.Count && !dialogPanel.transform.parent.gameObject.activeSelf)
+		if (Global.GD.dialogMessage != null && nDialog < Global.GD.dialogMessage.Count && !dialogPanel.transform.parent.gameObject.activeSelf)
 		{
 			showDialogPanel();
 		}
 	}
 
 
-	// Affiche le panneau de dialoge au début de niveau (si besoin)
+	// Affiche le panneau de dialoge au dï¿½but de niveau (si besoin)
 	public void showDialogPanel()
 	{
 		GameObjectManager.setGameObjectState(dialogPanel.transform.parent.gameObject, true);
@@ -38,7 +38,7 @@ public class DialogSystem : FSystem
 
 		configureDialog();
 
-		if (GameData.dialogMessage.Count > 1)
+		if (Global.GD.dialogMessage.Count > 1)
 		{
 			setActiveOKButton(false);
 			setActiveNextButton(true);
@@ -54,12 +54,12 @@ public class DialogSystem : FSystem
 	// Permet d'afficher la suite du dialogue
 	public void nextDialog()
 	{
-		nDialog++; // On incrémente le nombre de dialogue
+		nDialog++; // On incrï¿½mente le nombre de dialogue
 
 		configureDialog();
 
-		// Si il reste des dialogues à afficher ensuite
-		if (nDialog + 1 < GameData.dialogMessage.Count)
+		// Si il reste des dialogues ï¿½ afficher ensuite
+		if (nDialog + 1 < Global.GD.dialogMessage.Count)
 		{
 			setActiveOKButton(false);
 			setActiveNextButton(true);
@@ -75,12 +75,12 @@ public class DialogSystem : FSystem
     {
 		// set text
 		GameObject textGO = dialogPanel.transform.Find("Text").gameObject;
-		if (GameData.dialogMessage[nDialog].Item1 != null)
+		if (Global.GD.dialogMessage[nDialog].Item1 != null)
 		{
 			GameObjectManager.setGameObjectState(textGO, true);
-			textGO.GetComponent<TextMeshProUGUI>().text = GameData.dialogMessage[nDialog].Item1;
-			if (GameData.dialogMessage[nDialog].Item2 != -1)
-				((RectTransform)textGO.transform).sizeDelta = new Vector2(((RectTransform)textGO.transform).sizeDelta.x, GameData.dialogMessage[nDialog].Item2);
+			textGO.GetComponent<TextMeshProUGUI>().text = Global.GD.dialogMessage[nDialog].Item1;
+			if (Global.GD.dialogMessage[nDialog].Item2 != -1)
+				((RectTransform)textGO.transform).sizeDelta = new Vector2(((RectTransform)textGO.transform).sizeDelta.x, Global.GD.dialogMessage[nDialog].Item2);
 			else
 				((RectTransform)textGO.transform).sizeDelta = new Vector2(((RectTransform)textGO.transform).sizeDelta.x, textGO.GetComponent<LayoutElement>().preferredHeight);
 		}
@@ -88,22 +88,22 @@ public class DialogSystem : FSystem
 			GameObjectManager.setGameObjectState(textGO, false);
 		// set image
 		GameObject imageGO = dialogPanel.transform.Find("Image").gameObject;
-		if (GameData.dialogMessage[nDialog].Item3 != null)
+		if (Global.GD.dialogMessage[nDialog].Item3 != null)
 		{
 			GameObjectManager.setGameObjectState(imageGO, true);
 			setImageSprite(imageGO.GetComponent<Image>(), Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
-			Path.DirectorySeparatorChar + GameData.levelToLoad.Item1 + Path.DirectorySeparatorChar + "Images" + Path.DirectorySeparatorChar + GameData.dialogMessage[nDialog].Item3);
-			if (GameData.dialogMessage[nDialog].Item4 != -1)
-				((RectTransform)imageGO.transform).sizeDelta = new Vector2(((RectTransform)imageGO.transform).sizeDelta.x, GameData.dialogMessage[nDialog].Item4);
+			Path.DirectorySeparatorChar + Global.GD.levelToLoad.Item1 + Path.DirectorySeparatorChar + "Images" + Path.DirectorySeparatorChar + Global.GD.dialogMessage[nDialog].Item3);
+			if (Global.GD.dialogMessage[nDialog].Item4 != -1)
+				((RectTransform)imageGO.transform).sizeDelta = new Vector2(((RectTransform)imageGO.transform).sizeDelta.x, Global.GD.dialogMessage[nDialog].Item4);
 			else
 				((RectTransform)imageGO.transform).sizeDelta = new Vector2(((RectTransform)imageGO.transform).sizeDelta.x, imageGO.GetComponent<LayoutElement>().preferredHeight);
 		}
 		else
 			GameObjectManager.setGameObjectState(imageGO, false);
 		// set camera pos
-		if (GameData.dialogMessage[nDialog].Item5 != -1 && GameData.dialogMessage[nDialog].Item6 != -1)
+		if (Global.GD.dialogMessage[nDialog].Item5 != -1 && Global.GD.dialogMessage[nDialog].Item6 != -1)
         {
-			GameObjectManager.addComponent<FocusCamOn>(MainLoop.instance.gameObject, new { camX = GameData.dialogMessage[nDialog].Item5, camY = GameData.dialogMessage[nDialog].Item6 });
+			GameObjectManager.addComponent<FocusCamOn>(MainLoop.instance.gameObject, new { camX = Global.GD.dialogMessage[nDialog].Item5, camY = Global.GD.dialogMessage[nDialog].Item6 });
         }
 	}
 
@@ -123,14 +123,14 @@ public class DialogSystem : FSystem
 
 
 	// See OKButton in editor
-	// Désactive le panel de dialogue
+	// Dï¿½sactive le panel de dialogue
 	public void closeDialogPanel()
 	{
 		GameObjectManager.setGameObjectState(dialogPanel.transform.parent.gameObject, false);
-		nDialog = GameData.dialogMessage.Count;
+		nDialog = Global.GD.dialogMessage.Count;
 	}
 
-	// Affiche l'image associée au dialogue
+	// Affiche l'image associï¿½e au dialogue
 	public void setImageSprite(Image img, string path)
 	{
 		if (Application.platform == RuntimePlatform.WebGLPlayer)

@@ -36,9 +36,16 @@ public class TitleScreenSystem : FSystem {
             funcParam = funcData.GetComponent<FunctionalityParam>();
             funcLevel = funcData.GetComponent<FunctionalityInLevel>();
         }
+		
+		if (Global.GD == null || Global.GD.levelList == null)
+		{
+			// loadingGD = GameStateManager.LoadGD();
+			// await loadingGD;
+			Global.GD = new GameData();
+		}
 
 
-		GameData.levelList = new Hashtable();
+		Global.GD.levelList = new Hashtable();
 
 		levelButtons = new Dictionary<GameObject, List<GameObject>>();
 
@@ -47,9 +54,9 @@ public class TitleScreenSystem : FSystem {
 		if (Application.platform == RuntimePlatform.WebGLPlayer)
 		{
 			//paramFunction();
-			GameData.levelList["Campagne infiltration"] = new List<string>();
+			Global.GD.levelList["Campagne infiltration"] = new List<string>();
 			for (int i = 1; i <= 20; i++)
-				((List<string>)GameData.levelList["Campagne infiltration"]).Add(Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
+				((List<string>)Global.GD.levelList["Campagne infiltration"]).Add(Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
 			Path.DirectorySeparatorChar + "Campagne infiltration" + Path.DirectorySeparatorChar +"Niveau" + i + ".xml");
 			// Hide Competence button
 			GameObjectManager.setGameObjectState(compLevelButton, false);
@@ -64,12 +71,12 @@ public class TitleScreenSystem : FSystem {
 			{
 				levels = readScenario(directory);
 				if (levels != null)
-					GameData.levelList[Path.GetFileName(directory)] = levels; //key = directory name
+					Global.GD.levelList[Path.GetFileName(directory)] = levels; //key = directory name
 			}
 		}
 
 		//create level directory buttons
-		foreach (string key in GameData.levelList.Keys)
+		foreach (string key in Global.GD.levelList.Keys)
 		{
 			GameObject directoryButton = Object.Instantiate<GameObject>(Resources.Load("Prefabs/Button") as GameObject, cList.transform);
 			directoryButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = key;
@@ -78,10 +85,10 @@ public class TitleScreenSystem : FSystem {
 			// add on click
 			directoryButton.GetComponent<Button>().onClick.AddListener(delegate { showLevels(directoryButton); });
 			// create level buttons
-			for (int i = 0; i < ((List<string>)GameData.levelList[key]).Count; i++)
+			for (int i = 0; i < ((List<string>)Global.GD.levelList[key]).Count; i++)
 			{
 				GameObject button = Object.Instantiate<GameObject>(Resources.Load("Prefabs/LevelButton") as GameObject, cList.transform);
-				button.transform.Find("Button").GetChild(0).GetComponent<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(((List<string>)GameData.levelList[key])[i]);
+				button.transform.Find("Button").GetChild(0).GetComponent<TextMeshProUGUI>().text = Path.GetFileNameWithoutExtension(((List<string>)Global.GD.levelList[key])[i]);
 				int delegateIndice = i; // need to use local variable instead all buttons launch the last
 				button.transform.Find("Button").GetComponent<Button>().onClick.AddListener(delegate { launchLevel(key, delegateIndice); });
 				levelButtons[directoryButton].Add(button);
@@ -146,7 +153,7 @@ public class TitleScreenSystem : FSystem {
 						//levelButtons[directory][i].transform.Find("Button").GetComponent<Button>().interactable = false;
 						levelButtons[directory][i].transform.Find("Button").GetComponent<Button>().interactable = true;
 					//scores
-					int scoredStars = PlayerPrefs.GetInt(directoryName + Path.DirectorySeparatorChar + i + GameData.scoreKey, 0); //0 star by default
+					int scoredStars = PlayerPrefs.GetInt(directoryName + Path.DirectorySeparatorChar + i + Global.GD.scoreKey, 0); //0 star by default
 					Transform scoreCanvas = levelButtons[directory][i].transform.Find("ScoreCanvas");
 					for (int nbStar = 0; nbStar < 4; nbStar++) {
 						if (nbStar == scoredStars)
@@ -166,7 +173,7 @@ public class TitleScreenSystem : FSystem {
 	}
 
 	public void launchLevel(string levelDirectory, int level) {
-		GameData.levelToLoad = (levelDirectory, level);
+		Global.GD.levelToLoad = (levelDirectory, level);
 		GameObjectManager.loadScene("MainScene");
 	}
 

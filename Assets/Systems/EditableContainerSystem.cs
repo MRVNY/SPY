@@ -55,7 +55,7 @@ public class EditableContainerSystem : FSystem
 	{
 		MainLoop.instance.StartCoroutine(tcheckLinkName());
 		f_gameLoaded.addEntryCallback(delegate {
-			if (GameData.dragDropEnabled && SceneManager.GetActiveScene().name != "ScriptEditor")
+			if (Global.GD.dragDropEnabled && SceneManager.GetActiveScene().name != "ScriptEditor")
 			{
 				foreach (GameObject container in f_scriptContainer)
 				{
@@ -171,8 +171,8 @@ public class EditableContainerSystem : FSystem
 				{
 					EditingUtility.addItemOnDropArea(script[k], dropArea);
 					// On compte le nombre de bloc utilis? pour l'initialisation
-					GameData.totalActionBlocUsed += script[k].GetComponentsInChildren<BaseElement>().Length;
-					GameData.totalActionBlocUsed += script[k].GetComponentsInChildren<BaseCondition>().Length;
+					Global.GD.totalActionBlocUsed += script[k].GetComponentsInChildren<BaseElement>().Length;
+					Global.GD.totalActionBlocUsed += script[k].GetComponentsInChildren<BaseCondition>().Length;
 				}
 				GameObjectManager.addComponent<NeedRefreshPlayButton>(MainLoop.instance.gameObject);
 			}

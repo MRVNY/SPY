@@ -110,7 +110,7 @@ public class EndGameManager : FSystem {
 		}
 		else if (f_requireEndPanel.First().GetComponent<NewEnd>().endType == NewEnd.Win)
 		{
-			int score = (10000 / (GameData.totalActionBlocUsed + 1) + 5000 / (GameData.totalStep + 1) + 6000 / (GameData.totalExecute + 1) + 5000 * GameData.totalCoin);
+			int score = (10000 / (Global.GD.totalActionBlocUsed + 1) + 5000 / (Global.GD.totalStep + 1) + 6000 / (Global.GD.totalExecute + 1) + 5000 * Global.GD.totalCoin);
 			Transform verticalCanvas = endPanel.transform.Find("VerticalCanvas");
 			GameObjectManager.setGameObjectState(verticalCanvas.Find("ScoreCanvas").gameObject, true);
 			verticalCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Bravo vous avez gagné !\nScore: " + score;
@@ -124,7 +124,7 @@ public class EndGameManager : FSystem {
 			GameObjectManager.setGameObjectState(endPanel.transform.Find("MainMenu").gameObject, true);
 			GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, true);
 			//Check if next level exists in campaign
-			if (GameData.levelToLoad.Item2 >= ((List<string>)GameData.levelList[GameData.levelToLoad.Item1]).Count - 1)
+			if (Global.GD.levelToLoad.Item2 >= ((List<string>)Global.GD.levelList[Global.GD.levelToLoad.Item1]).Count - 1)
 			{
 				GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, false);
 			}
@@ -187,14 +187,14 @@ public class EndGameManager : FSystem {
 	{
 		// Détermine le nombre d'étoile à afficher
 		int scoredStars = 0;
-		if (GameData.levelToLoadScore != null)
+		if (Global.GD.levelToLoadScore != null)
 		{
 			//check 0, 1, 2 or 3 stars
-			if (score >= GameData.levelToLoadScore[0])
+			if (score >= Global.GD.levelToLoadScore[0])
 			{
 				scoredStars = 3;
 			}
-			else if (score >= GameData.levelToLoadScore[1])
+			else if (score >= Global.GD.levelToLoadScore[1])
 			{
 				scoredStars = 2;
 			}
@@ -214,10 +214,10 @@ public class EndGameManager : FSystem {
 		}
 
 		//save score only if better score
-		int savedScore = PlayerPrefs.GetInt(GameData.levelToLoad.Item1 + Path.DirectorySeparatorChar + GameData.levelToLoad.Item2 + GameData.scoreKey, 0);
+		int savedScore = PlayerPrefs.GetInt(Global.GD.levelToLoad.Item1 + Path.DirectorySeparatorChar + Global.GD.levelToLoad.Item2 + Global.GD.scoreKey, 0);
 		if (savedScore < scoredStars)
 		{
-			PlayerPrefs.SetInt(GameData.levelToLoad.Item1 + Path.DirectorySeparatorChar + GameData.levelToLoad.Item2 + GameData.scoreKey, scoredStars);
+			PlayerPrefs.SetInt(Global.GD.levelToLoad.Item1 + Path.DirectorySeparatorChar + Global.GD.levelToLoad.Item2 + Global.GD.scoreKey, scoredStars);
 			PlayerPrefs.Save();
 		}
 	}

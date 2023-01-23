@@ -30,9 +30,14 @@ public class LevelMapSystem : FSystem
 		Scores = new List<Tile>() { LM.Undone, LM.Done, LM.Code, LM.All, LM.Exec };
 		LevelNames = new Dictionary<Vector3Int, string>();
 
-		ReadLevels();
+		if (Global.GD == null || Global.GD.levelList == null)
+		{
+			GameStateManager.LoadGD();
+			//Global.GD = new GameData();
+			ReadLevels();
+		}
 
-		LevelList = (List<string>)GameData.levelList[GameData.mode];
+		LevelList = (List<string>)Global.GD.levelList[Global.GD.mode];
 		
 		LoadLevels();
 		
@@ -61,7 +66,7 @@ public class LevelMapSystem : FSystem
 		LM.CharacMap.SetTile(LM.CharacPos, LM.Charac);
 		LM.LevelName.text = LevelNames[tilePos].Split('/', '.')[^2];
 		LM.StartLevel.onClick.RemoveAllListeners();
-		LM.StartLevel.onClick.AddListener(delegate { launchLevel(GameData.mode, LevelList.IndexOf(LevelNames[tilePos])); });
+		LM.StartLevel.onClick.AddListener(delegate { launchLevel(Global.GD.mode, LevelList.IndexOf(LevelNames[tilePos])); });
 		if(mousePos.x != Vector2.negativeInfinity.x)
 		{
 			await CameraTranstion(new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z));
@@ -85,14 +90,14 @@ public class LevelMapSystem : FSystem
 
 	public static void ReadLevels()
 	{
-		GameData.levelList = new Hashtable();
+		Global.GD.levelList = new Hashtable();
 		string levelsPath;
 		if (Application.platform == RuntimePlatform.WebGLPlayer)
 		{
 			//paramFunction();
-			GameData.levelList["Campagne infiltration"] = new List<string>();
+			Global.GD.levelList["Campagne infiltration"] = new List<string>();
 			for (int i = 1; i <= 20; i++)
-				((List<string>)GameData.levelList["Campagne infiltration"]).Add(Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
+				((List<string>)Global.GD.levelList["Campagne infiltration"]).Add(Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
 					Path.DirectorySeparatorChar + "Campagne infiltration" + Path.DirectorySeparatorChar +"Niveau" + i + ".xml");
 			// Hide Competence button
 			ParamCompetenceSystem.instance.Pause = true;
@@ -105,7 +110,7 @@ public class LevelMapSystem : FSystem
 			{
 				levels = readScenario(directory);
 				if (levels != null)
-					GameData.levelList[Path.GetFileName(directory)] = levels; //key = directory name
+					Global.GD.levelList[Path.GetFileName(directory)] = levels; //key = directory name
 			}
 		}
 	}
@@ -126,7 +131,7 @@ public class LevelMapSystem : FSystem
 	}
 	
 	public void launchLevel(string levelDirectory, int level) {
-		GameData.levelToLoad = (levelDirectory, level);
+		Global.GD.levelToLoad = (levelDirectory, level);
 		GameObjectManager.loadScene("MainScene");
 	}
 
@@ -135,7 +140,7 @@ public class LevelMapSystem : FSystem
 		int x = 0;
 		foreach (var level in LevelList)
 		{
-			int scoredStars = PlayerPrefs.GetInt(GameData.mode + Path.DirectorySeparatorChar + LevelList.IndexOf(level) + GameData.scoreKey, 0); //0 star by default
+			int scoredStars = PlayerPrefs.GetInt(Global.GD.mode + Path.DirectorySeparatorChar + LevelList.IndexOf(level) + Global.GD.scoreKey, 0); //0 star by default
 			LM.Stars.SetTile(new Vector3Int(x, 0, 0), Scores[scoredStars]);
 
 			Vector3Int pos = new Vector3Int(x, 0, 0);
@@ -151,7 +156,7 @@ public class LevelMapSystem : FSystem
 		int x = 0;
 		foreach (var level in LevelList)
 		{
-			int scoredStars = PlayerPrefs.GetInt(GameData.mode + Path.DirectorySeparatorChar + LevelList.IndexOf(level) + GameData.scoreKey, 0); //0 star by default
+			int scoredStars = PlayerPrefs.GetInt(Global.GD.mode + Path.DirectorySeparatorChar + LevelList.IndexOf(level) + Global.GD.scoreKey, 0); //0 star by default
 			LM.Stars.SetTile(new Vector3Int(x, 0, 0), Scores[scoredStars]);
 
 			Vector3Int pos = new Vector3Int(x, 0, 0);

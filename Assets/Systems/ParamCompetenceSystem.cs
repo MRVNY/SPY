@@ -264,7 +264,7 @@ public class ParamCompetenceSystem : FSystem
 	// Lit tous les fichiers XML des niveaux de chaque dossier afin de charger quelle fonctionalit? se trouve dans quel niveau  
 	private void readXMLinfo()
 	{
-		foreach (List<string> levels in GameData.levelList.Values)
+		foreach (List<string> levels in Global.GD.levelList.Values)
 		{
 			foreach (string level in levels)
 			{
@@ -506,7 +506,7 @@ public class ParamCompetenceSystem : FSystem
 			{
 				// On parcourt le dictionnaire des fonctionnalit?s level design
 				// On supprime de la liste des niveaux possibles tous les niveaux appellant des fonctionnalit?s de level design
-				foreach (List<string> levels in GameData.levelList.Values)
+				foreach (List<string> levels in Global.GD.levelList.Values)
 				{
 					// On cr?er une copie de la liste des niveaux disponibles
 					foreach (string level in levels)
@@ -541,7 +541,7 @@ public class ParamCompetenceSystem : FSystem
 				// On split la chaine de caract?re pour pouvoir r?cup?rer le dossier ou se trouve le niveau selectionn?
 				var level = levelSelected.Split('\\');
 				string folder = level[level.Length - 2];
-				GameData.levelToLoad = (folder, ((List<string>)GameData.levelList[folder]).IndexOf(levelSelected));
+				Global.GD.levelToLoad = (folder, ((List<string>)Global.GD.levelList[folder]).IndexOf(levelSelected));
 			}
             else
             {
@@ -549,7 +549,7 @@ public class ParamCompetenceSystem : FSystem
 				// On split la chaine de caract?re pour pouvoir r?cup?rer le dossier ou se trouve le niveau selectionn?
 				var level = levelSelected.Split('\\');
 				string folder = level[level.Length - 2];
-				GameData.levelToLoad = (folder, ((List<string>)GameData.levelList[folder]).IndexOf(levelSelected));
+				Global.GD.levelToLoad = (folder, ((List<string>)Global.GD.levelList[folder]).IndexOf(levelSelected));
 			}
 			GameObjectManager.loadScene("MainScene");
 		}

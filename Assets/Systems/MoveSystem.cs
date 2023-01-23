@@ -47,10 +47,10 @@ public class MoveSystem : FSystem {
 			// Manage position
 			if (Mathf.Abs(go.transform.localPosition.z / 3 - go.GetComponent<Position>().x) > 0.01f || Mathf.Abs(go.transform.localPosition.x / 3 - go.GetComponent<Position>().y) > 0.01f)
 			{
-				go.transform.localPosition = Vector3.MoveTowards(go.transform.localPosition, new Vector3(go.GetComponent<Position>().y * 3, go.transform.localPosition.y, go.GetComponent<Position>().x * 3), moveSpeed * GameData.gameSpeed_current * Time.deltaTime);
+				go.transform.localPosition = Vector3.MoveTowards(go.transform.localPosition, new Vector3(go.GetComponent<Position>().y * 3, go.transform.localPosition.y, go.GetComponent<Position>().x * 3), moveSpeed * Global.GD.gameSpeed_current * Time.deltaTime);
 				if (go.GetComponent<Animator>() && go.tag == "Player")
 				{
-					if (GameData.gameSpeed_current == GameData.gameSpeed_default)
+					if (Global.GD.gameSpeed_current == Global.GD.gameSpeed_default)
 					{
 						go.GetComponent<Animator>().SetFloat("Walk", 1f);
 						go.GetComponent<Animator>().SetFloat("Run", -1f);
@@ -90,7 +90,7 @@ public class MoveSystem : FSystem {
 			}
 			if (target.eulerAngles.y != go.transform.eulerAngles.y)
 			{
-				go.transform.rotation = Quaternion.RotateTowards(go.transform.rotation, target, turnSpeed * GameData.gameSpeed_current * Time.deltaTime);
+				go.transform.rotation = Quaternion.RotateTowards(go.transform.rotation, target, turnSpeed * Global.GD.gameSpeed_current * Time.deltaTime);
 				if (go.GetComponent<Animator>() && go.tag == "Player")
 					go.GetComponent<Animator>().SetFloat("Rotate", 1f);
 			}
