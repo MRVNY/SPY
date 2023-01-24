@@ -18,8 +18,7 @@ public class LevelMapSystem : FSystem
 	private Family f_LM = FamilyManager.getFamily(new AllOfComponents(typeof(LevelMap)));
 	private LevelMap LM;
 
-	private List<string> LevelList;
-	private Dictionary<Vector3Int, string> LevelNames;
+	private Dictionary<Vector3Int, Level> LevelDict;
 	private List<Tile> Scores;
 	
 	private Task cameraMoving;
@@ -31,22 +30,22 @@ public class LevelMapSystem : FSystem
 			
 		LM = f_LM.First().GetComponent<LevelMap>();
 		Scores = new List<Tile>() { LM.Undone, LM.Done, LM.Code, LM.All, LM.Exec };
-		LevelNames = new Dictionary<Vector3Int, string>();
+		LevelDict = new Dictionary<Vector3Int, Level>();
 
 		GameStateManager.LoadGD();
-		if (Global.GD == null || Global.GD.levelList == null)
-		{
-			Global.GD = new GameData();
-			ReadLevels();
-		}
-
-		LevelList = (List<string>)Global.GD.levelList[Global.GD.mode];
+		// if (Global.GD == null || Global.GD.Tree == null)
+		// {
+		// 	Global.GD = new GameData();
+		// 	TreeManager.ReadLevels();
+		// }
+		Global.GD = new GameData();
+		TreeManager.ConstructTree();
 		
-		LoadLevels();
+		//LoadLevels();
+		ConstructRoad(Global.GD.Tree, Vector3Int.zero, 0);
 		
-		string level = ((List<string>)Global.GD.levelList[Global.GD.mode])[Global.GD.levelToLoad.Item2];
-		if (LevelList.Contains(level))
-			LM.CharacPos = LevelNames.FirstOrDefault(x => x.Value == level).Key;
+		if (LevelDict.ContainsValue(Global.GD.level))
+			LM.CharacPos = LevelDict.FirstOrDefault(x => x.Value == Global.GD.level).Key;
 		else
 			LM.CharacPos = Vector3Int.zero;
 
@@ -70,31 +69,11 @@ public class LevelMapSystem : FSystem
 			else if (Input.GetKeyDown(KeyCode.RightArrow))
 				tilePos = Right(LM.CharacPos);
 				
-			if (tilePos != Vector3Int.up && LM.Map.HasTile(tilePos) && LevelNames.ContainsKey(tilePos)){
+			if (tilePos != Vector3Int.up && LM.Map.HasTile(tilePos) && LevelDict.ContainsKey(tilePos)){
 				LM.CharacPos = tilePos;
 				LoadUI(LM.CharacPos);
 			}
 		}
-	}
-	
-	private Vector3Int Right(Vector3Int v)
-	{
-		return v + 2*Vector3Int.right;
-	}
-	
-	private Vector3Int Left(Vector3Int v)
-	{
-		return v + 2*Vector3Int.left;
-	}
-	
-	private Vector3Int Up(Vector3Int v)
-	{
-		return v + Vector3Int.up + 2*Vector3Int.right;
-	}
-	
-	private Vector3Int Down(Vector3Int v)
-	{
-		return v + Vector3Int.down + 2*Vector3Int.right;
 	}
 
 	private async void LoadUI(Vector3Int tilePos)
@@ -103,9 +82,9 @@ public class LevelMapSystem : FSystem
 		LM.CharacPos = tilePos;
 		LM.CharacMap.ClearAllTiles();
 		LM.CharacMap.SetTile(LM.CharacPos, LM.Charac);
-		LM.LevelName.text = LevelNames[tilePos].Split('/', '.')[^2];
+		LM.LevelName.text = LevelDict[tilePos].name;
 		LM.StartLevel.onClick.RemoveAllListeners();
-		LM.StartLevel.onClick.AddListener(delegate { launchLevel(Global.GD.mode, LevelList.IndexOf(LevelNames[tilePos])); });
+		LM.StartLevel.onClick.AddListener(delegate { launchLevel(Global.GD.mode, LevelDict[tilePos]); });
 		toPos = new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z);
 		cameraMoving = CameraTranstion();
 	}
@@ -125,98 +104,147 @@ public class LevelMapSystem : FSystem
 		}
 	}
 
-	public static void ReadLevels()
-	{
-		Global.GD.levelList = new Hashtable();
-		string levelsPath;
-		if (Application.platform == RuntimePlatform.WebGLPlayer)
-		{
-			//paramFunction();
-			Global.GD.levelList["Campagne infiltration"] = new List<string>();
-			for (int i = 1; i <= 20; i++)
-				((List<string>)Global.GD.levelList["Campagne infiltration"]).Add(Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
-					Path.DirectorySeparatorChar + "Campagne infiltration" + Path.DirectorySeparatorChar +"Niveau" + i + ".xml");
-			// Hide Competence button
-			ParamCompetenceSystem.instance.Pause = true;
-		}
-		else
-		{
-			levelsPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels";
-			List<string> levels;
-			foreach (string directory in Directory.GetDirectories(levelsPath))
-			{
-				levels = readScenario(directory);
-				if (levels != null)
-					Global.GD.levelList[Path.GetFileName(directory)] = levels; //key = directory name
-			}
-		}
-	}
-	public static List<string> readScenario(string repositoryPath) {
-		if (File.Exists(repositoryPath + Path.DirectorySeparatorChar + "Scenario.xml")) {
-			List<string> levelList = new List<string>();
-			XmlDocument doc = new XmlDocument();
-			doc.Load(repositoryPath + Path.DirectorySeparatorChar + "Scenario.xml");
-			XmlNode root = doc.ChildNodes[1]; //root = <scenario/>
-			foreach (XmlNode child in root.ChildNodes) {
-				if (child.Name.Equals("level")) {
-					levelList.Add(repositoryPath + Path.DirectorySeparatorChar + (child.Attributes.GetNamedItem("name").Value));
-				}
-			}
-			return levelList;
-		}
-		return null;
-	}
-	
-	public void launchLevel(string levelDirectory, int level) {
-		Global.GD.levelToLoad = (levelDirectory, level);
+	// public static void ReadLevels()
+	// {
+	// 	string levelsPath;
+	// 	if (Application.platform == RuntimePlatform.WebGLPlayer)
+	// 	{
+	// 		//paramFunction();
+	// 		Global.GD.treeLevelList = new List<string>();
+	// 		for (int i = 1; i <= 20; i++)
+	// 			((List<string>)Global.GD.treeLevelList["SkillTree"]).Add(Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
+	// 				Path.DirectorySeparatorChar + "SkillTree" + Path.DirectorySeparatorChar +"Niveau" + i + ".xml");
+	// 		// Hide Competence button
+	// 		ParamCompetenceSystem.instance.Pause = true;
+	// 	}
+	// 	else
+	// 	{
+	// 		levelsPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels";
+	// 		List<string> levels;
+	// 		foreach (string directory in Directory.GetDirectories(levelsPath))
+	// 		{
+	// 			levels = TitleScreenSystem.readScenario(directory);
+	// 			if (levels != null)
+	// 				Global.GD.treeLevelList[Path.GetFileName(directory)] = levels; //key = directory name
+	// 		}
+	// 	}
+	// }
+	public void launchLevel(string mode, Level level) {
+		Global.GD.mode = mode;
+		Global.GD.level = level;
 		GameObjectManager.loadScene("MainScene");
 	}
 
+	private void ConstructRoad(Node node, Vector3Int pos, int split)
+	{
+		if(node.introLevels.Count > 0)
+		{Level first = node.introLevels.First();
+			LM.Map.SetTile(pos, LM.Base);
+			LM.Stars.SetTile(pos, Scores[(int)first.score]);
+			LevelDict.Add(pos, first);
+		}
+
+		foreach (var lvl in node.introLevels)
+			if(lvl != node.introLevels.First()) pos = RoadFoward(pos, lvl);
+		foreach (var lvl in node.levelPool)
+			pos = RoadFoward(pos, lvl);
+		foreach (var lvl in node.outroLevels)
+			pos = RoadFoward(pos, lvl);
+
+		switch (node.nextNodes.Count)
+		{
+			case 1:
+				if (pos.x > 0) pos = RoadMerge(pos, split);
+				if(LM.Map.GetTile(pos)!=LM.Base) ConstructRoad(node.nextNodes[0], pos, 0);
+				break;
+			case 2:
+				(Vector3Int,Vector3Int) upAndDown = RoadSplit(pos);
+				ConstructRoad(node.nextNodes[0], upAndDown.Item1, 1);
+				ConstructRoad(node.nextNodes[1], upAndDown.Item2, -1);
+				break;
+			default: break;
+		}
+	}
 	private void LoadLevels()
 	{
 		int x = 0;
-		foreach (var level in LevelList)
+		foreach (var level in LevelDict.Values.ToList())
 		{
-			int scoredStars = PlayerPrefs.GetInt(Global.GD.mode + Path.DirectorySeparatorChar + LevelList.IndexOf(level) + Global.GD.scoreKey, 0); //0 star by default
+			int scoredStars = PlayerPrefs.GetInt(Global.GD.mode + Path.DirectorySeparatorChar + LevelDict.Values.ToList().IndexOf(level) + Global.GD.scoreKey, 0); //0 star by default
 			LM.Stars.SetTile(new Vector3Int(x, 0, 0), Scores[scoredStars]);
 
 			Vector3Int pos = new Vector3Int(x, 0, 0);
 			LM.Map.SetTile(pos, LM.Base);
-			LevelNames.Add(pos, level);
+			LevelDict.Add(pos, level);
 			LM.Map.SetTile(new Vector3Int(x+1,0,0), LM.Road);
 			x += 2;
 		}
 	}
 	
-	private void ConstructRoad()
+	private Vector3Int Right(Vector3Int v) { return v + 2*Vector3Int.right; }
+	private Vector3Int Left(Vector3Int v) { return v + 2*Vector3Int.left; }
+	private Vector3Int Up(Vector3Int v) { return v + Vector3Int.up + 2*Vector3Int.right; }
+	private Vector3Int Down(Vector3Int v) { return v + Vector3Int.down + 2*Vector3Int.right; }
+	
+
+	private Vector3Int RoadFoward(Vector3Int pos, Level lvl)
 	{
-		int x = 0;
-		foreach (var level in LevelList)
+		pos += Vector3Int.right;
+		LM.Map.SetTile(pos, LM.Road);
+		pos += Vector3Int.right;
+		LM.Map.SetTile(pos, LM.Base);
+		LM.Stars.SetTile(pos, Scores[(int)lvl.score]);
+		LevelDict.Add(pos, lvl);
+		return pos;
+	}
+
+	private (Vector3Int,Vector3Int) RoadSplit(Vector3Int pos)
+	{
+		Vector3Int up;
+		Vector3Int down;
+		if (pos.y == 0)
 		{
-			int scoredStars = PlayerPrefs.GetInt(Global.GD.mode + Path.DirectorySeparatorChar + LevelList.IndexOf(level) + Global.GD.scoreKey, 0); //0 star by default
-			LM.Stars.SetTile(new Vector3Int(x, 0, 0), Scores[scoredStars]);
-
-			Vector3Int pos = new Vector3Int(x, 0, 0);
-			LM.Map.SetTile(pos, LM.Base);
-			LevelNames.Add(pos, level);
-			LM.Map.SetTile(new Vector3Int(x+1,0,0), LM.Road);
-			x += 2;
+			pos += Vector3Int.right;
+			LM.Map.SetTile(pos, LM.Split);
+			
+			up = pos + Vector3Int.up;
+			LM.Map.SetTile(up, LM.UpRight);
+			up += Vector3Int.right + Vector3Int.up;
+			
+			down = pos + Vector3Int.down;
+			LM.Map.SetTile(down, LM.DownRight);
+			down += Vector3Int.right + Vector3Int.down;
 		}
-	}
-
-	private void RoadFoward()
-	{
-		
-	}
-
-	private void RoadSplit()
-	{
-		
+		else
+		{
+			pos += Vector3Int.right;
+			LM.Map.SetTile(pos, LM.Split);
+			
+			up = pos + Vector3Int.up;
+			down = pos + Vector3Int.down;
+		}
+		return (up,down);
 	}
 	
-	private void RoadMerge()
+	private Vector3Int RoadMerge(Vector3Int pos, int split)
 	{
-		
+		if (pos.y - 2*split == 0) //if it's the first split
+		{
+			pos += split * Vector3Int.down;
+			if(split>0) LM.Map.SetTile(pos, LM.DownRight);
+			else LM.Map.SetTile(pos, LM.UpRight);
+			
+			pos += Vector3Int.right + split * Vector3Int.down;
+			LM.Map.SetTile(pos, LM.Merge);
+			pos += Vector3Int.right;
+		}
+		else
+		{
+			pos += Vector3Int.right + split * Vector3Int.down;
+			LM.Map.SetTile(pos, LM.Merge);
+			pos += Vector3Int.right;
+		}
+		return pos;
 	}
 	
 }

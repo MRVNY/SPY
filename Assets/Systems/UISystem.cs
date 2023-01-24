@@ -91,8 +91,8 @@ public class UISystem : FSystem {
 			foreach (GameObject trash in f_removeButton)
 				trash.GetComponent<Button>().interactable = false;
 			// Sauvegarde de l'état d'avancement des niveaux (niveau et étoile)
-			if (PlayerPrefs.GetInt(Global.GD.levelToLoad.Item1,0) < Global.GD.levelToLoad.Item2 + 1)
-				PlayerPrefs.SetInt(Global.GD.levelToLoad.Item1, Global.GD.levelToLoad.Item2 + 1);
+			// if (PlayerPrefs.GetInt(Global.GD.mode,0) < Global. Global.GD.levelToLoad.Item2 + 1)
+			// 	PlayerPrefs.SetInt(Global.GD.mode, Global.GD.levelToLoad.Item2 + 1);
 			PlayerPrefs.Save();
 		}
 		// for other end type, nothing to do more
@@ -234,7 +234,7 @@ public class UISystem : FSystem {
 		Global.GD.totalStep = 0;
 		Global.GD.totalExecute = 0;
 		Global.GD.totalCoin = 0;
-		Global.GD.levelToLoadScore = null;
+		Global.GD.levelScore = null;
 		Global.GD.dialogMessage = new List<(string, float, string, float, int, int)>();
 }
 
@@ -243,7 +243,7 @@ public class UISystem : FSystem {
 	// On charge la scéne suivante
 	public void nextLevel(){
 		// On imcrémente le numéro du niveau
-		Global.GD.levelToLoad.Item2++;
+		Global.GD.level = Global.GD.level.next;
 		// On efface l'historique
 		HistoryManager.actionsHistory = null;
 		// On recharge la scéne (mais avec le nouveau numéro de niveau)

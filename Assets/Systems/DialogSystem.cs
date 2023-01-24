@@ -13,6 +13,7 @@ public class DialogSystem : FSystem
 {
 	public GameObject dialogPanel;
 	private int nDialog = 0;
+	private string sepa = Path.DirectorySeparatorChar.ToString();
 
 	protected override void onStart()
 	{
@@ -91,8 +92,7 @@ public class DialogSystem : FSystem
 		if (Global.GD.dialogMessage[nDialog].Item3 != null)
 		{
 			GameObjectManager.setGameObjectState(imageGO, true);
-			setImageSprite(imageGO.GetComponent<Image>(), Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
-			Path.DirectorySeparatorChar + Global.GD.levelToLoad.Item1 + Path.DirectorySeparatorChar + "Images" + Path.DirectorySeparatorChar + Global.GD.dialogMessage[nDialog].Item3);
+			setImageSprite(imageGO.GetComponent<Image>(), Global.GD.path + Global.GD.mode + sepa + "Images" + sepa + Global.GD.dialogMessage[nDialog].Item3);
 			if (Global.GD.dialogMessage[nDialog].Item4 != -1)
 				((RectTransform)imageGO.transform).sizeDelta = new Vector2(((RectTransform)imageGO.transform).sizeDelta.x, Global.GD.dialogMessage[nDialog].Item4);
 			else

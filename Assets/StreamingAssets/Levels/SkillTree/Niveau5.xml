@@ -42,4 +42,6 @@
 	<action type="TurnRight"/>
   </script>
   <score twoStars="3875" threeStars="4875"/>
+
+  <levelInfo node="Intro" type="outro"/>
 </level>

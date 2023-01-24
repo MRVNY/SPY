@@ -273,7 +273,9 @@ public class LevelEditorSystem : FSystem {
 	public void LoadLevel(string levelName)
 	{
 		Global.GD.mode = "Homemade";
-		Global.GD.homemadeLevelToLoad = (levelName);
+		Level tmp = new Level();
+		tmp.name = levelName;
+		Global.GD.level = (tmp);
 		GameObjectManager.loadScene("ScriptEditor");
 	}
 	

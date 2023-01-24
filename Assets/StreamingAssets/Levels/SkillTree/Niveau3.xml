@@ -35,5 +35,7 @@
   </blockLimits>
   <player associatedScriptName="Karl" posY="1" posX="5" direction="3" />
   <script name="Karl" editMode="0" />
-  <score twoStars="5000" threeStars="6000"/>  
+  <score twoStars="5000" threeStars="6000"/>
+
+  <levelInfo node="Intro" type="pool"/>
 </level>

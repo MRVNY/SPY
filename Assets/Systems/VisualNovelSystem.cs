@@ -34,7 +34,7 @@ public class VisualNovelSystem : FSystem
 	{
 		if(LevelGenerator.loadingGD != null) await LevelGenerator.loadingGD;
 		
-		if (Global.GD.levelList == null)
+		if (Global.GD == null)
 			return;
 
 		VN = f_VN.First().GetComponent<VisualNovel>();
@@ -48,7 +48,7 @@ public class VisualNovelSystem : FSystem
 			node = Global.GD.convoNode;
 
 			imgPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
-			          Path.DirectorySeparatorChar + Global.GD.levelToLoad.Item1 + Path.DirectorySeparatorChar +
+			          Path.DirectorySeparatorChar + Global.GD.mode + Path.DirectorySeparatorChar +
 			          "Images" + Path.DirectorySeparatorChar;
 
 			Global.GD.gameLanguage = "en";

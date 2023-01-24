@@ -17,6 +17,8 @@ public class LevelMap : MonoBehaviour
     public Tile Road;
     public Tile Split;
     public Tile Merge;
+    public Tile UpRight;
+    public Tile DownRight;
 
     public Tile Done;
     public Tile Undone;

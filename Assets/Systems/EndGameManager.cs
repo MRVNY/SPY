@@ -124,7 +124,7 @@ public class EndGameManager : FSystem {
 			GameObjectManager.setGameObjectState(endPanel.transform.Find("MainMenu").gameObject, true);
 			GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, true);
 			//Check if next level exists in campaign
-			if (Global.GD.levelToLoad.Item2 >= ((List<string>)Global.GD.levelList[Global.GD.levelToLoad.Item1]).Count - 1)
+			if (Global.GD.level.next != null)
 			{
 				GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, false);
 			}
@@ -187,14 +187,14 @@ public class EndGameManager : FSystem {
 	{
 		// Détermine le nombre d'étoile à afficher
 		int scoredStars = 0;
-		if (Global.GD.levelToLoadScore != null)
+		if (Global.GD.levelScore != null)
 		{
 			//check 0, 1, 2 or 3 stars
-			if (score >= Global.GD.levelToLoadScore[0])
+			if (score >= Global.GD.levelScore[0])
 			{
 				scoredStars = 3;
 			}
-			else if (score >= Global.GD.levelToLoadScore[1])
+			else if (score >= Global.GD.levelScore[1])
 			{
 				scoredStars = 2;
 			}
@@ -214,10 +214,10 @@ public class EndGameManager : FSystem {
 		}
 
 		//save score only if better score
-		int savedScore = PlayerPrefs.GetInt(Global.GD.levelToLoad.Item1 + Path.DirectorySeparatorChar + Global.GD.levelToLoad.Item2 + Global.GD.scoreKey, 0);
+		int savedScore = PlayerPrefs.GetInt(Global.GD.mode + Path.DirectorySeparatorChar + Global.GD.level.name + Global.GD.scoreKey, 0);
 		if (savedScore < scoredStars)
 		{
-			PlayerPrefs.SetInt(Global.GD.levelToLoad.Item1 + Path.DirectorySeparatorChar + Global.GD.levelToLoad.Item2 + Global.GD.scoreKey, scoredStars);
+			PlayerPrefs.SetInt(Global.GD.mode + Path.DirectorySeparatorChar + Global.GD.level.name + Global.GD.scoreKey, scoredStars);
 			PlayerPrefs.Save();
 		}
 	}

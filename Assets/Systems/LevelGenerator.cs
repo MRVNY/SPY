@@ -38,15 +38,16 @@ public class LevelGenerator : FSystem {
 
 	protected override async void onStart()
 	{
-		if (Global.GD == null || Global.GD.levelList == null)
+		if (Global.GD == null || Global.GD.level == null)
 		{
 			// loadingGD = GameStateManager.LoadGD();
 			// await loadingGD;
 			Global.GD = new GameData();
-			LevelMapSystem.ReadLevels();
+			Global.GD.path = Application.streamingAssetsPath + "/Levels/";
+			//TreeManager.ConstructTree();
 		}
 		
-		if (Global.GD.levelList == null)
+		if (Global.GD.level == null)
 			GameObjectManager.loadScene("TitleScreen");
 		else
 		{
@@ -58,26 +59,16 @@ public class LevelGenerator : FSystem {
 			}
 			else
 			{
-				if (Global.GD.mode == "Homemade")
-				{
-					doc.Load(Global.GD.homemadeLevelToLoad);
-				}
-				else
-				{
-					doc.Load(((List<string>)Global.GD.levelList[Global.GD.levelToLoad.Item1])[Global.GD.levelToLoad.Item2]);
-				}
-
+				doc.Load(Global.GD.path + Global.GD.mode + Path.DirectorySeparatorChar + Global.GD.level.name + ".xml");
 				XmlToLevel(doc);
+				levelName.text = Global.GD.level.name;
 			}
-			if(Global.GD.mode == "Homemade")
-				levelName.text = Path.GetFileNameWithoutExtension(Global.GD.homemadeLevelToLoad);
-			else levelName.text = Path.GetFileNameWithoutExtension(((List<string>)Global.GD.levelList[Global.GD.levelToLoad.Item1])[Global.GD.levelToLoad.Item2]);
 		}
 	}
 
 	IEnumerator GetLevelWebRequest(XmlDocument doc)
 	{
-		UnityWebRequest www = UnityWebRequest.Get(((List<string>)Global.GD.levelList[Global.GD.levelToLoad.Item1])[Global.GD.levelToLoad.Item2]);
+		UnityWebRequest www = UnityWebRequest.Get(Global.GD.path + Global.GD.mode + Path.DirectorySeparatorChar + Global.GD.level.name + ".xml");
 		yield return www.SendWebRequest();
 
 		if (www.result != UnityWebRequest.Result.Success)
@@ -97,7 +88,7 @@ public class LevelGenerator : FSystem {
 		Global.GD.totalStep = 0;
 		Global.GD.totalExecute = 0;
 		Global.GD.totalCoin = 0;
-		Global.GD.levelToLoadScore = null;
+		Global.GD.levelScore = null;
 		Global.GD.dialogMessage = new List<(string, float, string, float, int, int)>();
 		Global.GD.actionBlockLimit = new Hashtable();
 		map = new List<List<int>>();
@@ -180,9 +171,9 @@ public class LevelGenerator : FSystem {
 					MainLoop.instance.StartCoroutine(delayReadXMLScript(child, child.Attributes.GetNamedItem("name").Value, editModeByUser, typeByUser));
 					break;
 				case "score":
-					Global.GD.levelToLoadScore = new int[2];
-					Global.GD.levelToLoadScore[0] = int.Parse(child.Attributes.GetNamedItem("threeStars").Value);
-					Global.GD.levelToLoadScore[1] = int.Parse(child.Attributes.GetNamedItem("twoStars").Value);
+					Global.GD.levelScore = new int[2];
+					Global.GD.levelScore[0] = int.Parse(child.Attributes.GetNamedItem("threeStars").Value);
+					Global.GD.levelScore[1] = int.Parse(child.Attributes.GetNamedItem("twoStars").Value);
 					break;
 			}
 		}
