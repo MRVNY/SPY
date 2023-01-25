@@ -112,7 +112,25 @@ public class VisualNovelSystem : FSystem
         }
         else skipButton.enabled = true;
 
-        // execute action
+        // execute 
+        if (convoTree[node]["action"] != null)
+		{
+	        string[] action = convoTree[node]["action"].ToString().Split(',');
+	        switch (action[0])
+	        {
+		        case "end":
+			        Global.GD.convoNode = null;
+			        break;
+		        case "value":
+			        break;
+		        case "mood":
+			        break;
+		        case "ending1":
+			        break;
+		        case "ending2":
+			        break;
+	        }
+		}
 	}
 
 	//Show text with typewriter effect

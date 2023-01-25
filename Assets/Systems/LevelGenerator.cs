@@ -36,7 +36,7 @@ public class LevelGenerator : FSystem {
 
 	public static Task loadingGD;
 
-	protected override async void onStart()
+	protected override void onStart()
 	{
 		if (Global.GD == null || Global.GD.level == null)
 		{

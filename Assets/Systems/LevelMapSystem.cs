@@ -54,7 +54,7 @@ public class LevelMapSystem : FSystem
 		LoadUI(LM.CharacPos);
 	}
 	
-	protected override async void onProcess(int familiesUpdateCount)
+	protected override void onProcess(int familiesUpdateCount)
 	{
 		if (Input.anyKeyDown)
 		{
@@ -76,7 +76,7 @@ public class LevelMapSystem : FSystem
 		}
 	}
 
-	private async void LoadUI(Vector3Int tilePos)
+	private void LoadUI(Vector3Int tilePos)
 	{
 		Vector2 mousePos = LM.CharacMap.CellToWorld(tilePos);
 		LM.CharacPos = tilePos;
@@ -103,32 +103,6 @@ public class LevelMapSystem : FSystem
 			await Task.Delay(10);
 		}
 	}
-
-	// public static void ReadLevels()
-	// {
-	// 	string levelsPath;
-	// 	if (Application.platform == RuntimePlatform.WebGLPlayer)
-	// 	{
-	// 		//paramFunction();
-	// 		Global.GD.treeLevelList = new List<string>();
-	// 		for (int i = 1; i <= 20; i++)
-	// 			((List<string>)Global.GD.treeLevelList["SkillTree"]).Add(Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
-	// 				Path.DirectorySeparatorChar + "SkillTree" + Path.DirectorySeparatorChar +"Niveau" + i + ".xml");
-	// 		// Hide Competence button
-	// 		ParamCompetenceSystem.instance.Pause = true;
-	// 	}
-	// 	else
-	// 	{
-	// 		levelsPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels";
-	// 		List<string> levels;
-	// 		foreach (string directory in Directory.GetDirectories(levelsPath))
-	// 		{
-	// 			levels = TitleScreenSystem.readScenario(directory);
-	// 			if (levels != null)
-	// 				Global.GD.treeLevelList[Path.GetFileName(directory)] = levels; //key = directory name
-	// 		}
-	// 	}
-	// }
 	public void launchLevel(string mode, Level level) {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
@@ -246,5 +220,4 @@ public class LevelMapSystem : FSystem
 		}
 		return pos;
 	}
-	
 }

@@ -173,20 +173,4 @@ public class TreeManager : FSystem
 			}
 		}
 	}
-
-	// public static List<string> readScenario(string repositoryPath) {
-	// 	if (File.Exists(repositoryPath + Path.DirectorySeparatorChar + "Scenario.xml")) {
-	// 		List<string> treeLevelList = new List<string>();
-	// 		XmlDocument doc = new XmlDocument();
-	// 		doc.Load(repositoryPath + Path.DirectorySeparatorChar + "Scenario.xml");
-	// 		XmlNode root = doc.ChildNodes[1]; //root = <scenario/>
-	// 		foreach (XmlNode child in root.ChildNodes) {
-	// 			if (child.Name.Equals("level")) {
-	// 				treeLevelList.Add(repositoryPath + Path.DirectorySeparatorChar + (child.Attributes.GetNamedItem("name").Value));
-	// 			}
-	// 		}
-	// 		return treeLevelList;
-	// 	}
-	// 	return null;
-	// }
 }
