@@ -153,7 +153,7 @@ public class TitleScreenSystem : FSystem {
 					if (i <= PlayerPrefs.GetInt(directoryName, 0)) //by default first level of directory is the only unlocked level of directory
 						levelButtons[directory][i].transform.Find("Button").GetComponent<Button>().interactable = true;
 					//unlocked levels
-					else 
+					else
 						//levelButtons[directory][i].transform.Find("Button").GetComponent<Button>().interactable = false;
 						levelButtons[directory][i].transform.Find("Button").GetComponent<Button>().interactable = true;
 					//scores
@@ -179,6 +179,7 @@ public class TitleScreenSystem : FSystem {
 	public void launchLevel(string mode, Level level) {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
+		//SendStatements.instance.SendLevel(level+1);//level);
 		GameObjectManager.loadScene("MainScene");
 	}
 

@@ -44,6 +44,12 @@ public class UISystem : FSystem {
 		instance = this;
 	}
 
+	static class Globals
+	{
+			// global int
+			public static String actions;
+	}
+
 	protected override void onStart()
 	{
 		f_currentActions.addEntryCallback(keepCurrentActionViewable);
@@ -163,7 +169,7 @@ public class UISystem : FSystem {
 		var xnew = 0f;
         var ynew = 0f;
         var znew = 0f;
- 
+
         for (int i = 0; i < objectCorners.Length; i++){
 			if (objectCorners[i].x < screenBounds.xMin)
                 xnew = screenBounds.xMin - objectCorners[i].x;
@@ -176,11 +182,11 @@ public class UISystem : FSystem {
 
             if (objectCorners[i].y > screenBounds.yMax)
                 ynew = screenBounds.yMax - objectCorners[i].y;
-				
+
         }
- 
+
         return new Vector3(xnew, ynew, znew);
- 
+
     }
 
 	// On affiche ou non la partie librairie/programmation sequence en fonction de la valeur reçue
@@ -286,7 +292,8 @@ public class UISystem : FSystem {
 			GameObject executableContainer = robot.GetComponent<ScriptRef>().executableScript;
 			//copy editable script
 			GameObject editableContainer = null;
-			// On parcourt les scripts containers pour identifer celui associé au robot 
+			String actions="";
+			// On parcourt les scripts containers pour identifer celui associé au robot
 			foreach (GameObject container in f_viewportContainer)
 				// Si le container comporte le même nom que le robot
 				if (container.GetComponentInChildren<UIRootContainer>().scriptName == robot.GetComponent<AgentEdit>().associatedScriptName)
@@ -299,21 +306,24 @@ public class UISystem : FSystem {
 				// we fill the executable container with actions of the editable container
 				EditingUtility.fillExecutablePanel(editableContainer, executableContainer, robot.tag);
 				// bind all child
-				foreach (Transform child in executableContainer.transform)
+				foreach (Transform child in executableContainer.transform){
+					actions+=" "+(child.gameObject).ToString();
 					GameObjectManager.bind(child.gameObject);
+				}
+				SendStatements.instance.SendActions(actions);
 				// On développe le panneau au cas où il aurait été réduit
 				robot.GetComponent<ScriptRef>().executablePanel.transform.Find("Header").Find("Toggle").GetComponent<Toggle>().isOn = true;
 			}
 		}
-		
+
 		// On notifie les systèmes comme quoi le panneau d'éxecution est rempli
 		GameObjectManager.addComponent<ExecutablePanelReady>(MainLoop.instance.gameObject);
 
 		// On harmonise l'affichage de l'UI container des agents
 		foreach (GameObject go in f_agents){
 			LayoutRebuilder.ForceRebuildLayoutImmediate(go.GetComponent<ScriptRef>().executablePanel.GetComponent<RectTransform>());
-			if(go.CompareTag("Player")){				
-				GameObjectManager.setGameObjectState(go.GetComponent<ScriptRef>().executablePanel, true);				
+			if(go.CompareTag("Player")){
+				GameObjectManager.setGameObjectState(go.GetComponent<ScriptRef>().executablePanel, true);
 			}
 		}
 	}
