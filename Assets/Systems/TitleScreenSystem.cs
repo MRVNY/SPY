@@ -179,7 +179,7 @@ public class TitleScreenSystem : FSystem {
 	public void launchLevel(string mode, Level level) {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
-		//SendStatements.instance.SendLevel(level+1);//level);
+		SendStatements.instance.SendLevel(level.name[^1]);//level);
 		GameObjectManager.loadScene("MainScene");
 	}
 

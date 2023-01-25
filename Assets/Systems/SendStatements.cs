@@ -103,21 +103,23 @@ public class SendStatements : FSystem {
         if (lv==0)
           lv=Globals.lv+1;
         Globals.lv=lv;
-				Debug.Log(GBL_Interface.playerName + " try level" +lv.ToString());
+				Debug.Log(GBL_Interface.playerName + " try level " +lv.ToString());
         if (lv <= 20)
           Globals.st_lv="level "+lv.ToString();
         else
           Globals.st_lv="new level";
-				GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
-				{
-						verb = "commence",
-						objectType = Globals.st_lv,
+        
+        GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
+        {
+            verb = "commence",
+            objectType = Globals.st_lv,
             activityExtensions = new Dictionary<string, string>()
             {
-              { "lv", lv.ToString() }
+                { "lv", lv.ToString() }
             }
-				});
-		}
+        });
+        }
+        
     public void WinLevel(int score)
     {
       GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new

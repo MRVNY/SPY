@@ -19,7 +19,8 @@ public class ScriptManager : FSystem {
 	protected override void onStart()
 	{
 		instance = this;
-		doc = XDocument.Load(LevelEditorSystem.xmlPath);
+		if(LevelEditorSystem.xmlPath != null)
+			doc = XDocument.Load(LevelEditorSystem.xmlPath);
 	}
 	
 	public void TranslateScript()

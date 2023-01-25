@@ -110,7 +110,7 @@ public class EndGameManager : FSystem {
 		}
 		else if (f_requireEndPanel.First().GetComponent<NewEnd>().endType == NewEnd.Win)
 		{
-			int score = (10000 / (gameData.totalActionBlocUsed + 1) + 5000 / (gameData.totalStep + 1) + 6000 / (gameData.totalExecute + 1) + 5000 * gameData.totalCoin);
+			int score = (10000 / (Global.GD.totalActionBlocUsed + 1) + 5000 / (Global.GD.totalStep + 1) + 6000 / (Global.GD.totalExecute + 1) + 5000 * Global.GD.totalCoin);
 			SendStatements.instance.WinLevel(score);
 			Transform verticalCanvas = endPanel.transform.Find("VerticalCanvas");
 			GameObjectManager.setGameObjectState(verticalCanvas.Find("ScoreCanvas").gameObject, true);
