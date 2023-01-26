@@ -41,6 +41,11 @@ public class UISystem_wrapper : BaseWrapper
 		MainLoop.callAppropriateSystemMethod (system, "returnToTitleScreen", null);
 	}
 
+	public void toLevelMap()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "toLevelMap", null);
+	}
+
 	public void initZeroVariableLevel()
 	{
 		MainLoop.callAppropriateSystemMethod (system, "initZeroVariableLevel", null);

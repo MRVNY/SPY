@@ -32,15 +32,14 @@ public class LevelMapSystem : FSystem
 		Scores = new List<Tile>() { LM.Undone, LM.Done, LM.Code, LM.All, LM.Exec };
 		LevelDict = new Dictionary<Vector3Int, Level>();
 
-		GameStateManager.LoadGD();
-		// if (Global.GD == null || Global.GD.Tree == null)
-		// {
-		// 	Global.GD = new GameData();
-		// 	TreeManager.ReadLevels();
-		// }
-		Global.GD = new GameData();
-		TreeManager.ConstructTree();
-		
+		await GameStateManager.LoadGD();
+		if (Global.GD == null || Global.GD.Tree == null)
+		{
+			Global.GD = new GameData();
+			Global.GD.path = Application.streamingAssetsPath + "/Levels/";
+			await TreeManager.ConstructTree();
+		}
+
 		//LoadLevels();
 		ConstructRoad(Global.GD.Tree, Vector3Int.zero, 0);
 		
@@ -53,7 +52,7 @@ public class LevelMapSystem : FSystem
 		Camera.main.transform.position = new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z);
 		LoadUI(LM.CharacPos);
 
-		await Ending2();
+		//await Ending2();
 	}
 	
 	protected override void onProcess(int familiesUpdateCount)
@@ -105,9 +104,12 @@ public class LevelMapSystem : FSystem
 			await Task.Delay(10);
 		}
 	}
-	public void launchLevel(string mode, Level level) {
+	public async void launchLevel(string mode, Level level) {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
+		string id = level.name;
+		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
+		await GameStateManager.SaveGD();
 		GameObjectManager.loadScene("MainScene");
 	}
 

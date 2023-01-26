@@ -36,12 +36,11 @@ public class LevelGenerator : FSystem {
 
 	public static Task loadingGD;
 
-	protected override void onStart()
+	protected async override void onStart()
 	{
+		await GameStateManager.LoadGD();
 		if (Global.GD == null || Global.GD.level == null)
 		{
-			// loadingGD = GameStateManager.LoadGD();
-			// await loadingGD;
 			Global.GD = new GameData();
 			Global.GD.path = Application.streamingAssetsPath + "/Levels/";
 			//TreeManager.ConstructTree();

@@ -105,7 +105,7 @@ public class TreeManager : FSystem
 		return null;
 	}
 	
-	public static void ConstructTree()
+	public static async Task ConstructTree()
 	{
 		Global.GD.path = Application.streamingAssetsPath + "/Levels/";
 		//get all the folder names under a path

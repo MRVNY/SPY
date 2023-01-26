@@ -8,6 +8,7 @@ using System.Xml;
 using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Object = UnityEngine.Object;
 
 /// <summary>
@@ -24,10 +25,12 @@ public class TitleScreenSystem : FSystem {
 
 	private FunctionalityParam funcParam;
 	private FunctionalityInLevel funcLevel;
+
+	public Task buildingTree;
 	
 	private Dictionary<GameObject, List<GameObject>> levelButtons; //key = directory button,  value = list of level buttons
 
-	protected override void onStart()
+	protected override async void onStart()
 	{
 		if (funcParam == null)
         {
@@ -38,12 +41,12 @@ public class TitleScreenSystem : FSystem {
             funcLevel = funcData.GetComponent<FunctionalityInLevel>();
         }
 		
+		await GameStateManager.LoadGD();
 		if (Global.GD == null || Global.GD.levelNameList == null)
 		{
-			// loadingGD = GameStateManager.LoadGD();
-			// await loadingGD;
 			Global.GD = new GameData();
 			Global.GD.path = Application.streamingAssetsPath + "/Levels/";
+			buildingTree = TreeManager.ConstructTree();
 		}
 
 
@@ -179,12 +182,13 @@ public class TitleScreenSystem : FSystem {
 	public void launchLevel(string mode, Level level) {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
-		SendStatements.instance.SendLevel(level.name[^1]);//level);
+		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
 		GameObjectManager.loadScene("MainScene");
 	}
 
-	public void launchLevelMap()
+	public async void launchLevelMap()
 	{
+		if(buildingTree!=null) await buildingTree;
 		GameObjectManager.loadScene("LevelMap");
 	}
 

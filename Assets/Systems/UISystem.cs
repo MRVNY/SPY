@@ -232,6 +232,12 @@ public class UISystem : FSystem {
 		GameObjectManager.loadScene("TitleScreen");
 	}
 
+	public void toLevelMap()
+	{
+		initZeroVariableLevel();
+		HistoryManager.actionsHistory = null;
+		GameObjectManager.loadScene("LevelMap");
+	}
 
 	// Permet de réinitialiser les variables du niveau dans l'objet GameData
 	public void initZeroVariableLevel()
