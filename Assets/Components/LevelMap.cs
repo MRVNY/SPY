@@ -7,13 +7,16 @@ using UnityEngine.UI;
 
 public class LevelMap : MonoBehaviour
 {
+    
     public Vector3Int CharacPos;
     public Tilemap CharacMap;
     public Tilemap Map;
     public Tilemap Stars;
 
     public Tile Charac;
+    public Tile LockedBase;
     public Tile Base;
+    public Tile Castle;
     public Tile Road;
     public Tile Split;
     public Tile Merge;

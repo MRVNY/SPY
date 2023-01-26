@@ -24,7 +24,7 @@ public class LevelMapSystem : FSystem
 	private Task cameraMoving;
 	private Vector3 toPos;
 
-	protected override void onStart()
+	protected async override void onStart()
 	{
 		Camera.main.transform.position = new Vector3(0, 0, Camera.main.transform.position.z);
 			
@@ -52,6 +52,8 @@ public class LevelMapSystem : FSystem
 		Vector3 mousePos = LM.CharacMap.CellToWorld(LM.CharacPos);
 		Camera.main.transform.position = new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z);
 		LoadUI(LM.CharacPos);
+
+		await Ending2();
 	}
 	
 	protected override void onProcess(int familiesUpdateCount)
@@ -219,5 +221,44 @@ public class LevelMapSystem : FSystem
 			pos += Vector3Int.right;
 		}
 		return pos;
+	}
+
+	public async Task Ending2()
+	{
+		LM.Map.CompressBounds();
+		List<Vector3Int>[] toRemove = new List<Vector3Int>[LM.Map.cellBounds.size.x];
+		foreach (var pos in LevelDict.Keys.ToList())
+		{
+			if(toRemove[pos.x]==null){ toRemove[pos.x] = new List<Vector3Int>();}
+			toRemove[pos.x].Add(pos);
+		}
+		bool charaRemoved = false;
+		for(int i = toRemove.Length-1; i>=0; i--)
+		{
+			if(!charaRemoved && toRemove[i]!=null)
+			{
+				LoadUI(toRemove[i][^1]);
+				await Task.Delay(2000);
+				LM.CharacMap.ClearAllTiles();
+				LM.LevelName.text = "";
+				LM.StartLevel.gameObject.SetActive(false);
+				charaRemoved = true;
+			}
+			
+			if(toRemove[i]!=null)
+			{
+				Vector2 mousePos = LM.CharacMap.CellToWorld(new Vector3Int(toRemove[i][0].x, 0, 0));
+				toPos = new Vector3(mousePos.x, 0, Camera.main.transform.position.z);
+				cameraMoving = CameraTranstion();
+				await Task.Delay(1000);
+				
+				foreach (var pos in toRemove[i])
+				{
+					LM.Map.SetTile(pos, LM.LockedBase);
+					LM.Stars.SetTile(pos, LM.Undone);
+				}
+				await Task.Delay(1000);
+			}
+		}
 	}
 }
