@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
+using System.IO;
+
 
 [Serializable]
 public class GameData {
@@ -17,6 +19,7 @@ public class GameData {
 
 	public List<(string,float,string,float, int, int)> dialogMessage; //list of (dialogText, dialogHeight, imageName, imageHeight, camX, camY)
 	public Hashtable actionBlockLimit; //Is block available in library?
+	public Hashtable score;
 	// public Dictionary<string, int> actionBlockLimit; //Is block available in library?
 	public string scoreKey = "score";
 	public int totalStep;
@@ -30,6 +33,6 @@ public class GameData {
 
 	public string gameLanguage = "en";
 	public string convoNode = "-1";
-	
-	
+
+
 }

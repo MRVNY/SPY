@@ -3,6 +3,7 @@ using FYFY;
 using DIG.GBLXAPI;
 using System;
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -10,7 +11,7 @@ using Newtonsoft.Json;
 
 public class SendStatements : FSystem {
 
-    static class Globals
+    public static class Globals
     {
         // global int
         public static int lv;
@@ -108,7 +109,7 @@ public class SendStatements : FSystem {
           Globals.st_lv="level "+lv.ToString();
         else
           Globals.st_lv="new level";
-        
+
         GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
         {
             verb = "commence",
@@ -119,7 +120,7 @@ public class SendStatements : FSystem {
             }
         });
         }
-        
+
     public void WinLevel(int score)
     {
       GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
@@ -130,6 +131,23 @@ public class SendStatements : FSystem {
           {
             { "score", score.ToString() }
           }
+      });
+
+        Debug.Log(Global.GD.score);
+      if (Global.GD.score[Globals.st_lv]==null){
+        Global.GD.score[Globals.st_lv]=0;
+      }
+      if (score>(int)Global.GD.score[Globals.st_lv]){
+        Global.GD.score[Globals.st_lv]=score;
+        //Debug.Log(Global.GD.score[Globals.st_lv]);
+      }
+    }
+    public void SendRestart()
+    {
+      GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
+      {
+          verb = "recommence",
+          objectType = Globals.st_lv,
       });
     }
 

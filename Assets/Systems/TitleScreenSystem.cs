@@ -27,7 +27,7 @@ public class TitleScreenSystem : FSystem {
 	private FunctionalityInLevel funcLevel;
 
 	public Task buildingTree;
-	
+
 	private Dictionary<GameObject, List<GameObject>> levelButtons; //key = directory button,  value = list of level buttons
 
 	protected override async void onStart()
@@ -40,11 +40,12 @@ public class TitleScreenSystem : FSystem {
             funcParam = funcData.GetComponent<FunctionalityParam>();
             funcLevel = funcData.GetComponent<FunctionalityInLevel>();
         }
-		
+
 		await GameStateManager.LoadGD();
 		if (Global.GD == null || Global.GD.levelNameList == null)
 		{
 			Global.GD = new GameData();
+			Global.GD.score = new Hashtable();
 			Global.GD.path = Application.streamingAssetsPath + "/Levels/";
 			buildingTree = TreeManager.ConstructTree();
 		}

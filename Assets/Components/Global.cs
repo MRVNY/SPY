@@ -7,4 +7,6 @@ using System.Collections.Generic;
 public class Global
 {
     public static GameData GD;
+
+
 }

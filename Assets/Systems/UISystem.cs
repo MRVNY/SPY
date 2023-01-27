@@ -27,7 +27,7 @@ public class UISystem : FSystem {
 	private Family f_editingMode = FamilyManager.getFamily(new AllOfComponents(typeof(EditMode)));
 
 	private Family f_enabledinventoryBlocks = FamilyManager.getFamily(new AllOfComponents(typeof(ElementToDrag)), new AllOfProperties(PropertyMatcher.PROPERTY.ACTIVE_IN_HIERARCHY));
-	
+
 	public GameObject buttonExecute;
 	public GameObject buttonPause;
 	public GameObject buttonNextStep;
@@ -221,6 +221,7 @@ public class UISystem : FSystem {
 	public void restartScene(){
 		initZeroVariableLevel();
 		GameObjectManager.loadScene("MainScene");
+		SendStatements.instance.SendRestart();
 	}
 
 
