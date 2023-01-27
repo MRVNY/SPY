@@ -110,7 +110,7 @@ public class LevelMapSystem : FSystem
 		string id = level.name;
 		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
 		await GameStateManager.SaveGD();
-		GameObjectManager.loadScene("MainScene");
+		GameObjectManager.loadScene("GameScene");
 	}
 
 	private void ConstructRoad(Node node, Vector3Int pos, int split)

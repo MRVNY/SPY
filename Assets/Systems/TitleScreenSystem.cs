@@ -184,7 +184,7 @@ public class TitleScreenSystem : FSystem {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
 		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
-		GameObjectManager.loadScene("MainScene");
+		GameObjectManager.loadScene("GameScene");
 	}
 
 	public async void launchLevelMap()
