@@ -29,6 +29,11 @@ public class TitleScreenSystem : FSystem {
 	public Task buildingTree;
 
 	private Dictionary<GameObject, List<GameObject>> levelButtons; //key = directory button,  value = list of level buttons
+	
+	private string[] languages = new string[] {"en", "fr"};
+	
+	public GameObject settingsPanel;
+	public GameObject menuPanel;
 
 	protected override async void onStart()
 	{
@@ -104,6 +109,8 @@ public class TitleScreenSystem : FSystem {
 				GameObjectManager.setGameObjectState(button, false);
 			}
 		}
+
+		openMenu();
 	}
 
 	public static List<string> readScenario(string repositoryPath) {
@@ -289,6 +296,28 @@ public class TitleScreenSystem : FSystem {
 				funcParam.elementRequiermentLibrary.Add(child.Attributes.GetNamedItem("name").Value, listEleTemp);
 			}
 		}
+	}
+
+	public void changeLanguage(int i)
+	{
+		Global.GD.gameLanguage = languages[i];
+	}
+
+	public void clearSaves()
+	{
+		GameStateManager.DeleteAllSaveFiles();
+	}
+	
+	public void openSettings()
+	{
+		GameObjectManager.setGameObjectState(settingsPanel, true);
+		GameObjectManager.setGameObjectState(menuPanel, false);
+	}
+
+	public void openMenu()
+	{
+		GameObjectManager.setGameObjectState(settingsPanel, false);
+		GameObjectManager.setGameObjectState(menuPanel, true);
 	}
 
 	// See Quitter button in editor

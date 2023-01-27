@@ -39,6 +39,7 @@
   </blockLimits>
   <player associatedScriptName="Karl" posY="2" posX="1" direction="0" />
   <script name="Karl" editMode="0" />
+  
   <score twoStars="0" threeStars="10500"/>
   <star code="1" exec="1"/>
   

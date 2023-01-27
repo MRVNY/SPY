@@ -10,6 +10,8 @@ public class TitleScreenSystem_wrapper : BaseWrapper
 	public UnityEngine.GameObject cList;
 	public System.String pathFileParamFunct;
 	public System.String pathFileParamRequiermentLibrary;
+	public UnityEngine.GameObject settingsPanel;
+	public UnityEngine.GameObject menuPanel;
 	private void Start()
 	{
 		this.hideFlags = HideFlags.NotEditable;
@@ -20,6 +22,8 @@ public class TitleScreenSystem_wrapper : BaseWrapper
 		MainLoop.initAppropriateSystemField (system, "cList", cList);
 		MainLoop.initAppropriateSystemField (system, "pathFileParamFunct", pathFileParamFunct);
 		MainLoop.initAppropriateSystemField (system, "pathFileParamRequiermentLibrary", pathFileParamRequiermentLibrary);
+		MainLoop.initAppropriateSystemField (system, "settingsPanel", settingsPanel);
+		MainLoop.initAppropriateSystemField (system, "menuPanel", menuPanel);
 	}
 
 	public void showCampagneMenu()
@@ -40,6 +44,26 @@ public class TitleScreenSystem_wrapper : BaseWrapper
 	public void backFromCampagneMenu()
 	{
 		MainLoop.callAppropriateSystemMethod (system, "backFromCampagneMenu", null);
+	}
+
+	public void changeLanguage(System.Int32 i)
+	{
+		MainLoop.callAppropriateSystemMethod (system, "changeLanguage", i);
+	}
+
+	public void clearSaves()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "clearSaves", null);
+	}
+
+	public void openSettings()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "openSettings", null);
+	}
+
+	public void openMenu()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "openMenu", null);
 	}
 
 	public void quitGame()
