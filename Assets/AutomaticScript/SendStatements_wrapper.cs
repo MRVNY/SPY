@@ -28,6 +28,11 @@ public class SendStatements_wrapper : BaseWrapper
 		MainLoop.callAppropriateSystemMethod (system, "WinLevel", score);
 	}
 
+	public void SendRestart()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "SendRestart", null);
+	}
+
 	public void SendActions(System.String actions)
 	{
 		MainLoop.callAppropriateSystemMethod (system, "SendActions", actions);

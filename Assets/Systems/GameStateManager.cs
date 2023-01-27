@@ -49,7 +49,7 @@ public class GameStateManager : FSystem {
     public static void Save<T>(T objectToSave, string key)
     {
         // chemin du fichier de sauvegarde
-        string path = savePath + "/saves/";
+        string path = savePath + Path.PathSeparator + "saves" + Path.PathSeparator;
 
         //création du fichier si il n'existe pas
         Directory.CreateDirectory(path);
