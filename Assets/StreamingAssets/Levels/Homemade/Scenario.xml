@@ -2,28 +2,5 @@
 <scenario>
   <level name="Niveau1.xml" />
   <level name="Niveau2.xml" />
-  <level name="2023-01-28T19:42:30.xml" />
-  <level name="2023-01-28T19:43:25.xml" />
-  <level name="2023-01-28T19:44:12.xml" />
-  <level name="2023-01-28T20:36:06.xml" />
-  <level name="2023-01-28T20:37:44.xml" />
-  <level name="2023-01-28T20:38:29.xml" />
-  <level name="2023-01-28T20:40:29.xml" />
-  <level name="2023-01-28T20:41:32.xml" />
-  <level name="2023-01-28T20:41:43.xml" />
-  <level name="2023-01-28T20:43:08.xml" />
-  <level name="2023-01-28T20:43:37.xml" />
-  <level name="2023-01-28T20:44:26.xml" />
-  <level name="2023-01-28T20:45:38.xml" />
-  <level name="2023-01-28T20:51:32.xml" />
-  <level name="2023-01-28T20:53:57.xml" />
-  <level name="2023-01-28T20:54:29.xml" />
-  <level name="2023-01-28T20:55:04.xml" />
-  <level name="2023-01-28T20:56:34.xml" />
-  <level name="2023-01-28T20:56:54.xml" />
-  <level name="2023-01-28T20:57:36.xml" />
-  <level name="2023-01-28T20:58:11.xml" />
-  <level name="2023-01-28T20:59:19.xml" />
-  <level name="2023-01-28T21:01:14.xml" />
-  <level name="2023-01-28T21:03:56.xml" />
+  <level name="2023-01-28T19:33:28.xml" />
 </scenario>

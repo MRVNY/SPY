@@ -8,8 +8,6 @@ using System.Xml;
 using System.Xml.Linq;
 using UnityEngine;
 using FYFY;
-using UnityEditor.Tilemaps;
-using UnityEngine.Tilemaps;
 
 /// <summary>
 /// Manage dialogs at the begining of the level
