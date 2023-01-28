@@ -34,7 +34,8 @@ public class GameStateManager : FSystem {
 
     public static bool SaveExists(string key)
     {
-        return File.Exists(savePath);
+        string path = savePath + key + ".txt";
+        return File.Exists(path);
     }
     
     public static void Save<T>(T objectToSave, string key)
@@ -69,6 +70,7 @@ public class GameStateManager : FSystem {
 
     public async static Task SaveGD()
     {
+        DeleteAllSaveFiles();
         Save(Global.GD, "GameData");
     }
 

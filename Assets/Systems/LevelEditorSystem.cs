@@ -284,8 +284,8 @@ public class LevelEditorSystem : FSystem {
 		Level tmp = new Level();
 		tmp.name = levelName;
 		Global.GD.level = tmp;
-		//await GameStateManager.SaveGD();
-		//await GameStateManager.LoadGD();
+		await GameStateManager.SaveGD();
+		await GameStateManager.LoadGD();
 		GameObjectManager.loadScene("ScriptEditor");
 	}
 	
