@@ -22,6 +22,7 @@ public class VisualNovelSystem : FSystem
 	
 	//convoTree & paths
 	private string node;
+	private string next;
 	private JObject convoTree;
 	private string treePath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "ConvoTree" + Path.DirectorySeparatorChar;
 	private string imgPath;
@@ -43,7 +44,7 @@ public class VisualNovelSystem : FSystem
 
 		VN = f_VN.First().GetComponent<VisualNovel>();
 		skipButton = VN.dialog.transform.parent.GetComponent<Button>();
-		skipButton.onClick.AddListener(() => { Skip(); });
+		skipButton.onClick.AddListener(() => { Next(); });
 		optionPanel = VN.options[0].transform.parent.parent.gameObject;
 		toggleUI("VN_Off");
 		
@@ -51,7 +52,8 @@ public class VisualNovelSystem : FSystem
 		{
 			if(SceneManager.GetActiveScene().name == "LevelMap")
 				convoTree = JObject.Parse(File.ReadAllText(treePath + "LevelMap.json"));
-			else convoTree = JObject.Parse(File.ReadAllText(treePath + Global.GD.level.node.name + ".json"));
+			else convoTree = JObject.Parse(File.ReadAllText(treePath + "Intro.json"));
+			//else convoTree = JObject.Parse(File.ReadAllText(treePath + Global.GD.level.node.name + ".json"));
 			node = Global.GD.convoNode;
 
 			imgPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
@@ -70,35 +72,51 @@ public class VisualNovelSystem : FSystem
 	
 	private async void setVN()
 	{
-		if (convoTree[node] == null) toggleUI("VN_Off");
+		node = Global.GD.convoNode;
+        JToken jNode = convoTree[node];
+        if (jNode == null)
+        {
+	        toggleUI("VN_Off");
+	        return;
+        }
 
 		for (int i = 0; i < VN.options.Count(); i++)
 			VN.options[i].transform.parent.gameObject.SetActive(false);
-		node = Global.GD.convoNode;
 
 		// set text
 		skipButton.enabled = true;
 		if (toWrite.Count == 0)
-			toWrite = convoTree[node][Global.GD.gameLanguage].ToString().Split('\n').ToList();
+		{
+			string text = jNode[Global.GD.gameLanguage].ToString();
+			if (text.Contains("{name}")) text = text.Replace("{name}", Global.GD.player);
+			toWrite = text.Split('\n').ToList();
+		}
+
 		writing = TypeWriter(toWrite[0]);
 
 		if (toWrite.Count == 1)
 		{
 			// set image
-			if (convoTree[node]["img"] != null)
-				setImageSprite(VN.img, imgPath + convoTree[node]["img"].ToString());
+			if (jNode["img"] != null)
+				setImageSprite(VN.img, imgPath + jNode["img"].ToString());
 
 			// set camera pos
-			// if (Global.GD.dialogMessage[nDialog].Item5 != -1 && Global.GD.dialogMessage[nDialog].Item6 != -1)
-			//       {
-			// 	GameObjectManager.addComponent<FocusCamOn>(MainLoop.instance.gameObject, new { camX = Global.GD.dialogMessage[nDialog].Item5, camY = Global.GD.dialogMessage[nDialog].Item6 });
-			//       }
+			if (jNode["camX"] != null && jNode["camY"] != null)
+				GameObjectManager.addComponent<FocusCamOn>(MainLoop.instance.gameObject, new { camX = jNode["camX"], camY = jNode["camY"] });
 
 			// set options
-			else if (convoTree[node]["options"] != null) setOptions();
+			else if (jNode["options"] != null) setOptions();
 			
+			// set NextNode
+			next = null;
+			if (node[^1].ToString().All(char.IsDigit))
+			{
+				string guessNext = node.Substring(node.Length-1) + (int.Parse(node[^1].ToString()) + 1);
+				if(convoTree[guessNext]!=null) next = guessNext;
+			}
+
 			// execute 
-			if (convoTree[node]["action"] != null) setActions();
+			if (jNode["action"] != null) setActions();
 		}
 	}
 
@@ -110,7 +128,7 @@ public class VisualNovelSystem : FSystem
 		var objs = convoTree[node]["options"][Global.GD.gameLanguage].OfType<JProperty>();
 		for (int i = 0; i < VN.options.Count(); i++)
 		{
-			if (objs.Count() > i - 1)
+			if (i < objs.Count())
 			{
 				var button = VN.options[i].transform.parent.gameObject;
 				VN.options[i].text = (string)objs.ElementAt(i).Value;
@@ -121,9 +139,9 @@ public class VisualNovelSystem : FSystem
 				button.SetActive(true);
 				VN.options[i].transform.parent.GetComponent<Button>().onClick.RemoveAllListeners();
 				VN.options[i].transform.parent.GetComponent<Button>().onClick.AddListener(
-					() =>
-					{
+					() => {
 						Global.GD.convoNode = nextNode;
+						toWrite.Clear();
 						setVN();
 					});
 			}
@@ -150,12 +168,19 @@ public class VisualNovelSystem : FSystem
 				break;
 			case "askName":
 				toggleUI("askName");
+				skipButton.enabled = false;
 				VN.askName.GetComponentInChildren<Button>().onClick.AddListener(() =>
 				{
 					Global.GD.player = VN.askName.GetComponentInChildren<TMP_InputField>().text;
-					Debug.Log(Global.GD.player);
+					Global.GD.convoNode = "gotName";
+					toWrite.Clear();
+					toggleUI("VN_On");
+					GameStateManager.SaveGD();
+					setVN();
 				});
 				break;
+			case "next":
+				next = action[1]; break;
 		}
 	}
 
@@ -176,15 +201,26 @@ public class VisualNovelSystem : FSystem
 	}
 
 	//Skip Typewriter when it's not finished
-	public async void Skip()
+	public async void Next()
 	{
-		if (convoTree[node]["options"] == null && skipped && toWrite.Count==1) toggleUI("VN_Off");
+		if (convoTree[node]["options"] == null && skipped && toWrite.Count==1 && next==null) toggleUI("VN_Off");
 
 		else if (skipped)
 		{
 			toWrite.RemoveAt(0);
 			skipButton.enabled = false;
-			if(toWrite.Count==0) toggleUI("VN_Off");
+			if (toWrite.Count == 0)
+			{
+				if (next != null)
+				{
+					Global.GD.convoNode = next;
+					setVN();
+				}
+				else
+				{
+					toggleUI("VN_Off");
+				}
+			}
 			else setVN();
 		}
 		
@@ -234,7 +270,9 @@ public class VisualNovelSystem : FSystem
 			case "VN_On":
 				VN.gameObject.SetActive(true); break;
 			case "VN_Off":
-				VN.gameObject.SetActive(false); break;
+				VN.gameObject.SetActive(false);
+				GameStateManager.SaveGD();
+				break;
 		}
 	}
 

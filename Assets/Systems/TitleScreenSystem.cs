@@ -46,17 +46,15 @@ public class TitleScreenSystem : FSystem {
             funcLevel = funcData.GetComponent<FunctionalityInLevel>();
         }
 
-		await GameStateManager.LoadGD();
+		if(Global.GD == null) await GameStateManager.LoadGD();
 		if (Global.GD == null || Global.GD.levelNameList == null)
 		{
 			Global.GD = new GameData();
 			Global.GD.score = new Hashtable();
-			Global.GD.path = Application.streamingAssetsPath + "/Levels/";
+			Global.GD.path = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" + Path.DirectorySeparatorChar;
 			buildingTree = TreeManager.ConstructTree();
+			Global.GD.levelNameList = new Hashtable();
 		}
-
-
-		Global.GD.levelNameList = new Hashtable();
 
 		levelButtons = new Dictionary<GameObject, List<GameObject>>();
 
@@ -191,12 +189,14 @@ public class TitleScreenSystem : FSystem {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
 		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
+		GameStateManager.SaveGD();
 		GameObjectManager.loadScene("GameScene");
 	}
 
 	public async void launchLevelMap()
 	{
 		if(buildingTree!=null) await buildingTree;
+		GameStateManager.SaveGD();
 		GameObjectManager.loadScene("LevelMap");
 	}
 

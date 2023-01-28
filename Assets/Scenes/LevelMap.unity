@@ -338,7 +338,7 @@ PrefabInstance:
     - target: {fileID: 1897947829222967638, guid: 3dce463725cbc4c79b90843ac6d1a6c6,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1897947829222967639, guid: 3dce463725cbc4c79b90843ac6d1a6c6,
         type: 3}
@@ -523,12 +523,17 @@ PrefabInstance:
     - target: {fileID: 2517236392498498112, guid: 3dce463725cbc4c79b90843ac6d1a6c6,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6514681066083737148, guid: 3dce463725cbc4c79b90843ac6d1a6c6,
         type: 3}
       propertyPath: m_LayoutGroup
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7964003084106501583, guid: 3dce463725cbc4c79b90843ac6d1a6c6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3dce463725cbc4c79b90843ac6d1a6c6, type: 3}
@@ -6684,6 +6689,7 @@ GameObject:
   - component: {fileID: 1800684165}
   - component: {fileID: 1800684168}
   - component: {fileID: 1800684169}
+  - component: {fileID: 1800684170}
   m_Layer: 0
   m_Name: Main_Loop
   m_TagString: Untagged
@@ -6724,6 +6730,10 @@ MonoBehaviour:
   - _typeAssemblyQualifiedName: VisualNovelSystem, Assembly-CSharp, Version=0.0.0.0,
       Culture=neutral, PublicKeyToken=null
     _typeFullName: VisualNovelSystem
+    _pause: 0
+  - _typeAssemblyQualifiedName: SendStatements, Assembly-CSharp, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    _typeFullName: SendStatements
     _pause: 0
   _lateUpdateSystemDescriptions: []
   _forceUpdateInspector: 0
@@ -6779,6 +6789,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skipButton: {fileID: 0}
+--- !u!114 &1800684170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1800684164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 732a109786f1449a3b2fd0e9b5cc505d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1815252484
 GameObject:
   m_ObjectHideFlags: 0

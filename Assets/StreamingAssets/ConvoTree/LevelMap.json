@@ -1,22 +1,41 @@
 {
     "askName" : {
-        "en" : "Hello special agent \nWe just learned that top-secret documents have been stolen and we must recover them. \nGot it?",
-        "fr" : "Bonjour agent spécial \nNous venons d'apprendre que des documents secrets ont été volés et nous devons les récupérer. \nC'est clair?",
+        "en" : "Oh hey! Didn't see you there \nWhat's your name?",
+        "fr" : "Oh hey! Je ne t'avais pas vu \nComment t'appelles-tu?",        
         
-        "img" : "drophere.png",
-
-        "options" : {
-            "en" : {
-                "Niveau1.1" : "Hello?",
-                "Niveau1.2" : "Ewww",
-                "Niveau1.3" : "I'm a robot"
-            },
-            "fr" : {
-                "Niveau1.1" : "Bonjour?",
-                "Niveau1.2" : "Ewww",
-                "Niveau1.3" : "Je suis un robot"
-            }
-        },
         "action" : "askName"
+    },
+    
+    "gotName" : {
+        "en" : "Nice to meet you {name}! \nMy name is K",
+        "fr" : "Ravi de te rencontrer {name}! \nJe m'appelle K",
+        
+        "options" : {
+            "en": {
+                "gotName.1": "What does if stands for?",
+                "gotName.2": "That's weird name"
+            },
+            "fr": {
+                "gotName.1": "Qu'est-ce que ça veut dire?",
+                "gotName.2": "C'est un nom bizarre"
+            }
+        }
+    },
+    
+    "gotName.1" : {
+        "en" : "I dunno, just K I guess",
+        "fr" : "Je ne sais pas, juste K je suppose",
+        "action" : "next,born.0"
+    },
+    
+    "gotName.2" : {
+        "en" : "I know, I know, but I like it",
+        "fr" : "Je sais, je sais, mais j'aime bien",
+        "action" : "next,born.0"
+    },
+    
+    "born.0" : {
+        "en" : "BTW. Today it's my birthday!",
+        "fr" : "D'ailleurs. C'est mon anniversaire aujourd'hui!"
     }
 }
