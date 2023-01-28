@@ -28,6 +28,7 @@ public class GameData {
 	public int totalActionBlocUsed;
 	public int totalExecute;
 	public int totalCoin;
+	public int difficulty = 1;
 
 	public float gameSpeed_default = 1f;
 	public float gameSpeed_current = 1f;

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using FYFY;
 using TMPro;
@@ -54,6 +55,8 @@ public class VisualNovelSystem : FSystem
 				convoTree = JObject.Parse(File.ReadAllText(treePath + "LevelMap.json"));
 			else convoTree = JObject.Parse(File.ReadAllText(treePath + "Intro.json"));
 			//else convoTree = JObject.Parse(File.ReadAllText(treePath + Global.GD.level.node.name + ".json"));
+			if(Global.GD.level != null)
+				Global.GD.convoNode = Global.GD.level.name + ".0";
 			node = Global.GD.convoNode;
 
 			imgPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
@@ -111,7 +114,7 @@ public class VisualNovelSystem : FSystem
 			next = null;
 			if (node[^1].ToString().All(char.IsDigit))
 			{
-				string guessNext = node.Substring(node.Length-1) + (int.Parse(node[^1].ToString()) + 1);
+				string guessNext = node.Substring(0,node.Length-1) + (int.Parse(node[^1].ToString()) + 1);
 				if(convoTree[guessNext]!=null) next = guessNext;
 			}
 
@@ -181,6 +184,9 @@ public class VisualNovelSystem : FSystem
 				break;
 			case "next":
 				next = action[1]; break;
+			case "changeDiff":
+				int tmp = int.Parse(action[1]);
+				Global.GD.difficulty = Math.Min(Math.Max(0,tmp),2); break;
 		}
 	}
 
@@ -237,6 +243,7 @@ public class VisualNovelSystem : FSystem
 	// Affiche l'image associ�e au dialogue
 	private void setImageSprite(Image img, string path)
 	{
+		toggleUI("img");
 		if (Application.platform == RuntimePlatform.WebGLPlayer)
 		{
 			MainLoop.instance.StartCoroutine(GetTextureWebRequest(img, path));
@@ -255,7 +262,7 @@ public class VisualNovelSystem : FSystem
 
 	private void toggleUI(string ui)
 	{
-		optionPanel.SetActive(true);
+		optionPanel.SetActive(false);
 		VN.img.gameObject.SetActive(false);
 		VN.askName.SetActive(false);
 		

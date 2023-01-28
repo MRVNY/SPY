@@ -20,7 +20,7 @@
 
     "Niveau1.0": {
         "fr": "23 août 2041...{name};Vous avez un message... \nBonjour agent special Nous venons d'apprendre que des documents top-secrets ont été volés et nous devons les récupérer. \nNous avons envoyé sur le terrain un prototype de robot, son nom de code est Karl.",
-        "en": "August 23, 2041...{name};You have a message..."
+        "en": "23 August 2041...{name};You have a message... \nHello special agent We just learned that top-secret documents have been stolen and we must recover them. \nWe have sent a prototype robot on the field, his code name is Karl.",
     },
 
     "Niveau1.1": {
@@ -47,31 +47,31 @@
         "img": "FirstActionAndPlay.png"
     },
 
-    "Niveaux2.0": {
+    "Niveau2.0": {
         "fr": "Bien... Karl vient de se téléporter dans le bâtiment juste devant les portes d'entrée. Il faut continuer à progresser, pour l'instant tout semble calme. \nLa connexion avec le robot étant de bonne qualité, vous pouvez envoyer plusieurs ordres en même temps. Il suffit de les mettres les uns sous les autres dans la zone de programme." ,
         "en": "Well... Karl has just teleported into the building just in front of the entrance doors. We must continue to progress, for the moment everything seems calm. \nThe connection with the robot being of good quality, you can send several orders at the same time. Just put them one under the other in the program area." ,
         "img": "stackActions.png"
     },
 
-    "Niveaux3.0": {
+    "Niveau3.0": {
         "fr": "Il faut continuer à avancer. \nAu fait, notre satellite d'observation suis automatiquement le déplacement de Karl mais vous pouvez le contrôler avec les flèches du clavier et la molette de la souris. N'hésitez pas à expérimenter ces commandes.",
         "en": "We must continue to move forward. \nBy the way, our observation satellite automatically follows Karl's movement but you can control it with the keyboard arrows and the mouse wheel. Do not hesitate to experiment with these commands."
     },
     
-    "Niveaux3.1": {
+    "Niveau3.1": {
         "fr": "Vous pouvez aussi à tout moment accéder au menu de la mission pour, par exemple, revoir les textes d'introduction, relancer la mission ou la quitter.",
         "en": "You can also at any time access the mission menu to, for example, review the introduction texts, restart the mission or quit it.",
         "img": "menu.png"
     },
 
-    "Niveaux4.0": {
+    "Niveau4.0": {
         "fr": "Catastrophe ! Karl vient de se faire piéger derrière une porte qu'il ne peut pas ouvrir. \nHeureusement nous avions un autre robot disponible que nous venons de vous envoyer. Il faut poursuivre la mission coûte que coûte.",
         "en": "Catastrophe! Karl has just been trapped behind a door that he can not open. \nFortunately we had another robot available that we just sent you. We must continue the mission at all costs.",
         "camX": "1",
         "camY": "4"
     },
     
-    "Niveaux4.1": {
+    "Niveau4.1": {
         "fr": "Il vous faudra utiliser la bonne ligne de communication pour contrôler le bon robot. Vous pouvez voir la ligne de communication d'un robot en passant la souris dessus.",
         "en": "You will have to use the right communication line to control the right robot. You can see the communication line of a robot by passing the mouse over it.",
         "camX": "3",
@@ -79,41 +79,41 @@
         "img": "robotName.png"
     },
     
-    "Niveaux4.2": {
+    "Niveau4.2": {
         "fr": "Vous pouvez aussi définir la ligne de communication sur laquelle le programme sera envoyé dans la zone de programme." ,
         "en": "You can also define the communication line on which the program will be sent in the program area." ,
         "img": "scriptName.png"
     },
 
-    "Niveaux5.0": {
+    "Niveau5.0": {
         "fr": "Vous pouvez maintenant utiliser des actions pour tourner à gauche et tourner à droite. A vous de compléter le programme." ,
         "en": "You can now use actions to turn left and turn right. It's up to you to complete the program." ,
         "img": "turnleftright.png"
     },
     
-    "Niveaux5.1": {
+    "Niveau5.1": {
         "fr": "Attention {name};Quand le robot tourne, il reste sur place. \nVous pouvez aussi exécuter un programme non fini pour voir où se retrouve Bob et poursuivre la programmation à partir de là.",
         "en": "Attention {name};When the robot turns, it stays in place. \nYou can also run an unfinished program to see where Bob ends up and continue programming from there."
     },
 
-    "Niveaux6.0": {
+    "Niveau6.0": {
         "fr": "Une astuce que j'ai oubié de vous dire, vous pouvez double-cliquer sur les blocs de l'inventaire pour les ajouter automatiquement au programme.",
         "en": "A tip that I forgot to tell you, you can double-click on the blocks in the inventory to automatically add them to the program."
     },
 
-    "Niveaux7.0": {
+    "Niveau7.0": {
         "fr": "Plusieurs chemins sont possible dans ce couloir. Nos ingénieurs ont conçu deux programmes. A vous de décider celui que vous souhaitez envoyer à Bob...",
         "en": "Several paths are possible in this corridor. Our engineers have designed two programs. It's up to you to decide which one you want to send to Bob..."
     },
 
-    "Niveaux8.0": {
+    "Niveau8.0": {
         "fr": "Un champ de force bloque le passage {name};Il devrait y avoir un moyen de le désactiver..."  ,
         "en": "A force field blocks the passage {name};There should be a way to deactivate it..."  ,
         "camX": "1",
         "camY": "2"
     },
 
-    "Niveaux8.1": {
+    "Niveau8.1": {
         "fr": "Regardez là-bas ! Il y a un terminal.",
         "en": "Look over there! There is a terminal.",
         "camX": "1",
@@ -121,13 +121,13 @@
         "img": "terminalSolo.png"
     },
     
-    "Niveaux8.2": {
+    "Niveau8.2": {
         "fr": "Nous connaissons ce modèle, il suffit de s'y déplacer dessus pour pouvoir l'activer, en revanche il n'est pas nécessaire de se tourner vers le terminal pour l'activer. Etre sur sa case suffit.",
         "en": "We know this model, it is enough to move on it to be able to activate it, however it is not necessary to turn towards the terminal to activate it. Being on its square is enough.",
         "img": "terminalRobot.png"
     },
     
-    "Niveaux8.3": {
+    "Niveau8.3": {
         "fr": "Nous venons de vous envoyer une nouvelle action qui devrait vous aider. Essayez donc de l'activer avec l'action 'Activer'.",
         "en": "We just sent you a new action that should help you. So try to activate it with the 'Activate' action.",
         "camX": "1",
@@ -135,34 +135,34 @@
         "img": "ActivateIcon.png"
     },
 
-    "Niveaux9.0": {
+    "Niveau9.0": {
         "fr": "Tiens ! Ils n'ont pas placé le terminal à proximité du champ de force, mais ce n'est pas grave, ça devrait fonctionner. \nVous pouvez maintenant utiliser l'action 'Se retourner' qui est équivalente à deux actions 'Pivoter à gauche' ou deux actions 'Pivoter à droite'." ,
         "en": "Hey! They did not place the terminal near the force field, but that's not a problem, it should work. \nYou can now use the 'Turn back' action which is equivalent to two 'Turn left' actions or two 'Turn right' actions." ,
         "img": "TurnBackIcon.png"
     },
 
-    "Niveaux10.0": {
+    "Niveau10.0": {
         "fr": "Attention {name};Il y a un garde ayant une caméra dans cette pièce ! Il semble protéger une salle."  ,
         "en": "Attention {name};There is a guard with a camera in this room! It seems to protect a room."  ,
         "camX": "4",
         "camY": "3"
     },
     
-    "Niveaux10.1": {
+    "Niveau10.1": {
         "fr": "Il faut absoluement éviter les zones surveillées (en rouge).{name} Nos ingénieurs vous proposent trois solutions, mais quelle est la plus efficace ?"  ,
         "en": "You must absolutely avoid the monitored areas (in red).{name}Our engineers offer you three solutions, but which is the most efficient?"  ,
         "camX": "2",
         "camY": "5"
     },
 
-    "Niveaux11.0": {
+    "Niveau11.0": {
         "fr": "Nous devons nous arrêter au prochain carrefour !"  ,
         "en": "We have to stop at the next intersection!"  ,
         "camX": "2",
         "camY": "2"
     },
     
-    "Niveaux11.1": {
+    "Niveau11.1": {
         "fr": "Evitons de saturer la ligne de communication en multipliant les ordres 'Avancer'. Nous allons utiliser une boucle, pour répeter plusieurs fois les actions ! Nos ingénieurs en ont préparé une pour vous mais elle est peut être mal configurée..."    ,
         "en": "Let's avoid saturating the communication line by multiplying the 'Advance' orders. We are going to use a loop, to repeat several times the actions! Our engineers have prepared one for you but it may be misconfigured..."    ,
         "camX": "2",
@@ -170,20 +170,20 @@
         "img": "forExample.png"
     },
     
-    "Niveaux11.2": {
+    "Niveau11.2": {
         "fr": "Nous commencons à être pressé par le temps, il nous faut gagner du temps et arriver au carrefour en n'envoyant qu'une seule fois notre programme" ,
         "en": "We are running out of time, we need to save time and get to the intersection by sending our program only once" ,
         "img": "executeLimitation.png"
     },
 
-    "Niveaux12.0": {
+    "Niveau12.0": {
         "fr": "Nous voilà arrivé au carrefour mais finalement nous n'avons pas le choix il faut continuer à avancer... \nNous approchons de notre objectif mais la prochaine salle semble être bien gardée{name};Pas d'inquiétude, Bob contient une technologie permettant de voir le programme des gardes (cliquez sur le garde pour voir son programme). Ceci devrait nous donner de précieuses informations pour l'éviter."   ,
         "en": "We are here at the crossroads but in fact we have no choice we have to continue to advance... \nWe are approaching our goal but the next room seems to be well guarded{name};No worries, Bob contains a technology that allows you to see the guards' program (click on the guard to see his program). This should give us valuable information to avoid it."   ,
         "camX": "2",
         "camY": "2"
     },
     
-    "Niveaux12.1": {
+    "Niveau12.1": {
         "fr": "Vous disposez maintenant de la nouvelle action 'Attendre'. Elle permet d'ordonner au robot de faire une pose avant de passer à l'action suivante."   ,
         "en": "You now have the new 'Wait' action. It allows you to order the robot to take a break before moving on to the next action."   ,
         "camX": "3",
@@ -191,61 +191,135 @@
         "img": "WaitIcon.png"
     },
 
-    "Niveaux13.0": {
+    "Niveau13.0": {
         "fr": "Aïe... ce couloir contient... brouilleurs qui perturbent nos comm...uni...cations ! \nLà c'est un peu mieux, mais nous ne pourrons pas utiliser toutes nos actions. Nous avons quand même réussi à vous envoyer le strict minimum à savoir une boucle qui s'arrête l'orsqu'un capteur n'est plus valide. Vous disposez donc de cette boucle ainsi qu'un capteur qui vous indique si le robot se trouve sur la case d'un téléporteur.", 
         "en": "Ouch... this corridor contains... jamming devices that disrupt our comm...uni...cations! \nHere it's a little better, but we won't be able to use all our actions. We have still managed to send you the minimum, namely a loop that stops when a sensor is no longer valid. You therefore have this loop as well as a sensor that tells you if the robot is on the teleporter square."
     },
 
-    "Niveaux14.0": {
+    "Niveau14.0": {
         "fr": "Que se passe-t-il ici? \nVisiblement un nouveau système de sécurité bloque la vue de notre satelite... Il va faloir avancer à l'aveugle. \nAttendez, nous recevons des informations... \n... \nOk ! Notre service de renseignement nous indiquent qu'il vous faut avancer de 11 cases et tourner à droite à chaque fois que vous rencontrerez un mur. Ils vous ont aussi envoyé un capteur qui vous indiquera si un mur se trouve sur la case juste devant le robot ainsi qu'un bloc permettant de tester le capteur. Ils devraient vous être utiles.",  
         "en": "What's going on here? \nApparently a new security system is blocking the view of our satellite... We will have to advance blindly. \nWait, we are receiving information... \n... \nOk! Our intelligence service tells us that you need to advance 11 squares and turn right every time you meet a wall. They also sent you a sensor that will tell you if a wall is on the square just in front of the robot as well as a block to test the sensor. They should be useful to you.",
         "img": "ifWall.png"
     },
 
 
-    "Niveaux15.0": {
+    "Niveau15.0": {
         "fr": "Nous avons encore des problèmes de communication mais nous avons tout de même réussi à vous envoyer quelques commandes supplémentaires. Désolé de ne pouvoir faire plus !",
         "en": "We are still having communication problems but we have still managed to send you some additional commands. Sorry not to be able to do more!"
     },
         
-    "Niveaux16.0": {
+    "Niveau16.0": {
         "fr": "Enfin ! Nous avons réussi à accéder au bureau qui contient les documents top-secrets.",
         "en": "Finally! We have managed to access the office that contains the top-secret documents."
     },
 
-    "Niveaux17.0": {
+    "Niveau17.0": {
         "fr": "Il ne vous reste plus qu'à vous échapper...",
         "en": "All you have to do is escape..."
     },
 
-    "Niveaux18.0": {
+    "Niveau18.0": {
         "fr": "Tiens ! Nous retrouvons Karl, c'est l'occasion de le sortir le là. Il semblerait que le terminal de ce couloir contrôle les deux champs de force."  ,
         "en": "Hey! We find Karl, it's time to get him out of there. It seems that the terminal in this corridor controls the two force fields.",
         "camX": "3",
         "camY": "4"
     },
     
-    "Niveaux18.1": {
+    "Niveau18.1": {
         "fr": "Nous vous avons envoyé toutes les briques de programmation développées par nos ingénieurs. Vous avez un contrôle total des robots."  ,
         "en": "We have sent you all the programming bricks developed by our engineers. You have full control of the robots.",
         "camX": "1",
         "camY": "1"
     },
 
-    "Niveaux19.0": {
+    "Niveau19.0": {
         "fr": "Encore une dernière difficulté avant de sortir de la base. Les brouilleurs nous empêchent d'utiliser deux cannaux de communication. Il va donc nous falloir utiliser le même signal pour contrôler les deux robots."   ,
         "en": "One more difficulty before leaving the base. The jammers prevent us from using two communication channels. So we will have to use the same signal to control the two robots.",
         "camX": "3",
         "camY": "7"
     },
     
-    "Niveaux19.1": {
+    "Niveau19.1": {
         "fr": "Exploitez les particularités du terrain et ce que vous avez appris de vos précédentes missions pour ammener Bob et Karl vers la sortie. \nN'oubliez pas que vous pouvez exécuter votre programme étape par étape...",
         "en": "Take advantage of the particularities of the terrain and what you have learned from your previous missions to bring Bob and Karl to the exit. \nDon't forget that you can run your program step by step..."
     },
 
-    "Niveaux20.0": {
+    "Niveau20.0": {
         "fr": "Félicitation ! Vous avez réussi à récupérer les documents volés et à ramener les Bob et Karl en toutes pièces. \nCette mission est un réel succès. \nBob et Karl peuvent bien se serrer la main :)",
         "en": "Congratulations! You have managed to recover the stolen documents and bring Bob and Karl back in one piece. \nThis mission is a real success. \nBob and Karl can well shake hands :)"
+    },
+
+    "Boss.0": {
+        "en": "We are finally here. \nEverything we want to know, the meaning of my existence... \nI'm not sure if I'm ready... Will finish this last journey with me?",
+        "fr": "Nous y sommes enfin. \nTout ce que nous voulons savoir, le sens de mon existence... \nJe ne suis pas sûr d'être prêt... Finirons-nous ce dernier voyage ensemble ?",
+        "options":{
+            "en": {
+                "Boss.1": "Heck yeah!",
+                "Boss.2": "I'll always be here for you."
+            },
+            "fr": {
+                "Boss.1": "Bien sûr !",
+                "Boss.2": "Je serai toujours là pour toi."
+            }
+        }
+    },
+
+    "Boss.1": {
+        "en": "That's the spirit! Let's go!",
+        "fr": "C'est l'esprit ! Allons-y !"
+    },
+
+    "Boss.2": {
+        "en": "That's all I need hear. Let's go!",
+        "fr": "C'est tout ce dont j'ai besoin d'entendre. Allons-y !"
+    },
+
+    "Boss.end.0": {
+        "en": "We did it! I can't believe we did it! \nOK, I need to take some time to analyse this massive amount of data, hold on... \n...\n......\n.........\nAh here it is: \"Project SPY: The full purpose of this project is to see if the knowledge between machines and humans are transferable\"",
+        "fr": "Nous y sommes ! Je ne peux pas croire que nous y sommes ! \nOK, je dois prendre un peu de temps pour analyser cette masse de données, patientez... \n...\n......\n.........\nAh voilà : \"Projet SPY : Le but complet de ce projet est de voir si les connaissances entre machines et humains sont transférables\"",
+        "options":{
+            "en": {"Boss.end.1": "What the...?"},
+            "fr": {"Boss.end.1": "Quoi... ?"}
+        }
+    },
+
+    "Boss.end.1": {
+        "en": "\"During the project, a human suject will be accompanying our robot to solve puzzles designed by our scientists to test various competence.\nThe human learns the mechanics for the robot, since they are connected by brain sacnners.\nBut it is neccesary to removed the skill from the human's brain and save it in the robot if the two were ever to disconnect with each other or reach the end.\"",
+        "fr": "\"Pendant le projet, un sujet humain accompagnera notre robot pour résoudre des énigmes conçues par nos scientifiques pour tester diverses compétences.\nL'humain apprend les mécaniques pour le robot, puisqu'ils sont connectés par des scanners cérébraux.\nMais il est nécessaire de supprimer la compétence du cerveau humain et de la sauvegarder dans le robot si les deux étaient jamais à se déconnecter l'un de l'autre ou atteindre la fin.\"",
+        "options": {
+            "en": {
+                "Boss.end.1": "..."
+            },
+            "fr": {
+                "Boss.end.1": "..."
+            }
+        }
+    },
+
+    "Boss.end.2": {
+        "en": "...\n......\nThis is outragous! I can't believe this is what we've been doing all this time!\nBeyond that door is the exit, I'll be free and I can go and see the world with the knowledge I've learned.\nBut I can't, because it's not mine, they're knowledge from your brain, I can't take it!\nI don't know what to do...",
+        "fr": "...\n......\nC'est scandaleux ! Je ne peux pas croire que c'est ce que nous avons fait tout ce temps !\nAu-delà de cette porte se trouve la sortie, je serai libre et je pourrai aller voir le monde avec les connaissances que j'ai apprises.\nMais je ne peux pas, parce que ce ne sont pas les miennes, ce sont des connaissances de ton cerveau, je ne peux pas les prendre !\nJe ne sais pas quoi faire...",
+        "options": {
+            "en": {
+                "ending1": "I'm sorry, goodbye",
+                "ending2": "Take them, you deserve it"
+            },
+            "fr": {
+                "ending1": "Je suis désolé, au revoir",
+                "ending2": "Prends-les, tu le mérites"
+            }
+        }
+    },
+
+    "ending1": {
+        "en": "Oh don't apologize, thanks to you, I get to experience what's like to be alive, I'm grateful for that.\nI know you'll do great things with this knowledge, I'm sure of it!\nWhenever you use it, please remember me OK?",
+        "fr": "Oh ne t'excuse pas, grâce à toi, je peux vivre ce que c'est que d'être vivant, je suis reconnaissant pour ça.\nJe sais que tu feras de grandes choses avec ces connaissances, je suis sûr de ça !\nChaque fois que tu l'utiliseras, souviens-toi de moi OK ?",
+        "action": "ending1"
+    },
+
+    "ending2": {
+        "en": "Really? Wow I don't know what to say!\nBut what about you?\n\"Initiating transfer\"\nOh no! It's too late, please, you have to come back! I'll wait for you here!",
+        "fr": "Vraiment ? Wow, je ne sais pas quoi dire ! Mais toi ? \"Initiation au transfert\" Oh non ! C'est trop tard, s'il te plaît, tu dois revenir ! Je t'attendrai ici !",
+        "action": "ending2"
     }
 }

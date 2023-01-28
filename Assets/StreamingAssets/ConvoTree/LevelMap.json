@@ -37,5 +37,40 @@
     "born.0" : {
         "en" : "BTW. Today it's my birthday!",
         "fr" : "D'ailleurs. C'est mon anniversaire aujourd'hui!"
+    },
+    
+    "askDifficulty": {
+        "en" : "Wow, that was kinda hard for me to understand, what about you?",
+        "fr" : "Wow, c'était un peu dur pour moi à comprendre, et toi?",
+        "options" : {
+            "en": {
+                "askDifficulty.1": "I had no idea what I was doing",
+                "askDifficulty.2": "I kinda undertood",
+                "askDifficulty.3": "Easy peasy"
+            },
+            "fr": {
+                "askDifficulty.1": "Je n'avais aucune idée de ce que je faisais",
+                "askDifficulty.2": "J'ai un peu compris",
+                "askDifficulty.3": "Facile comme bonjour"
+            }
+        }
+    },
+    
+    "askDifficulty.1" : {
+        "en" : "I know right! \nLet's just try to take it slow, I'm sure we can make it!", 
+        "fr" : "Je sais, n'est-ce pas! \nEssayons juste de prendre le temps, je suis sûr qu'on peut y arriver!",
+        "action" : "changeDiff,-1"
+    },
+    
+    "askDifficulty.2" : {
+        "en" : "That's already not bad! Let's keep up the good work shall we?", 
+        "fr" : "C'est déjà pas mal! Continuons le bon travail, non?",
+        "action" : "changeDiff,0"
+    },
+    
+    "askDifficulty.3" : {
+        "en" : "Ooooh look at you! We'll get there in no time!", 
+        "fr" : "Ooooh regarde toi! On y arrivera en un rien de temps!",
+        "action" : "changeDiff,1"
     }
 }

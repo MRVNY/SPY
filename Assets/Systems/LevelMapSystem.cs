@@ -58,6 +58,12 @@ public class LevelMapSystem : FSystem
 		if(Global.GD.ending==2) await Ending2();
 
 		if (Global.GD.player == "Student") Global.GD.convoNode = "askName";
+		else if (Global.GD.level != null && Global.GD.level.node != null)
+		{
+			if(Global.GD.level.node.levelPool.Contains(Global.GD.level)) 
+				Global.GD.convoNode = "askDifficulty";
+			else Global.GD.convoNode = Global.GD.level.name + ".0";	
+		}
 	}
 	
 	protected override void onProcess(int familiesUpdateCount)
