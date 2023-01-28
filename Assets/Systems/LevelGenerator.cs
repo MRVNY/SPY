@@ -39,16 +39,15 @@ public class LevelGenerator : FSystem {
 	protected async override void onStart()
 	{
 		if(Global.GD == null) await GameStateManager.LoadGD();
-		if (Global.GD == null || Global.GD.level == null || Global.GD.score==null)
+		if (Global.GD == null || Global.GD.level == null)
 		{
 			Global.GD = new GameData();
-			Global.GD.score = new Hashtable();
 			Global.GD.path = Application.streamingAssetsPath + Path.PathSeparator + "Levels" +Path.PathSeparator;
 		}
+		if(Global.GD.score==null) Global.GD.score = new Hashtable();
 
 		if (Global.GD.level == null)
-			Debug.Log(Global.GD.level);
-			//GameObjectManager.loadScene("TitleScreen");
+			GameObjectManager.loadScene("TitleScreen");
 		else
 		{
 			Level = GameObject.Find("Level");

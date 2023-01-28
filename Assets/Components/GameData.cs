@@ -35,6 +35,4 @@ public class GameData {
 
 	public string gameLanguage = "en";
 	public string convoNode = "-1";
-
-
 }

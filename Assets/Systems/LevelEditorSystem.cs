@@ -3,6 +3,7 @@ using UnityEngine;
 using FYFY;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
@@ -42,10 +43,10 @@ public class LevelEditorSystem : FSystem {
 	public static string xmlPath;
 	public static string scenarioPath;
     
-	protected override void onStart()
+	protected override async void onStart()
     {
 	    levelEditor = f_levelEditor.First().GetComponent<LevelEditor>();
-	    
+
 	    Vector2 agentPos = Vector2.zero;
 		
 		xml = new XDocument();
@@ -267,15 +268,24 @@ public class LevelEditorSystem : FSystem {
 		scenario.Element("scenario").Add(new XElement("level", new XAttribute("name",fileName)));
 		scenario.Save(scenarioPath);
 		
-		LoadLevel(xmlPath);
+		LoadLevel(Path.GetFileNameWithoutExtension(xmlPath));
 	}
 
-	public void LoadLevel(string levelName)
+	public async void LoadLevel(string levelName)
 	{
+		//if(Global.GD == null) await GameStateManager.LoadGD();
+		if (Global.GD == null)
+		{
+			Global.GD = new GameData();
+			Global.GD.path = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" + Path.DirectorySeparatorChar;
+		}
+		
 		Global.GD.mode = "Homemade";
 		Level tmp = new Level();
 		tmp.name = levelName;
-		Global.GD.level = (tmp);
+		Global.GD.level = tmp;
+		//await GameStateManager.SaveGD();
+		//await GameStateManager.LoadGD();
 		GameObjectManager.loadScene("ScriptEditor");
 	}
 	
