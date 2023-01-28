@@ -1,0 +1,181 @@
+{
+    "Niveau1": {
+        "en": "Hello special agent. We just learned that top-secret documents have been stolen and we must recover them.",
+        "fr": "Bonjour",
+        "img": "drophere.png",
+        "options": {
+            "en": {
+                "Niveau1.1": "Hello?",
+                "Niveau1.2": "Ewww",
+                "Niveau1.3": "I'm a robot"
+            },
+            "fr": {
+                "Niveau1.1": "Bonjour?",
+                "Niveau1.2": "Ewww",
+                "Niveau1.3": "Je suis un robot"
+            }
+        },
+        "action": "next,Niveau1.0"
+    },
+
+    "Niveau1.0": {
+        "fr": "23 août 2041...&#xA;&#xA;Vous avez un message... \nBonjour agent special Nous venons d'apprendre que des documents top-secrets ont été volés et nous devons les récupérer. \nNous avons envoyé sur le terrain un prototype de robot, son nom de code est Karl.",
+        "en": "August 23, 2041...&#xA;&#xA;You have a message...",
+        "img": "drophere.png"
+    },
+
+    "Niveau1.3": {
+        "fr": "Pour le contrôler à distance vous devrez lui envoyer les bonnes actions. Vous pouvez donner des ordres à Karl en faisant glisser les actions dans la zone de programme.",
+        "en": "To control him remotely you will have to send him the right actions. You can give orders to Karl by dragging the actions into the program area.",
+        "img": "drophere.png"
+    },
+
+    "Niveau1.4": {
+        "fr": "Si vous vous trompez vous pouvez utiliser le clic droit sur une action du programme pour la supprimer, ou nettoyer tout le programme à l'aide de la petite balayette.",
+        "en": "If you make a mistake you can use the right click on an action of the program to delete it, or clean the whole program using the little broom.",
+        "img": "resetButton.png"
+    },
+
+    "Niveau1.5": {
+        "fr": "Pour téléporter Karl dans le bâtiment vous devez lui commander de se déplacer sur le téléporteur rouge !",
+        "en": "To teleport Karl into the building you must order him to move to the red teleporter !",
+        "img": "drophere.png"
+    },
+
+    "Niveau1.6": {
+        "fr": "A vous de jouer, essayez d'utiliser l'action 'Avancer' dans la zone de programme du robot et cliquez sur le bouton lecture pour envoyer le programme à Karl.",
+        "en": "It's up to you, try to use the 'Move' action in the robot's program area and click on the play button to send the program to Karl.",
+        "img": "FirstActionAndPlay.png"
+    },
+
+    "Niveaux2": {
+        "fr": "Bien... Karl vient de se téléporter dans le bâtiment juste devant les portes d'entrée. Il faut continuer à progresser, pour l'instant tout semble calme. \nLa connexion avec le robot étant de bonne qualité, vous pouvez envoyer plusieurs ordres en même temps. Il suffit de les mettres les uns sous les autres dans la zone de programme." ,
+        img : "stackActions.png",
+    },
+
+    "Niveaux3": {
+        "fr": "Il faut continuer à avancer. \nAu fait, notre satellite d'observation suis automatiquement le déplacement de Karl mais vous pouvez le contrôler avec les flèches du clavier et la molette de la souris. N'hésitez pas à expérimenter ces commandes." ,
+        "fr": "Vous pouvez aussi à tout moment accéder au menu de la mission pour, par exemple, revoir les textes d'introduction, relancer la mission ou la quitter."  ,
+        img : "menu.png",
+    },
+
+    "Niveaux4": {
+        "fr": "Catastrophe ! Karl vient de se faire piéger derrière une porte qu'il ne peut pas ouvrir. \nHeureusement nous avions un autre robot disponible que nous venons de vous envoyer. Il faut poursuivre la mission coûte que coûte."  ,
+        camX : "1",
+        camY : "4",
+        "fr": "Il vous faudra utiliser la bonne ligne de communication pour contrôler le bon robot. Vous pouvez voir la ligne de communication d'un robot en passant la souris dessus."   ,
+        camX : "3",
+        camY : "4",
+        img : "robotName.png",
+        "fr": "Vous pouvez aussi définir la ligne de communication sur laquelle le programme sera envoyé dans la zone de programme." ,
+        img : "scriptName.png",
+    },
+
+    "Niveaux5": {
+        "fr": "Vous pouvez maintenant utiliser des actions pour tourner à gauche et tourner à droite. A vous de compléter le programme." ,
+        img : "turnleftright.png",
+        "fr": "Attention !&#xA;Quand le robot tourne, il reste sur place. \nVous pouvez aussi exécuter un programme non fini pour voir où se retrouve Bob et poursuivre la programmation à partir de là.",
+    },
+
+    "Niveaux6": {
+        "fr": "Une astuce que j'ai oubié de vous dire, vous pouvez double-cliquer sur les blocs de l'inventaire pour les ajouter automatiquement au programme.",
+    },
+
+    "Niveaux7": {
+        "fr": "Plusieurs chemins sont possible dans ce couloir. Nos ingénieurs ont conçu deux programmes. A vous de décider celui que vous souhaitez envoyer à Bob...",
+    },
+
+    "Niveaux8": {
+        "fr": "Un champ de force bloque le passage !&#xA;Il devrait y avoir un moyen de le désactiver..."  ,
+        camX : "1",
+        camY : "2",
+        "fr": "Regardez là-bas ! Il y a un terminal."   ,
+        camX : "1",
+        camY : "3",
+        img : "terminalSolo.png",
+        "fr": "Nous connaissons ce modèle, il suffit de s'y déplacer dessus pour pouvoir l'activer, en revanche il n'est pas nécessaire de se tourner vers le terminal pour l'activer. Etre sur sa case suffit."  ,
+        img : "terminalRobot.png",
+        "fr": "Nous venons de vous envoyer une nouvelle action qui devrait vous aider. Essayez donc de l'activer avec l'action 'Activer'."   ,
+        camX : "1",
+        camY : "5",
+        img : "ActivateIcon.png",
+    },
+
+    "Niveaux9": {
+        "fr": "Tiens ! Ils n'ont pas placé le terminal à proximité du champ de force, mais ce n'est pas grave, ça devrait fonctionner. \nVous pouvez maintenant utiliser l'action 'Se retourner' qui est équivalente à deux actions 'Pivoter à gauche' ou deux actions 'Pivoter à droite'." ,
+        img : "TurnBackIcon.png",
+    },
+
+    "Niveaux10": {
+        "fr": "Attention !&#xA;Il y a un garde ayant une caméra dans cette pièce ! Il semble protéger une salle."  ,
+        camX : "4",
+        camY : "3",
+        "fr": "Il faut absoluement éviter les zones surveillées (en rouge).&#xA;Nos ingénieurs vous proposent trois solutions, mais quelle est la plus efficace ?"  ,
+        camX : "2",
+        camY : "5",
+    },
+
+    "Niveaux11": {
+        "fr": "Nous devons nous arrêter au prochain carrefour !"  ,
+        camX : "2",
+        camY : "2",
+        "fr": "Evitons de saturer la ligne de communication en multipliant les ordres 'Avancer'. Nous allons utiliser une boucle, pour répeter plusieurs fois les actions ! Nos ingénieurs en ont préparé une pour vous mais elle est peut être mal configurée..."    ,
+        camX : "2",
+        camY : "9",
+        img : "forExample.png",
+        "fr": "Nous commencons à être pressé par le temps, il nous faut gagner du temps et arriver au carrefour en n'envoyant qu'une seule fois notre programme" ,
+        img : "executeLimitation.png",
+    },
+
+    "Niveaux12": {
+        "fr": "Nous voilà arrivé au carrefour mais finalement nous n'avons pas le choix il faut continuer à avancer... \nNous approchons de notre objectif mais la prochaine salle semble être bien gardée!&#xA;Pas d'inquiétude, Bob contient une technologie permettant de voir le programme des gardes (cliquez sur le garde pour voir son programme). Ceci devrait nous donner de précieuses informations pour l'éviter."   ,
+        camX : "2",
+        camY : "2",
+        "fr": "Vous disposez maintenant de la nouvelle action 'Attendre'. Elle permet d'ordonner au robot de faire une pose avant de passer à l'action suivante."   ,
+        camX : "3",
+        camY : "6",
+        img : "WaitIcon.png",
+    },
+
+    "Niveaux13": {
+        "fr": "Aïe... ce couloir contient... brouilleurs qui perturbent nos comm...uni...cations ! \nLà c'est un peu mieux, mais nous ne pourrons pas utiliser toutes nos actions. Nous avons quand même réussi à vous envoyer le strict minimum à savoir une boucle qui s'arrête l'orsqu'un capteur n'est plus valide. Vous disposez donc de cette boucle ainsi qu'un capteur qui vous indique si le robot se trouve sur la case d'un téléporteur." ,
+    },
+
+    "Niveaux14": {
+        "fr": "Que se passe-t-il ici? \nVisiblement un nouveau système de sécurité bloque la vue de notre satelite... Il va faloir avancer à l'aveugle. \nAttendez, nous recevons des informations... \n... \nOk ! Notre service de renseignement nous indiquent qu'il vous faut avancer de 11 cases et tourner à droite à chaque fois que vous rencontrerez un mur. Ils vous ont aussi envoyé un capteur qui vous indiquera si un mur se trouve sur la case juste devant le robot ainsi qu'un bloc permettant de tester le capteur. Ils devraient vous être utiles."  
+        img : "ifWall.png",
+    },
+
+
+    "Niveaux15": {
+        "fr": "Nous avons encore des problèmes de communication mais nous avons tout de même réussi à vous envoyer quelques commandes supplémentaires. Désolé de ne pouvoir faire plus !",
+    },
+        
+    "Niveaux16": {
+        "fr": "Enfin ! Nous avons réussi à accéder au bureau qui contient les documents top-secrets.",
+    },
+
+    "Niveaux17": {
+        "fr": "Il ne vous reste plus qu'à vous échapper...",
+    },
+
+    "Niveaux18": {
+        "fr": "Tiens ! Nous retrouvons Karl, c'est l'occasion de le sortir le là. Il semblerait que le terminal de ce couloir contrôle les deux champs de force."  ,
+        camX : "3",
+        camY : "4",
+        "fr": "Nous vous avons envoyé toutes les briques de programmation développées par nos ingénieurs. Vous avez un contrôle total des robots."  ,
+        camX : "1",
+        camY : "1",
+    },
+
+    "Niveaux19": {
+        "fr": "Encore une dernière difficulté avant de sortir de la base. Les brouilleurs nous empêchent d'utiliser deux cannaux de communication. Il va donc nous falloir utiliser le même signal pour contrôler les deux robots."   ,
+        camX : "3",
+        camY : "7",
+        "fr": "Exploitez les particularités du terrain et ce que vous avez appris de vos précédentes missions pour ammener Bob et Karl vers la sortie. \nN'oubliez pas que vous pouvez exécuter votre programme étape par étape...",
+    },
+
+    "Niveaux20": {
+        "fr": "Félicitation ! Vous avez réussi à récupérer les documents volés et à ramener les Bob et Karl en toutes pièces. \nCette mission est un réel succès. \nBob et Karl peuvent bien se serrer la main :)"
+    }
+}

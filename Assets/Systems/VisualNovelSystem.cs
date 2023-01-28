@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using UnityEngine.Networking;
 using Newtonsoft.Json.Linq;
 using UnityEngine.Accessibility;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Manage dialogs at the begining of the level
@@ -20,15 +21,18 @@ public class VisualNovelSystem : FSystem
 	private VisualNovel VN;
 	
 	//convoTree & paths
-	public string node;
+	private string node;
 	private JObject convoTree;
-	private string treePath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "ConvoTree";
+	private string treePath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "ConvoTree" + Path.DirectorySeparatorChar;
 	private string imgPath;
 	
 	//Async Typewrtier & Skip
+	private List<string> toWrite = new List<string>();
 	private Task writing;
 	public Button skipButton;
 	bool skipped = false;
+	
+	private GameObject optionPanel;
 
 	protected override async void onStart()
 	{
@@ -39,23 +43,26 @@ public class VisualNovelSystem : FSystem
 
 		VN = f_VN.First().GetComponent<VisualNovel>();
 		skipButton = VN.dialog.transform.parent.GetComponent<Button>();
-		VN.gameObject.SetActive(false);
-		//GameData = Global.GD.Instance;
-
+		skipButton.onClick.AddListener(() => { Skip(); });
+		optionPanel = VN.options[0].transform.parent.parent.gameObject;
+		toggleUI("VN_Off");
+		
 		if (Global.GD.convoNode != null)
 		{
-			convoTree = JObject.Parse(File.ReadAllText(treePath + Path.DirectorySeparatorChar + "1.json"));
+			if(SceneManager.GetActiveScene().name == "LevelMap")
+				convoTree = JObject.Parse(File.ReadAllText(treePath + "LevelMap.json"));
+			else convoTree = JObject.Parse(File.ReadAllText(treePath + Global.GD.level.node.name + ".json"));
 			node = Global.GD.convoNode;
 
 			imgPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
 			          Path.DirectorySeparatorChar + Global.GD.mode + Path.DirectorySeparatorChar +
 			          "Images" + Path.DirectorySeparatorChar;
 
-			Global.GD.gameLanguage = "en";
+			//Global.GD.gameLanguage = "en";
 			
 			if (convoTree[node] != null)
 			{
-				VN.gameObject.SetActive(true);
+				toggleUI("VN_On");
 				setVN();
 			}
 		}
@@ -63,73 +70,92 @@ public class VisualNovelSystem : FSystem
 	
 	private async void setVN()
 	{
-		if (convoTree[node] == null) VN.gameObject.SetActive(false);
+		if (convoTree[node] == null) toggleUI("VN_Off");
 
 		for (int i = 0; i < VN.options.Count(); i++)
-		{
 			VN.options[i].transform.parent.gameObject.SetActive(false);
-		}
 		node = Global.GD.convoNode;
 
 		// set text
-	    writing = TypeWriter(convoTree[node][Global.GD.gameLanguage].ToString());
-		
-		// set image
-		if(convoTree[node]["img"] != null)
+		skipButton.enabled = true;
+		if (toWrite.Count == 0)
+			toWrite = convoTree[node][Global.GD.gameLanguage].ToString().Split('\n').ToList();
+		writing = TypeWriter(toWrite[0]);
+
+		if (toWrite.Count == 1)
 		{
-			setImageSprite(VN.img, imgPath + convoTree[node]["img"].ToString());
+			// set image
+			if (convoTree[node]["img"] != null)
+				setImageSprite(VN.img, imgPath + convoTree[node]["img"].ToString());
+
+			// set camera pos
+			// if (Global.GD.dialogMessage[nDialog].Item5 != -1 && Global.GD.dialogMessage[nDialog].Item6 != -1)
+			//       {
+			// 	GameObjectManager.addComponent<FocusCamOn>(MainLoop.instance.gameObject, new { camX = Global.GD.dialogMessage[nDialog].Item5, camY = Global.GD.dialogMessage[nDialog].Item6 });
+			//       }
+
+			// set options
+			else if (convoTree[node]["options"] != null) setOptions();
+			
+			// execute 
+			if (convoTree[node]["action"] != null) setActions();
 		}
+	}
 
-		// set camera pos
-		// if (Global.GD.dialogMessage[nDialog].Item5 != -1 && Global.GD.dialogMessage[nDialog].Item6 != -1)
-  //       {
-		// 	GameObjectManager.addComponent<FocusCamOn>(MainLoop.instance.gameObject, new { camX = Global.GD.dialogMessage[nDialog].Item5, camY = Global.GD.dialogMessage[nDialog].Item6 });
-  //       }
-  
-  		// set options
-        if (convoTree[node]["options"] != null)
-        {
-	        var objs = convoTree[node]["options"][Global.GD.gameLanguage].OfType<JProperty>();
-	        for (int i = 0; i < VN.options.Count(); i++)
-	        {
-		        if (objs.Count() > i - 1)
-		        {
-			        var button = VN.options[i].transform.parent.gameObject;
-			        VN.options[i].text = (string)objs.ElementAt(i).Value;
-			        string nextNode = objs.ElementAt(i).Name;
+	private async void setOptions()
+	{
+		toggleUI("options");
+		skipButton.enabled = false;
 
-			        await writing;
-			        button.SetActive(true);
-			        VN.options[i].transform.parent.GetComponent<Button>().onClick.AddListener(
-				        () =>
-				        {
-					        Global.GD.convoNode = nextNode;
-					        setVN();
-				        });
-		        }
-	        }
-	        skipButton.enabled = false;
-        }
-        else skipButton.enabled = true;
-
-        // execute 
-        if (convoTree[node]["action"] != null)
+		var objs = convoTree[node]["options"][Global.GD.gameLanguage].OfType<JProperty>();
+		for (int i = 0; i < VN.options.Count(); i++)
 		{
-	        string[] action = convoTree[node]["action"].ToString().Split(',');
-	        switch (action[0])
-	        {
-		        case "end":
-			        Global.GD.convoNode = null;
-			        break;
-		        case "value":
-			        break;
-		        case "mood":
-			        break;
-		        case "ending1":
-			        break;
-		        case "ending2":
-			        break;
-	        }
+			if (objs.Count() > i - 1)
+			{
+				var button = VN.options[i].transform.parent.gameObject;
+				VN.options[i].text = (string)objs.ElementAt(i).Value;
+				string nextNode = objs.ElementAt(i).Name;
+
+				//Wait for typewirtter and show option
+				await writing;
+				button.SetActive(true);
+				VN.options[i].transform.parent.GetComponent<Button>().onClick.RemoveAllListeners();
+				VN.options[i].transform.parent.GetComponent<Button>().onClick.AddListener(
+					() =>
+					{
+						Global.GD.convoNode = nextNode;
+						setVN();
+					});
+			}
+		}
+	}
+	
+	private void setActions()
+	{
+		string[] action = convoTree[node]["action"].ToString().Split(',');
+		switch (action[0])
+		{
+			case "end":
+				Global.GD.convoNode = null;
+				break;
+			case "value": break;
+			case "mood": break;
+			case "ending1":
+				Global.GD.ending = 1;
+				SceneManager.LoadScene("LevelMap");
+				break;
+			case "ending2":
+				Global.GD.ending = 2;
+				SceneManager.LoadScene("LevelMap");
+				break;
+			case "askName":
+				toggleUI("askName");
+				VN.askName.GetComponentInChildren<Button>().onClick.AddListener(() =>
+				{
+					Global.GD.player = VN.askName.GetComponentInChildren<TMP_InputField>().text;
+					Debug.Log(Global.GD.player);
+				});
+				break;
 		}
 	}
 
@@ -152,15 +178,23 @@ public class VisualNovelSystem : FSystem
 	//Skip Typewriter when it's not finished
 	public async void Skip()
 	{
-		if (convoTree[node]["options"] == null && skipped) VN.gameObject.SetActive(false);
+		if (convoTree[node]["options"] == null && skipped && toWrite.Count==1) toggleUI("VN_Off");
+
+		else if (skipped)
+		{
+			toWrite.RemoveAt(0);
+			skipButton.enabled = false;
+			if(toWrite.Count==0) toggleUI("VN_Off");
+			else setVN();
+		}
 		
-		if (writing != null)
+		else if (writing != null)
 		{
 			skipped = true;
 			await writing;
-			VN.dialog.text = convoTree[node][Global.GD.gameLanguage].ToString();
+			VN.dialog.text = toWrite[0];
 			
-			if (convoTree[node]["options"] != null) skipButton.enabled = false;
+			if (convoTree[node]["options"] != null && toWrite.Count==1) skipButton.enabled = false;
 		}
 	}
 
@@ -180,6 +214,27 @@ public class VisualNovelSystem : FSystem
 				img.sprite = Sprite.Create(tex2D, new Rect(0, 0, tex2D.width, tex2D.height), new Vector2(0, 0), 100.0f);
 				img.type = Image.Type.Simple;
 			}
+		}
+	}
+
+	private void toggleUI(string ui)
+	{
+		optionPanel.SetActive(true);
+		VN.img.gameObject.SetActive(false);
+		VN.askName.SetActive(false);
+		
+		switch (ui)
+		{
+			case "options":
+				optionPanel.SetActive(true); break;
+			case "img":
+				VN.img.gameObject.SetActive(true); break;
+			case "askName":
+				VN.askName.SetActive(true); break;
+			case "VN_On":
+				VN.gameObject.SetActive(true); break;
+			case "VN_Off":
+				VN.gameObject.SetActive(false); break;
 		}
 	}
 

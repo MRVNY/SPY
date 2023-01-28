@@ -23,9 +23,13 @@ public class LevelMapSystem : FSystem
 	
 	private Task cameraMoving;
 	private Vector3 toPos;
+	
+	public static LevelMapSystem Instance;
 
 	protected async override void onStart()
 	{
+		if(Instance == null) Instance = this;
+		
 		Camera.main.transform.position = new Vector3(0, 0, Camera.main.transform.position.z);
 			
 		LM = f_LM.First().GetComponent<LevelMap>();
@@ -52,7 +56,9 @@ public class LevelMapSystem : FSystem
 		Camera.main.transform.position = new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z);
 		LoadUI(LM.CharacPos);
 
-		//await Ending2();
+		if(Global.GD.ending==2) await Ending2();
+
+		if (Global.GD.player == "Student") Global.GD.convoNode = "askName";
 	}
 	
 	protected override void onProcess(int familiesUpdateCount)
@@ -262,5 +268,7 @@ public class LevelMapSystem : FSystem
 				await Task.Delay(1000);
 			}
 		}
+
+		Global.GD.ending = -2;
 	}
 }

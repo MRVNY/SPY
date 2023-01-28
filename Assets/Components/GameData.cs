@@ -10,6 +10,8 @@ public class GameData {
 	public string path = "/StreamingAssets/Levels/";
 	public string mode = "SkillTree"; //SkillTree / Homemade
 	public Level level;
+	public int ending = 0;
+	public string player = "Student";
 
 	public Hashtable levelNameList = new Hashtable();
 	public int[] levelScore; //levelToLoadScore[0] = best score (3 stars) ; levelToLoadScore[1] = medium score (2 stars)

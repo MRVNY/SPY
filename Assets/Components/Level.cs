@@ -4,6 +4,8 @@ using UnityEngine;
 [Serializable]
 public class Level
 {
+	public Node node;
+	
 	public string name = "Niveau1";
 	public int difficulty = 0;
 	public Lvltype type = Lvltype.normal;
