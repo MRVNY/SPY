@@ -8,6 +8,7 @@ using System.Xml;
 using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Object = UnityEngine.Object;
 
 /// <summary>
@@ -24,10 +25,17 @@ public class TitleScreenSystem : FSystem {
 
 	private FunctionalityParam funcParam;
 	private FunctionalityInLevel funcLevel;
-	
-	private Dictionary<GameObject, List<GameObject>> levelButtons; //key = directory button,  value = list of level buttons
 
-	protected override void onStart()
+	public Task buildingTree;
+
+	private Dictionary<GameObject, List<GameObject>> levelButtons; //key = directory button,  value = list of level buttons
+	
+	private string[] languages = new string[] {"en", "fr"};
+	
+	public GameObject settingsPanel;
+	public GameObject menuPanel;
+
+	protected override async void onStart()
 	{
 		if (funcParam == null)
         {
@@ -37,17 +45,16 @@ public class TitleScreenSystem : FSystem {
             funcParam = funcData.GetComponent<FunctionalityParam>();
             funcLevel = funcData.GetComponent<FunctionalityInLevel>();
         }
-		
+
+		if(Global.GD == null) await GameStateManager.LoadGD();
 		if (Global.GD == null || Global.GD.levelNameList == null)
 		{
-			// loadingGD = GameStateManager.LoadGD();
-			// await loadingGD;
 			Global.GD = new GameData();
-			Global.GD.path = Application.streamingAssetsPath + "/Levels/";
+			Global.GD.score = new Hashtable();
+			Global.GD.path = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" + Path.DirectorySeparatorChar;
+			buildingTree = TreeManager.ConstructTree();
+			Global.GD.levelNameList = new Hashtable();
 		}
-
-
-		Global.GD.levelNameList = new Hashtable();
 
 		levelButtons = new Dictionary<GameObject, List<GameObject>>();
 
@@ -100,6 +107,8 @@ public class TitleScreenSystem : FSystem {
 				GameObjectManager.setGameObjectState(button, false);
 			}
 		}
+
+		openMenu();
 	}
 
 	public static List<string> readScenario(string repositoryPath) {
@@ -179,12 +188,15 @@ public class TitleScreenSystem : FSystem {
 	public void launchLevel(string mode, Level level) {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
-		SendStatements.instance.SendLevel(level.name[^1]);//level);
-		GameObjectManager.loadScene("MainScene");
+		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
+		GameStateManager.SaveGD();
+		GameObjectManager.loadScene("GameScene");
 	}
 
-	public void launchLevelMap()
+	public async void launchLevelMap()
 	{
+		if(buildingTree!=null) await buildingTree;
+		GameStateManager.SaveGD();
 		GameObjectManager.loadScene("LevelMap");
 	}
 
@@ -284,6 +296,28 @@ public class TitleScreenSystem : FSystem {
 				funcParam.elementRequiermentLibrary.Add(child.Attributes.GetNamedItem("name").Value, listEleTemp);
 			}
 		}
+	}
+
+	public void changeLanguage(int i)
+	{
+		Global.GD.gameLanguage = languages[i];
+	}
+
+	public void clearSaves()
+	{
+		GameStateManager.DeleteAllSaveFiles();
+	}
+	
+	public void openSettings()
+	{
+		GameObjectManager.setGameObjectState(settingsPanel, true);
+		GameObjectManager.setGameObjectState(menuPanel, false);
+	}
+
+	public void openMenu()
+	{
+		GameObjectManager.setGameObjectState(settingsPanel, false);
+		GameObjectManager.setGameObjectState(menuPanel, true);
 	}
 
 	// See Quitter button in editor

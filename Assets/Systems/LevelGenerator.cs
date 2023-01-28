@@ -36,19 +36,19 @@ public class LevelGenerator : FSystem {
 
 	public static Task loadingGD;
 
-	protected override void onStart()
+	protected async override void onStart()
 	{
-		if (Global.GD == null || Global.GD.level == null)
+		if(Global.GD == null) await GameStateManager.LoadGD();
+		if (Global.GD == null || Global.GD.level == null || Global.GD.score==null)
 		{
-			// loadingGD = GameStateManager.LoadGD();
-			// await loadingGD;
 			Global.GD = new GameData();
-			Global.GD.path = Application.streamingAssetsPath + "/Levels/";
-			//TreeManager.ConstructTree();
+			Global.GD.score = new Hashtable();
+			Global.GD.path = Application.streamingAssetsPath + Path.PathSeparator + "Levels" +Path.PathSeparator;
 		}
-		
+
 		if (Global.GD.level == null)
-			GameObjectManager.loadScene("TitleScreen");
+			Debug.Log(Global.GD.level);
+			//GameObjectManager.loadScene("TitleScreen");
 		else
 		{
 			Level = GameObject.Find("Level");
@@ -262,7 +262,7 @@ public class LevelGenerator : FSystem {
 		entity.GetComponent<Position>().x = gridX;
 		entity.GetComponent<Position>().y = gridY;
 		entity.GetComponent<Direction>().direction = direction;
-		
+
 		//add new container to entity
 		ScriptRef scriptref = entity.GetComponent<ScriptRef>();
 		GameObject executablePanel = Object.Instantiate<GameObject>(Resources.Load ("Prefabs/ExecutablePanel") as GameObject, scriptContainer.gameObject.transform, false);
@@ -487,7 +487,7 @@ public class LevelGenerator : FSystem {
 			else
             {
 				Debug.LogWarning("Script \"" + name + "\" not created because another one already exists. Only one script with the same name is possible.");
-            }		
+            }
 		}
 	}
 

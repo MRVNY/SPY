@@ -24,6 +24,11 @@ public class EndGameManager : FSystem {
 	public GameObject playButtonAmount;
 	public GameObject endPanel;
 
+    public GameObject Restart;
+    public GameObject Rewind;
+    public GameObject Menu;
+    public GameObject Next;
+
 	public EndGameManager()
 	{
 		instance = this;
@@ -100,10 +105,10 @@ public class EndGameManager : FSystem {
 			Transform verticalCanvas = endPanel.transform.Find("VerticalCanvas");
 			GameObjectManager.setGameObjectState(verticalCanvas.Find("ScoreCanvas").gameObject, false);
 			verticalCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Vous avez été repéré !";
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("ReloadLevel").gameObject, true);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("ReloadState").gameObject, true);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("MainMenu").gameObject, true);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, false);
+			GameObjectManager.setGameObjectState(Restart, true);
+			GameObjectManager.setGameObjectState(Rewind, true);
+			GameObjectManager.setGameObjectState(Menu, true);
+			GameObjectManager.setGameObjectState(Next, false);
 			endPanel.GetComponent<AudioSource>().clip = Resources.Load("Sound/LoseSound") as AudioClip;
 			endPanel.GetComponent<AudioSource>().loop = true;
 			endPanel.GetComponent<AudioSource>().Play();
@@ -120,14 +125,14 @@ public class EndGameManager : FSystem {
 			endPanel.GetComponent<AudioSource>().clip = Resources.Load("Sound/VictorySound") as AudioClip;
 			endPanel.GetComponent<AudioSource>().loop = false;
 			endPanel.GetComponent<AudioSource>().Play();
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("ReloadLevel").gameObject, true);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("ReloadState").gameObject, false);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("MainMenu").gameObject, true);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, true);
+			GameObjectManager.setGameObjectState(Restart, true);
+			GameObjectManager.setGameObjectState(Rewind, false);
+			GameObjectManager.setGameObjectState(Menu, true);
+			GameObjectManager.setGameObjectState(Next, true);
 			//Check if next level exists in campaign
 			if (Global.GD.level.next != null)
 			{
-				GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, false);
+				GameObjectManager.setGameObjectState(Next, false);
 			}
 		}
 		else if (f_requireEndPanel.First().GetComponent<NewEnd>().endType == NewEnd.BadCondition)
@@ -135,10 +140,10 @@ public class EndGameManager : FSystem {
 			Transform verticalCanvas = endPanel.transform.Find("VerticalCanvas");
 			GameObjectManager.setGameObjectState(verticalCanvas.Find("ScoreCanvas").gameObject, false);
 			verticalCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Une condition est mal remplie !";
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("ReloadLevel").gameObject, false);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("ReloadState").gameObject, true);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("MainMenu").gameObject, false);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, false);
+			GameObjectManager.setGameObjectState(Restart, false);
+			GameObjectManager.setGameObjectState(Rewind, true);
+			GameObjectManager.setGameObjectState(Menu, false);
+			GameObjectManager.setGameObjectState(Next, false);
 			endPanel.GetComponent<AudioSource>().clip = Resources.Load("Sound/LoseSound") as AudioClip;
 			endPanel.GetComponent<AudioSource>().loop = true;
 			endPanel.GetComponent<AudioSource>().Play();
@@ -147,10 +152,10 @@ public class EndGameManager : FSystem {
 			Transform verticalCanvas = endPanel.transform.Find("VerticalCanvas");
 			GameObjectManager.setGameObjectState(verticalCanvas.Find("ScoreCanvas").gameObject, false);
 			verticalCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Vous n'avez pas réussi à atteindre le téléporteur et vous n'avez plus d'exécution disponible.\nEssayez de résoudre ce niveau en moins de coup !";
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("ReloadLevel").gameObject, true);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("ReloadState").gameObject, false);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("MainMenu").gameObject, true);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, false);
+			GameObjectManager.setGameObjectState(Restart, true);
+			GameObjectManager.setGameObjectState(Rewind, false);
+			GameObjectManager.setGameObjectState(Menu, true);
+			GameObjectManager.setGameObjectState(Next, false);
 			endPanel.GetComponent<AudioSource>().clip = Resources.Load("Sound/LoseSound") as AudioClip;
 			endPanel.GetComponent<AudioSource>().loop = true;
 			endPanel.GetComponent<AudioSource>().Play();
@@ -160,10 +165,10 @@ public class EndGameManager : FSystem {
 			Transform verticalCanvas = endPanel.transform.Find("VerticalCanvas");
 			GameObjectManager.setGameObjectState(verticalCanvas.Find("ScoreCanvas").gameObject, false);
 			verticalCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Aucune action ne peut être exécutée !";
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("ReloadLevel").gameObject, false);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("ReloadState").gameObject, true);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("MainMenu").gameObject, false);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, false);
+			GameObjectManager.setGameObjectState(Restart, false);
+			GameObjectManager.setGameObjectState(Rewind, true);
+			GameObjectManager.setGameObjectState(Menu, false);
+			GameObjectManager.setGameObjectState(Next, false);
 			endPanel.GetComponent<AudioSource>().clip = Resources.Load("Sound/LoseSound") as AudioClip;
 			endPanel.GetComponent<AudioSource>().loop = true;
 			endPanel.GetComponent<AudioSource>().Play();
@@ -173,10 +178,10 @@ public class EndGameManager : FSystem {
 			Transform verticalCanvas = endPanel.transform.Find("VerticalCanvas");
 			GameObjectManager.setGameObjectState(verticalCanvas.Find("ScoreCanvas").gameObject, false);
 			verticalCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "ATTENTION, boucle infinie détectée...\nRisque de surchauffe du processeur du robot, interuption du programme d'urgence !";
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("ReloadLevel").gameObject, false);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("ReloadState").gameObject, true);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("MainMenu").gameObject, false);
-			GameObjectManager.setGameObjectState(endPanel.transform.Find("NextLevel").gameObject, false);
+			GameObjectManager.setGameObjectState(Restart, false);
+			GameObjectManager.setGameObjectState(Rewind, true);
+			GameObjectManager.setGameObjectState(Menu, false);
+			GameObjectManager.setGameObjectState(Next, false);
 			endPanel.GetComponent<AudioSource>().clip = Resources.Load("Sound/LoseSound") as AudioClip;
 			endPanel.GetComponent<AudioSource>().loop = true;
 			endPanel.GetComponent<AudioSource>().Play();

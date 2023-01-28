@@ -15,4 +15,9 @@ public class GameStateManager_wrapper : BaseWrapper
 		MainLoop.callAppropriateSystemMethod (system, "LoadState", null);
 	}
 
+	public void DeleteAllSaveFiles()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "DeleteAllSaveFiles", null);
+	}
+
 }

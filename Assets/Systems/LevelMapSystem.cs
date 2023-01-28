@@ -22,24 +22,27 @@ public class LevelMapSystem : FSystem
 	
 	private Task cameraMoving;
 	private Vector3 toPos;
+	
+	public static LevelMapSystem Instance;
 
-	protected override void onStart()
+	protected async override void onStart()
 	{
+		if(Instance == null) Instance = this;
+		
 		Camera.main.transform.position = new Vector3(0, 0, Camera.main.transform.position.z);
 			
 		LM = f_LM.First().GetComponent<LevelMap>();
 		Scores = new List<Tile>() { LM.Undone, LM.Done, LM.Code, LM.All, LM.Exec };
 		LevelDict = new Dictionary<Vector3Int, Level>();
 
-		GameStateManager.LoadGD();
-		// if (Global.GD == null || Global.GD.Tree == null)
-		// {
-		// 	Global.GD = new GameData();
-		// 	TreeManager.ReadLevels();
-		// }
-		Global.GD = new GameData();
-		TreeManager.ConstructTree();
-		
+		if(Global.GD == null) await GameStateManager.LoadGD();
+		if (Global.GD == null || Global.GD.Tree == null)
+		{
+			Global.GD = new GameData();
+			Global.GD.path = Application.streamingAssetsPath + "/Levels/";
+			await TreeManager.ConstructTree();
+		}
+
 		//LoadLevels();
 		ConstructRoad(Global.GD.Tree, Vector3Int.zero, 0);
 		
@@ -51,6 +54,10 @@ public class LevelMapSystem : FSystem
 		Vector3 mousePos = LM.CharacMap.CellToWorld(LM.CharacPos);
 		Camera.main.transform.position = new Vector3(mousePos.x, mousePos.y, Camera.main.transform.position.z);
 		LoadUI(LM.CharacPos);
+
+		if(Global.GD.ending==2) await Ending2();
+
+		if (Global.GD.player == "Student") Global.GD.convoNode = "askName";
 	}
 	
 	protected override void onProcess(int familiesUpdateCount)
@@ -102,10 +109,12 @@ public class LevelMapSystem : FSystem
 			await Task.Delay(10);
 		}
 	}
-	public void launchLevel(string mode, Level level) {
+	public async void launchLevel(string mode, Level level) {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
-		GameObjectManager.loadScene("MainScene");
+		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
+		await GameStateManager.SaveGD();
+		GameObjectManager.loadScene("GameScene");
 	}
 
 	private void ConstructRoad(Node node, Vector3Int pos, int split)
@@ -218,5 +227,46 @@ public class LevelMapSystem : FSystem
 			pos += Vector3Int.right;
 		}
 		return pos;
+	}
+
+	public async Task Ending2()
+	{
+		LM.Map.CompressBounds();
+		List<Vector3Int>[] toRemove = new List<Vector3Int>[LM.Map.cellBounds.size.x];
+		foreach (var pos in LevelDict.Keys.ToList())
+		{
+			if(toRemove[pos.x]==null){ toRemove[pos.x] = new List<Vector3Int>();}
+			toRemove[pos.x].Add(pos);
+		}
+		bool charaRemoved = false;
+		for(int i = toRemove.Length-1; i>=0; i--)
+		{
+			if(!charaRemoved && toRemove[i]!=null)
+			{
+				LoadUI(toRemove[i][^1]);
+				await Task.Delay(2000);
+				LM.CharacMap.ClearAllTiles();
+				LM.LevelName.text = "";
+				LM.StartLevel.gameObject.SetActive(false);
+				charaRemoved = true;
+			}
+			
+			if(toRemove[i]!=null)
+			{
+				Vector2 mousePos = LM.CharacMap.CellToWorld(new Vector3Int(toRemove[i][0].x, 0, 0));
+				toPos = new Vector3(mousePos.x, 0, Camera.main.transform.position.z);
+				cameraMoving = CameraTranstion();
+				await Task.Delay(1000);
+				
+				foreach (var pos in toRemove[i])
+				{
+					LM.Map.SetTile(pos, LM.LockedBase);
+					LM.Stars.SetTile(pos, LM.Undone);
+				}
+				await Task.Delay(1000);
+			}
+		}
+
+		Global.GD.ending = -2;
 	}
 }

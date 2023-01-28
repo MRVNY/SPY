@@ -27,7 +27,7 @@ public class UISystem : FSystem {
 	private Family f_editingMode = FamilyManager.getFamily(new AllOfComponents(typeof(EditMode)));
 
 	private Family f_enabledinventoryBlocks = FamilyManager.getFamily(new AllOfComponents(typeof(ElementToDrag)), new AllOfProperties(PropertyMatcher.PROPERTY.ACTIVE_IN_HIERARCHY));
-	
+
 	public GameObject buttonExecute;
 	public GameObject buttonPause;
 	public GameObject buttonNextStep;
@@ -220,7 +220,8 @@ public class UISystem : FSystem {
 	// Permet de relancer le niveau au début
 	public void restartScene(){
 		initZeroVariableLevel();
-		GameObjectManager.loadScene("MainScene");
+		GameObjectManager.loadScene("GameScene");
+		SendStatements.instance.SendRestart();
 	}
 
 
@@ -232,6 +233,12 @@ public class UISystem : FSystem {
 		GameObjectManager.loadScene("TitleScreen");
 	}
 
+	public void toLevelMap()
+	{
+		initZeroVariableLevel();
+		HistoryManager.actionsHistory = null;
+		GameObjectManager.loadScene("LevelMap");
+	}
 
 	// Permet de réinitialiser les variables du niveau dans l'objet GameData
 	public void initZeroVariableLevel()
@@ -253,7 +260,8 @@ public class UISystem : FSystem {
 		// On efface l'historique
 		HistoryManager.actionsHistory = null;
 		// On recharge la scéne (mais avec le nouveau numéro de niveau)
-		restartScene();
+		//restartScene();
+		GameObjectManager.loadScene("LevelMap");
 	}
 
 

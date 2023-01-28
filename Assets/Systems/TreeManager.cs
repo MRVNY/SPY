@@ -48,12 +48,13 @@ public class TreeManager : FSystem
 		return node;
 	}
 
-	private static Level makeLevel(string name, int difficulty, Lvltype type)
+	private static Level makeLevel(string name, int difficulty, Lvltype type, Node node)
 	{
 		Level level = new Level();
 		level.name = name;
 		level.difficulty = difficulty;
 		level.type = Lvltype.normal;
+		level.node = node;
 		return level;
 	}
 
@@ -103,7 +104,7 @@ public class TreeManager : FSystem
 		return null;
 	}
 	
-	public static void ConstructTree()
+	public static async Task ConstructTree()
 	{
 		Global.GD.path = Application.streamingAssetsPath + "/Levels/";
 		//get all the folder names under a path
@@ -139,7 +140,7 @@ public class TreeManager : FSystem
 					if (levelInfo != null)
 					{
 						Node parent = findNode(Global.GD.Tree, levelInfo.Attribute("node").Value);
-						Level level = makeLevel(Path.GetFileNameWithoutExtension(lvl),0,Lvltype.normal);
+						Level level = makeLevel(Path.GetFileNameWithoutExtension(lvl),0,Lvltype.normal, parent);
 						//level.name = levelInfo.Attribute("name").Value;
 						string type = levelInfo.Attribute("type").Value;
 						if (levelInfo.LastAttribute.Name == "difficulty")

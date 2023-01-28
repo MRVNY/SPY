@@ -29,35 +29,23 @@ public class GameStateManager : FSystem {
     private string currentContent;
 
     public GameObject playButtonAmount;
-
-    GameStateManager instance;
-
-    private static string savePath;
-
-    public GameStateManager()
-	{
-		instance = this;
-        savePath = Application.persistentDataPath;
-	}
     
+    private static string savePath = Application.persistentDataPath + Path.PathSeparator + "saves" + Path.PathSeparator;
+
     public static bool SaveExists(string key)
     {
-        string path = savePath + "/saves/" + key + ".txt";
-        return File.Exists(path);
+        return File.Exists(savePath);
     }
     
     public static void Save<T>(T objectToSave, string key)
     {
-        // chemin du fichier de sauvegarde
-        string path = savePath + "/saves/";
-
         //création du fichier si il n'existe pas
-        Directory.CreateDirectory(path);
+        Directory.CreateDirectory(savePath);
         
         // convertion des paramètres de sauvegarde en fichier binaires
         BinaryFormatter formatter = new BinaryFormatter();
 
-        using(FileStream fileStream = new FileStream(path + key + ".txt", FileMode.Create))
+        using(FileStream fileStream = new FileStream(savePath + key + ".txt", FileMode.Create))
         {
             formatter.Serialize(fileStream, objectToSave);
         }
@@ -67,10 +55,9 @@ public class GameStateManager : FSystem {
     {
         if (SaveExists(key))
         {
-            string path = savePath + "/saves/";
             BinaryFormatter formatter = new BinaryFormatter();
             T returnValue = default(T);
-            using (FileStream fileStream = new FileStream(path + key + ".txt", FileMode.Open))
+            using (FileStream fileStream = new FileStream(savePath + key + ".txt", FileMode.Open))
             {
                 returnValue = (T)formatter.Deserialize(fileStream);
             }
@@ -183,5 +170,13 @@ public class GameStateManager : FSystem {
             TMP_Text amountText = playButtonAmount.GetComponentInChildren<TMP_Text>();
             amountText.text = "" + (int.Parse(amountText.text) + 1);
         }
+    }
+    
+    public static void DeleteAllSaveFiles()
+    {
+        DirectoryInfo dir = new DirectoryInfo(savePath);
+        dir.Delete(true);
+        Directory.CreateDirectory(savePath);
+        PlayerPrefs.DeleteAll();
     }
 }

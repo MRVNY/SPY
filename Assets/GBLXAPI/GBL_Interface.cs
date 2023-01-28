@@ -11,6 +11,7 @@ using DIG.GBLXAPI;
 using System.Collections.Generic;
 
 using DIG.GBLXAPI.Builders;
+using UnityEngine;
 
 // --------------------------------------------------------------------------------------
 // --------------------------------------------------------------------------------------
@@ -41,6 +42,7 @@ public static class GBL_Interface {
 
 	public static void SendStatement(string verb, string activityType, Dictionary<string, string> activityExtensions = null)
     {
+        Debug.Log(activityType);
         ActivityBuilder.IOptional activityBuilder = GBLXAPI.Activity
             .WithID("https://www.lip6.fr/mocah/ELS/" + activityType)
             .WithType(activityType);
