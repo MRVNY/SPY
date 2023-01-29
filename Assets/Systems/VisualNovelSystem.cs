@@ -189,7 +189,10 @@ public class VisualNovelSystem : FSystem
 				next = action[1]; break;
 			case "changeDiff":
 				int tmp = int.Parse(action[1]);
-				Global.GD.difficulty = Math.Min(Math.Max(0,tmp),2); break;
+				Global.GD.difficulty = Math.Min(Math.Max(0,tmp),2); 
+				Global.GD.convoNode = "";
+				node = "";
+				break;
 		}
 	}
 

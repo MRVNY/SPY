@@ -156,7 +156,6 @@ public class TreeManager : FSystem
 					XDocument doc = XDocument.Load(lvl);
 					XElement levelInfo = doc.Element("level").Element("levelInfo");
 					XElement competenceInfo = doc.Element("level").Element("blockLimits");
-					IEnumerable<XElement> allChildElements = competenceInfo.Elements();
 
 
 					if (levelInfo != null)
@@ -189,7 +188,7 @@ public class TreeManager : FSystem
 							if (competenceInfo != null)
 							{
 								Debug.Log("notnull");
-								foreach (XElement element in allChildElements)
+								foreach (XElement element in competenceInfo.Elements())
 								{
 									Debug.Log("child");
 									//Debug.Log(element.Attribute("limit").Value);

@@ -63,7 +63,7 @@ public class LevelMapSystem : FSystem
 		if (Global.GD.player == "Student") Global.GD.convoNode = "askName";
 		else if (Global.GD.level != null && Global.GD.level.node != null)
 		{
-			if (Global.GD.level.node.trainingLevels.First() == Global.GD.level)
+			if (Global.GD.level.score>0 && Global.GD.level.next[0].score==0 && Global.GD.level.node.trainingLevels.First() == Global.GD.level)
 			{
 				Global.GD.convoNode = "askDifficulty";
 			}
