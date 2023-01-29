@@ -1,23 +1,4 @@
 {
-    "Niveau1": {
-        "en": "Hello special agent. We just learned that top-secret documents have been stolen and we must recover them.",
-        "fr": "Bonjour",
-        "img": "drophere.png",
-        "options": {
-            "en": {
-                "Niveau1.1": "Hello?",
-                "Niveau1.2": "Ewww",
-                "Niveau1.3": "I'm a robot"
-            },
-            "fr": {
-                "Niveau1.1": "Bonjour?",
-                "Niveau1.2": "Ewww",
-                "Niveau1.3": "Je suis un robot"
-            }
-        },
-        "action": "next,Niveau1.0"
-    },
-
     "Niveau1.0": {
         "fr": "23 août 2041...{name};Vous avez un message... \nBonjour agent special Nous venons d'apprendre que des documents top-secrets ont été volés et nous devons les récupérer. \nNous avons envoyé sur le terrain un prototype de robot, son nom de code est Karl.",
         "en": "23 August 2041...{name};You have a message... \nHello special agent We just learned that top-secret documents have been stolen and we must recover them. \nWe have sent a prototype robot on the field, his code name is Karl."

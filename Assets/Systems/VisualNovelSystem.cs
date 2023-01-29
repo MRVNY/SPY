@@ -55,7 +55,7 @@ public class VisualNovelSystem : FSystem
 		{
 			if(SceneManager.GetActiveScene().name == "LevelMap")
 				convoTree = JObject.Parse(File.ReadAllText(treePath + "LevelMap.json"));
-			else convoTree = JObject.Parse(File.ReadAllText(treePath + "Intro.json"));
+			else convoTree = JObject.Parse(File.ReadAllText(treePath + "GameScene.json"));
 			//else convoTree = JObject.Parse(File.ReadAllText(treePath + Global.GD.level.node.name + ".json"));
 			
 			if(Global.GD.level != null && !Global.GD.convoNode.Contains("ask"))
