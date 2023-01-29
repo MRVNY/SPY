@@ -1,24 +1,31 @@
 <?xml version="1.0"?>
 <level>
     <map>
-        <line><cell value="0" /><cell value="0" /><cell value="0" /><cell value="0" /></line>
-        <line><cell value="0" /><cell value="0" /><cell value="3" /><cell value="0" /></line>
-        <line><cell value="0" /><cell value="0" /><cell value="0" /><cell value="0" /></line>
+        <line><cell value="-1" /><cell value="-1" /><cell value="-1" /><cell value="-1" /><cell value="-1" /></line>
+        <line><cell value="-1" /><cell value= "1" /><cell value= "0" /><cell value= "1" /><cell value="-1" /></line>
+        <line><cell value="-1" /><cell value= "0" /><cell value= "3" /><cell value= "0" /><cell value="-1" /></line>
+        <line><cell value="-1" /><cell value= "1" /><cell value= "0" /><cell value= "0" /><cell value="-1" /></line>
+        <line><cell value="-1" /><cell value= "1" /><cell value= "0" /><cell value= "1" /><cell value="-1" /></line>
+        <line><cell value="-1" /><cell value= "1" /><cell value= "0" /><cell value= "1" /><cell value="-1" /></line>
+        <line><cell value="-1" /><cell value= "1" /><cell value= "0" /><cell value= "1" /><cell value="-1" /></line>
+        <line><cell value="-1" /><cell value= "0" /><cell value= "0" /><cell value= "1" /><cell value="-1" /></line>
+        <line><cell value="-1" /><cell value= "0" /><cell value= "0" /><cell value= "1" /><cell value="-1" /></line>
+        <line><cell value="-1" /><cell value= "0" /><cell value= "2" /><cell value= "1" /><cell value="-1" /></line>
+        <line><cell value="-1" /><cell value="-1" /><cell value="-1" /><cell value="-1" /><cell value="-1" /></line>
     </map>
     <dialogs>
-        <dialog text="Test"/>
-        
     </dialogs>
+    <executionLimit amount="1" />
     <blockLimits>
-        <blockLimit blockType="Forward" limit="4" />
-        <blockLimit blockType="TurnLeft" limit="1" />
-        <blockLimit blockType="TurnRight" limit="2" />
+        <blockLimit blockType="Forward" limit="1" />
+        <blockLimit blockType="TurnLeft" limit="0" />
+        <blockLimit blockType="TurnRight" limit="0" />
         <blockLimit blockType="Wait" limit="0" />
         <blockLimit blockType="Activate" limit="0" />
         <blockLimit blockType="TurnBack" limit="0" />
         <blockLimit blockType="If" limit="0" />
         <blockLimit blockType="IfElse" limit="0" />
-        <blockLimit blockType="For" limit="0" />
+        <blockLimit blockType="For" limit="1" />
         <blockLimit blockType="While" limit="0" />
         <blockLimit blockType="Forever" limit="0" />
         <blockLimit blockType="AndOperator" limit="0" />
@@ -31,8 +38,8 @@
         <blockLimit blockType="Terminal" limit="0" />
         <blockLimit blockType="Exit" limit="0" />
     </blockLimits>
-    <coin posY="0" posX="0" />
-    <player associatedScriptName="Bob" posY="1" posX="0" direction="0" />
-    <script name="Bob" editMode="0"/>
-    <score twoStars="0" threeStars="6666"/>
+    <player associatedScriptName="Bob" posY="9" posX="2" direction="0" />
+    <script name="Bob" editMode="0">
+    </script>
+    <score twoStars="0" threeStars="6888"/>
 </level>
