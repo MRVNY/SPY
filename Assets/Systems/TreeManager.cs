@@ -104,7 +104,7 @@ public class TreeManager : FSystem
 		}
 		return null;
 	}
-
+	
 	public static async Task ConstructTree()
 	{
 		Global.GD.path = Application.streamingAssetsPath + Path.DirectorySeparatorChar +
@@ -112,19 +112,13 @@ public class TreeManager : FSystem
 		//get all the folder names under a path
 		foreach (string directory in Directory.GetDirectories(Global.GD.path))
 		{
-			foreach (string lvl in Directory.GetFiles(directory))
-			{
-				//
-				if (File.Exists(lvl) && lvl.EndsWith(".xml") && !lvl.EndsWith("Scenario.xml")){
-					XDocument doc = XDocument.Load(lvl);
-					XElement levelInfo = doc.Element("level").Element("levelInfo");
-					XElement nodeInfo = doc.Element("level").Element("nodeInfo");
-					XElement competenceInfo = doc.Element("level").Element("blockLimits");
-					IEnumerable<XElement> allChildElements = competenceInfo.Elements();
+			if(File.Exists(directory+Path.DirectorySeparatorChar+"Nodes.xml")){
+				string nodesXml = Directory.GetFiles(directory,"*Nodes.xml").First();
+				if (File.Exists(nodesXml) && nodesXml.EndsWith("Nodes.xml"))
+				{
+					XDocument doc = XDocument.Load(nodesXml);
 
-					//Level = GameObject.Find("Level");
-					Debug.Log(lvl);
-					if (nodeInfo != null)
+					foreach (var nodeInfo in doc.Element("level").Elements("nodeInfo").ToList())
 					{
 						if (nodeInfo != null)
 						{
@@ -146,6 +140,23 @@ public class TreeManager : FSystem
 							}
 						}
 					}
+				}
+			}
+			
+			// var files = Directory.GetFiles(directory, "*.xml").ToList();
+			// files.Remove(Directory.GetFiles(directory, "*Scenario.xml").First());
+			// files.Sort((s, s1) => 
+			// 	int.Parse(Path.GetFileNameWithoutExtension(s).Substring(6)).CompareTo(
+			// 		int.Parse(Path.GetFileNameWithoutExtension(s1).Substring(6))));
+			// Debug.Log(files);
+			foreach (string lvl in Directory.GetFiles(directory))
+			{
+
+				if (File.Exists(lvl) && lvl.EndsWith(".xml") && !lvl.EndsWith("Scenario.xml")){
+					XDocument doc = XDocument.Load(lvl);
+					XElement levelInfo = doc.Element("level").Element("levelInfo");
+					XElement competenceInfo = doc.Element("level").Element("blockLimits");
+					IEnumerable<XElement> allChildElements = competenceInfo.Elements();
 
 
 					if (levelInfo != null)
@@ -174,28 +185,31 @@ public class TreeManager : FSystem
 									parent.trainingLevels.Add(level);
 									break;
 							}
-						}
-						if (competenceInfo != null)
-						{
-							Debug.Log("notnull");
-							foreach(XElement element in allChildElements)
+
+							if (competenceInfo != null)
 							{
-	              Debug.Log("child");
-	                            //Debug.Log(element.Attribute("limit").Value);
-	              if (element.Attribute("limit").Value!="1")
+								Debug.Log("notnull");
+								foreach (XElement element in allChildElements)
 								{
-	                  string block_name = element.Attribute("blockType").Value;
+									Debug.Log("child");
+									//Debug.Log(element.Attribute("limit").Value);
+									if (element.Attribute("limit").Value != "1")
+									{
+										string block_name = element.Attribute("blockType").Value;
 										Debug.Log(block_name);
-										if (("If"==block_name) | ("IfElse"==block_name)) level.Competence_lv["If"]=1;
-										else if ("While"==block_name) level.Competence_lv["While"]=1;
-										else if ("For"==block_name) level.Competence_lv["For"]=1;
-										else if (("AndOperator"==block_name) | ("OrOperator"==block_name) | ("NotOperator"==block_name)) level.Competence_lv["Operator"]=1;
+										if (("If" == block_name) | ("IfElse" == block_name))
+											level.Competence_lv["If"] = 1;
+										else if ("While" == block_name) level.Competence_lv["While"] = 1;
+										else if ("For" == block_name) level.Competence_lv["For"] = 1;
+										else if (("AndOperator" == block_name) | ("OrOperator" == block_name) |
+										         ("NotOperator" == block_name)) level.Competence_lv["Operator"] = 1;
 										else break;
 										Debug.Log(level.Competence_lv);
+									}
 								}
 							}
+							else Debug.Log("whyNull");
 						}
-						else Debug.Log("whyNull");
 					}
 					// else
 					// {

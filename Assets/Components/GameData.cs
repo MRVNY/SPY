@@ -47,9 +47,4 @@ public class GameData {
 
 	public string gameLanguage = "en";
 	public string convoNode = "-1";
-<<<<<<< HEAD
-    //public var watch = new System.Diagnostics.Stopwatch();
-
-=======
->>>>>>> origin/LevelEditor
 }
