@@ -42,7 +42,7 @@ public class LevelGenerator : FSystem {
 		if (Global.GD == null || Global.GD.level == null)
 		{
 			Global.GD = new GameData();
-			Global.GD.path = Application.streamingAssetsPath + Path.PathSeparator + "Levels" +Path.PathSeparator;
+			Global.GD.path = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +Path.DirectorySeparatorChar;
 		}
 		if(Global.GD.score==null) Global.GD.score = new Hashtable();
 

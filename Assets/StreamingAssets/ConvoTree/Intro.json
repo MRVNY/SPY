@@ -20,7 +20,7 @@
 
     "Niveau1.0": {
         "fr": "23 août 2041...{name};Vous avez un message... \nBonjour agent special Nous venons d'apprendre que des documents top-secrets ont été volés et nous devons les récupérer. \nNous avons envoyé sur le terrain un prototype de robot, son nom de code est Karl.",
-        "en": "23 August 2041...{name};You have a message... \nHello special agent We just learned that top-secret documents have been stolen and we must recover them. \nWe have sent a prototype robot on the field, his code name is Karl.",
+        "en": "23 August 2041...{name};You have a message... \nHello special agent We just learned that top-secret documents have been stolen and we must recover them. \nWe have sent a prototype robot on the field, his code name is Karl."
     },
 
     "Niveau1.1": {

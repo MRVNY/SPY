@@ -9,6 +9,7 @@ public class EndGameManager_wrapper : BaseWrapper
 	public UnityEngine.GameObject Rewind;
 	public UnityEngine.GameObject Menu;
 	public UnityEngine.GameObject Next;
+	public UnityEngine.GameObject stars;
 	private void Start()
 	{
 		this.hideFlags = HideFlags.NotEditable;
@@ -18,6 +19,7 @@ public class EndGameManager_wrapper : BaseWrapper
 		MainLoop.initAppropriateSystemField (system, "Rewind", Rewind);
 		MainLoop.initAppropriateSystemField (system, "Menu", Menu);
 		MainLoop.initAppropriateSystemField (system, "Next", Next);
+		MainLoop.initAppropriateSystemField (system, "stars", stars);
 	}
 
 	public void cancelEnd()

@@ -126,28 +126,27 @@ public class SendStatements : FSystem {
       GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
       {
           verb = "reussit",
-          objectType = Globals.st_lv,
+          objectType = "new level",
           activityExtensions = new Dictionary<string, string>()
           {
             { "score", score.ToString() }
           }
       });
 
-        Debug.Log(Global.GD.score);
-      if (Global.GD.score[Globals.st_lv]==null){
-        Global.GD.score[Globals.st_lv]=0;
-      }
-      if (score>(int)Global.GD.score[Globals.st_lv]){
-        Global.GD.score[Globals.st_lv]=score;
-        //Debug.Log(Global.GD.score[Globals.st_lv]);
-      }
+       // if (Global.GD.score[Globals.st_lv]==null){
+       //   Global.GD.score[Globals.st_lv]=0;
+       // }
+       // if (score>(int)Global.GD.score[Globals.st_lv]){
+       //   Global.GD.score[Globals.st_lv]=score;
+       //  Debug.Log(Global.GD.score[Globals.st_lv]);
+       // }
     }
     public void SendRestart()
     {
       GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
       {
           verb = "recommence",
-          objectType = Globals.st_lv,
+          objectType = "new level",
       });
     }
 
@@ -156,7 +155,8 @@ public class SendStatements : FSystem {
       GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
       {
           verb = "essaie",
-          objectType = Globals.st_lv,
+          //objectType = Global.GD.level.node.name,
+          objectType = "new level",
           activityExtensions = new Dictionary<string, string>()
           {
             { "actions", actions.ToString() }

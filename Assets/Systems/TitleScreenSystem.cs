@@ -196,7 +196,7 @@ public class TitleScreenSystem : FSystem {
 	public async void launchLevelMap()
 	{
 		if(buildingTree!=null) await buildingTree;
-		GameStateManager.SaveGD();
+		//GameStateManager.SaveGD();
 		GameObjectManager.loadScene("LevelMap");
 	}
 
@@ -306,6 +306,7 @@ public class TitleScreenSystem : FSystem {
 	public void clearSaves()
 	{
 		GameStateManager.DeleteAllSaveFiles();
+		Global.GD = null;
 	}
 	
 	public void openSettings()
