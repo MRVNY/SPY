@@ -123,6 +123,8 @@ public class VisualNovelSystem : FSystem
 			
 			// execute 
 			if (jNode["action"] != null && !jNode["action"].ToString().Contains("ending")) setActions();
+			
+			// if(!Global.GD.playedConvoNodes.Contains(node)) Global.GD.playedConvoNodes.Add(node);
 		}
 	}
 

@@ -47,4 +47,5 @@ public class GameData {
 
 	public string gameLanguage = "en";
 	public string convoNode = "-1";
+    // public List<string> playedConvoNodes = new List<string>();
 }

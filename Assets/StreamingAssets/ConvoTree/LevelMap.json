@@ -72,5 +72,10 @@
         "en" : "Ooooh look at you! We'll get there in no time!", 
         "fr" : "Ooooh regarde toi! On y arrivera en un rien de temps!",
         "action" : "changeDiff,1"
+    },
+
+    "Niveau2.0" : {
+        "en" : "Oh by the way,  did you see that big tower over there?\nIt seems like you can skip all the levels before and enter straight into the tower.\nWell I'm not sure if it's a good idea for now since we know almost nothing about the levels ahead.\nBut hey, if you got bored next time, or you feel like you have already played the levels, I'm not stopping you from going",
+        "fr" : "Oh au fait, as-tu vu cette grande tour là-bas?\nIl semble que tu puisses sauter tous les niveaux avant et entrer directement dans la tour.\nEh bien, je ne suis pas sûr que ce soit une bonne idée pour le moment, car nous ne savons presque rien sur les niveaux à venir.\nMais bon, si tu t'ennuies la prochaine fois, ou si tu te sens déjà avoir joué aux niveaux, je ne t'empêche pas d'aller"
     }
 }
