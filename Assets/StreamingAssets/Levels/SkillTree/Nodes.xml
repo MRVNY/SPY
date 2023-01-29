@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <level>
-  <nodeInfo name="Intro" next="If,While"/>
-  <nodeInfo name="If" next="IfWhile"/>
-    <nodeInfo name="While" next="IfWhile"/>
-  <nodeInfo name="IfWhile" next=""/>
+<nodeInfo name="Intro" next="If,While"/>
+<nodeInfo name="If" next="IfWhile"/>
+<nodeInfo name="While" next="IfWhile"/>
+<nodeInfo name="IfWhile" next=""/>
 
 </level>

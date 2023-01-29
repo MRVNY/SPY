@@ -68,12 +68,12 @@ public class GameStateManager : FSystem {
         else return default(T);
     }
 
-    public async static Task SaveGD()
+    public static void SaveGD()
     {
         Save(Global.GD, "GameData");
     }
 
-    public static async Task LoadGD()
+    public static void LoadGD()
     {
         Global.GD = Load<GameData>("GameData");
     }

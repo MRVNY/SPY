@@ -36,9 +36,9 @@ public class LevelGenerator : FSystem {
 
 	public static Task loadingGD;
 
-	protected async override void onStart()
+	protected override void onStart()
 	{
-		if(Global.GD == null) await GameStateManager.LoadGD();
+		if(Global.GD == null) GameStateManager.LoadGD();
 		if (Global.GD == null || Global.GD.level == null)
 		{
 			Global.GD = new GameData();

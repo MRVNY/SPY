@@ -36,7 +36,7 @@ public class LevelMapSystem : FSystem
 		Scores = new List<Tile>() { LM.Undone, LM.Done, LM.Code, LM.Exec, LM.All };
 		LevelDict = new Dictionary<Vector3Int, Level>();
 
-		if(Global.GD == null) await GameStateManager.LoadGD();
+		if(Global.GD == null) GameStateManager.LoadGD();
 		if (Global.GD == null || Global.GD.Tree == null)
 		{
 			Global.GD = new GameData();
@@ -116,11 +116,11 @@ public class LevelMapSystem : FSystem
 			await Task.Delay(10);
 		}
 	}
-	public async void launchLevel(string mode, Level level) {
+	public void launchLevel(string mode, Level level) {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
 		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
-		await GameStateManager.SaveGD();
+		GameStateManager.SaveGD();
 		GameObjectManager.loadScene("GameScene");
 	}
 

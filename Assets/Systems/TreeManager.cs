@@ -196,6 +196,8 @@ public class TreeManager : FSystem
 			}
 		}
 		LinkLevels(Global.GD.Tree);
+		
+		await Task.Delay(0);
 	}
 	
 	private static void LinkLevels(Node node)

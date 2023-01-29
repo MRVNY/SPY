@@ -35,7 +35,7 @@ public class TitleScreenSystem : FSystem {
 	public GameObject settingsPanel;
 	public GameObject menuPanel;
 
-	protected override async void onStart()
+	protected override void onStart()
 	{
 		if (funcParam == null)
         {
@@ -46,7 +46,7 @@ public class TitleScreenSystem : FSystem {
             funcLevel = funcData.GetComponent<FunctionalityInLevel>();
         }
 
-		if(Global.GD == null) await GameStateManager.LoadGD();
+		if(Global.GD == null) GameStateManager.LoadGD();
 		if (Global.GD == null || Global.GD.levelNameList == null)
 		{
 			Global.GD = new GameData();

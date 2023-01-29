@@ -96,6 +96,7 @@
         "en": "Attention {name};When the robot turns, it stays in place. \nYou can also run an unfinished program to see where Bob ends up and continue programming from there."
     },
 
+
     "Niveau6.0": {
         "fr": "Une astuce que j'ai oubié de vous dire, vous pouvez double-cliquer sur les blocs de l'inventaire pour les ajouter automatiquement au programme.",
         "en": "A tip that I forgot to tell you, you can double-click on the blocks in the inventory to automatically add them to the program."
@@ -321,5 +322,44 @@
         "en": "Really? Wow I don't know what to say!\nBut what about you?\n\"Initiating transfer\"\nOh no! It's too late, please, you have to come back! I'll wait for you here!",
         "fr": "Vraiment ? Wow, je ne sais pas quoi dire ! Mais toi ? \"Initiation au transfert\" Oh non ! C'est trop tard, s'il te plaît, tu dois revenir ! Je t'attendrai ici !",
         "action": "ending2"
+    },
+
+    "Niveau5.end.0": {
+        "en": "We did it! I can't believe we did it! \nOK, I need to take some time to analyse this massive amount of data, hold on... \n...\n......\n.........\nAh here it is: \"Project SPY: The full purpose of this project is to see if the knowledge between machines and humans are transferable\"",
+        "fr": "Nous y sommes ! Je ne peux pas croire que nous y sommes ! \nOK, je dois prendre un peu de temps pour analyser cette masse de données, patientez... \n...\n......\n.........\nAh voilà : \"Projet SPY : Le but complet de ce projet est de voir si les connaissances entre machines et humains sont transférables\"",
+        "options": {
+            "en": {
+                "Niveau5.end.1": "What the...?"
+            },
+            "fr": {
+                "Niveau5.end.1": "Quoi... ?"
+            }
+        }
+    },
+    "Niveau5.end.1": {
+        "en": "\"During the project, a human suject will be accompanying our robot to solve puzzles designed by our scientists to test various competence.\nThe human learns the mechanics for the robot, since they are connected by brain sacnners.\nBut it is neccesary to removed the skill from the human's brain and save it in the robot if the two were ever to disconnect with each other or reach the end.\"",
+        "fr": "\"Pendant le projet, un sujet humain accompagnera notre robot pour résoudre des énigmes conçues par nos scientifiques pour tester diverses compétences.\nL'humain apprend les mécaniques pour le robot, puisqu'ils sont connectés par des scanners cérébraux.\nMais il est nécessaire de supprimer la compétence du cerveau humain et de la sauvegarder dans le robot si les deux étaient jamais à se déconnecter l'un de l'autre ou atteindre la fin.\"",
+        "options": {
+            "en": {
+                "Niveau5.end.2": "..."
+            },
+            "fr": {
+                "Niveau5.end.2": "..."
+            }
+        }
+    },
+    "Niveau5.end.2": {
+        "en": "...\n......\nThis is outragous! I can't believe this is what we've been doing all this time!\nBeyond that door is the exit, I'll be free and I can go and see the world with the knowledge I've learned.\nBut I can't, because it's not mine, they're knowledge from your brain, I can't take it!\nI don't know what to do...",
+        "fr": "...\n......\nC'est scandaleux ! Je ne peux pas croire que c'est ce que nous avons fait tout ce temps !\nAu-delà de cette porte se trouve la sortie, je serai libre et je pourrai aller voir le monde avec les connaissances que j'ai apprises.\nMais je ne peux pas, parce que ce ne sont pas les miennes, ce sont des connaissances de ton cerveau, je ne peux pas les prendre !\nJe ne sais pas quoi faire...",
+        "options": {
+            "en": {
+                "ending1": "I'm sorry, goodbye",
+                "ending2": "Take them, you deserve it"
+            },
+            "fr": {
+                "ending1": "Je suis désolé, au revoir",
+                "ending2": "Prends-les, tu le mérites"
+            }
+        }
     }
 }

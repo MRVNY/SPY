@@ -15,4 +15,9 @@ public class VisualNovelSystem_wrapper : BaseWrapper
 		MainLoop.callAppropriateSystemMethod (system, "Next", null);
 	}
 
+	public void endLevelConvo()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "endLevelConvo", null);
+	}
+
 }

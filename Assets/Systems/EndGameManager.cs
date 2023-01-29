@@ -139,6 +139,9 @@ public class EndGameManager : FSystem {
 			GameObjectManager.setGameObjectState(Rewind, false);
 			GameObjectManager.setGameObjectState(Menu, true);
 			GameObjectManager.setGameObjectState(Next, true);
+			
+			VisualNovelSystem.Instance.endLevelConvo();
+			
 			//Check if next level exists in campaign
 			// if (Global.GD.level.next.Count)
 			// {
@@ -199,7 +202,7 @@ public class EndGameManager : FSystem {
 	}
 
 	// Gére le nombre d'étoile à afficher selon le score obtenue
-	private async void setScoreStars(int score, Transform scoreCanvas)
+	private void setScoreStars(int score, Transform scoreCanvas)
 	{
 		bool bestCode = false;
 		bool bestExec = false;
@@ -227,7 +230,7 @@ public class EndGameManager : FSystem {
 			Global.GD.level.score = Star.All;
 
 		//if(Global.GD.level.next!=null) Global.GD.level = Global.GD.level.next;
-		await GameStateManager.SaveGD();
+		GameStateManager.SaveGD();
 
 		// Détermine le nombre d'étoile à afficher
 		int scoredStars = 0;

@@ -35,9 +35,11 @@ public class VisualNovelSystem : FSystem
 	bool skipped = false;
 	
 	private GameObject optionPanel;
+	public static VisualNovelSystem Instance;
 
 	protected override async void onStart()
 	{
+		Instance = this;
 		if(LevelGenerator.loadingGD != null) await LevelGenerator.loadingGD;
 		
 		if (Global.GD == null)
@@ -73,7 +75,7 @@ public class VisualNovelSystem : FSystem
 		}
 	}
 	
-	private async void setVN()
+	private void setVN()
 	{
 		node = Global.GD.convoNode;
         JToken jNode = convoTree[node];
@@ -117,9 +119,6 @@ public class VisualNovelSystem : FSystem
 				string guessNext = node.Substring(0,node.Length-1) + (int.Parse(node[^1].ToString()) + 1);
 				if(convoTree[guessNext]!=null) next = guessNext;
 			}
-
-			// execute 
-			if (jNode["action"] != null) setActions();
 		}
 	}
 
@@ -172,7 +171,7 @@ public class VisualNovelSystem : FSystem
 			case "askName":
 				toggleUI("askName");
 				skipButton.enabled = false;
-				VN.askName.GetComponentInChildren<Button>().onClick.AddListener(() =>
+				VN.askName.GetComponentInChildren<Button>().onClick.AddListener( () =>
 				{
 					Global.GD.player = VN.askName.GetComponentInChildren<TMP_InputField>().text;
 					Global.GD.convoNode = "gotName";
@@ -209,7 +208,11 @@ public class VisualNovelSystem : FSystem
 	//Skip Typewriter when it's not finished
 	public async void Next()
 	{
-		if (convoTree[node]["options"] == null && skipped && toWrite.Count==1 && next==null) toggleUI("VN_Off");
+		if (convoTree[node]["options"] == null && skipped && toWrite.Count == 1 && next == null)
+		{
+			toggleUI("VN_Off");
+			toWrite.Clear();
+		}
 
 		else if (skipped)
 		{
@@ -217,6 +220,9 @@ public class VisualNovelSystem : FSystem
 			skipButton.enabled = false;
 			if (toWrite.Count == 0)
 			{
+				// execute 
+				if (convoTree[node]["action"] != null) setActions();
+				
 				if (next != null)
 				{
 					Global.GD.convoNode = next;
@@ -296,6 +302,16 @@ public class VisualNovelSystem : FSystem
 		{
 			Texture2D tex2D = ((DownloadHandlerTexture)www.downloadHandler).texture;
 			img.sprite = Sprite.Create(tex2D, new Rect(0, 0, tex2D.width, tex2D.height), new Vector2(0, 0), 100.0f);
+		}
+	}
+
+	public void endLevelConvo()
+	{
+		if (convoTree[Global.GD.level.name + ".end.0"] != null)
+		{
+			Global.GD.convoNode = Global.GD.level.name + ".end.0";
+			toggleUI("VN_On");
+			setVN();
 		}
 	}
 }
