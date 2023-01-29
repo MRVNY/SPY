@@ -30,7 +30,7 @@ public class GameStateManager : FSystem {
 
     public GameObject playButtonAmount;
     
-    private static string savePath = Application.persistentDataPath + Path.PathSeparator + "saves" + Path.PathSeparator;
+    private static string savePath = Application.persistentDataPath + Path.DirectorySeparatorChar + "saves" + Path.DirectorySeparatorChar;
 
     public static bool SaveExists(string key)
     {
@@ -68,13 +68,12 @@ public class GameStateManager : FSystem {
         else return default(T);
     }
 
-    public async static Task SaveGD()
+    public static void SaveGD()
     {
-        DeleteAllSaveFiles();
         Save(Global.GD, "GameData");
     }
 
-    public static async Task LoadGD()
+    public static void LoadGD()
     {
         Global.GD = Load<GameData>("GameData");
     }

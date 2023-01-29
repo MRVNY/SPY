@@ -13,4 +13,9 @@ public class LevelMapSystem_wrapper : BaseWrapper
 		MainLoop.callAppropriateSystemMethod (system, "launchLevel", null);
 	}
 
+	public void toTiltle()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "toTiltle", null);
+	}
+
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using System.IO;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 /// <summary>
 /// This system check if the end of the level is reached and display end panel accordingly
@@ -20,7 +21,7 @@ public class EndGameManager : FSystem {
 	private Family f_exit = FamilyManager.getFamily(new AllOfComponents(typeof(Position), typeof(AudioSource)), new AnyOfTags("Exit"));
 
 	private Family f_playingMode = FamilyManager.getFamily(new AllOfComponents(typeof(PlayMode)));
-	
+
 	public GameObject playButtonAmount;
 	public GameObject endPanel;
 
@@ -28,6 +29,13 @@ public class EndGameManager : FSystem {
     public GameObject Rewind;
     public GameObject Menu;
     public GameObject Next;
+
+    private Color gold = new Color(228,255,0,255);
+    private Color gray = new Color(137,137,137,255);
+    private Color blue = new Color(0,255,255,255);
+    private Color red = new Color(255,0,0,255);
+
+    public GameObject stars;
 
 	public EndGameManager()
 	{
@@ -116,10 +124,36 @@ public class EndGameManager : FSystem {
 		else if (f_requireEndPanel.First().GetComponent<NewEnd>().endType == NewEnd.Win)
 		{
 			int score = (10000 / (Global.GD.totalActionBlocUsed + 1) + 5000 / (Global.GD.totalStep + 1) + 6000 / (Global.GD.totalExecute + 1) + 5000 * Global.GD.totalCoin);
-			SendStatements.instance.WinLevel(score);
+      SendStatements.instance.WinLevel(score);
+			//if (Global.GD.levelScore==null)
+			if (Global.GD.score[Global.GD.scoreKey]==null)
+			{
+				Debug.Log("null");
+				Debug.Log(Global.GD.level.Competence_lv["For"]);
+				foreach(DictionaryEntry s in Global.GD.level.Competence_lv){
+					Debug.Log(s.Key);
+					if (Global.GD.compCounter[s.Key]==null){
+						Global.GD.compCounter[s.Key]=1;
+						Debug.Log("Learned");
+					}
+					else{
+						Debug.Log("here");
+						Global.GD.compCounter[s.Key]=1+  (int)Global.GD.compCounter[s.Key];
+						if ((int)Global.GD.compCounter[s.Key]==1){
+							Debug.Log("Learned");
+						}
+					}
+				}
+			}
+			else{
+				Debug.Log(Global.GD.levelScore);
+			}
+			//Global.GD
 			Transform verticalCanvas = endPanel.transform.Find("VerticalCanvas");
 			GameObjectManager.setGameObjectState(verticalCanvas.Find("ScoreCanvas").gameObject, true);
-			verticalCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Bravo vous avez gagné !\nScore: " + score;
+			verticalCanvas.GetComponentInChildren<TextMeshProUGUI>().text =
+				"Code length" + Global.GD.totalActionBlocUsed + "/" + Global.GD.level.bestCode
+				+ "\nExecution length" + Global.GD.totalStep + "/" + Global.GD.level.bestExec;
 			setScoreStars(score, verticalCanvas.Find("ScoreCanvas"));
 
 			endPanel.GetComponent<AudioSource>().clip = Resources.Load("Sound/VictorySound") as AudioClip;
@@ -129,11 +163,14 @@ public class EndGameManager : FSystem {
 			GameObjectManager.setGameObjectState(Rewind, false);
 			GameObjectManager.setGameObjectState(Menu, true);
 			GameObjectManager.setGameObjectState(Next, true);
+			
+			VisualNovelSystem.Instance.endLevelConvo();
+			
 			//Check if next level exists in campaign
-			if (Global.GD.level.next != null)
-			{
-				GameObjectManager.setGameObjectState(Next, false);
-			}
+			// if (Global.GD.level.next.Count)
+			// {
+			// 	GameObjectManager.setGameObjectState(Next, false);
+			// }
 		}
 		else if (f_requireEndPanel.First().GetComponent<NewEnd>().endType == NewEnd.BadCondition)
 		{
@@ -191,33 +228,61 @@ public class EndGameManager : FSystem {
 	// Gére le nombre d'étoile à afficher selon le score obtenue
 	private void setScoreStars(int score, Transform scoreCanvas)
 	{
-		// Détermine le nombre d'étoile à afficher
-		int scoredStars = 0;
-		if (Global.GD.levelScore != null)
+		bool bestCode = false;
+		bool bestExec = false;
+		Image[] starList = stars.GetComponentsInChildren<Image>();
+		starList[0].color = gold;
+		if (Global.GD.totalActionBlocUsed <= Global.GD.level.bestCode)
 		{
-			//check 0, 1, 2 or 3 stars
-			if (score >= Global.GD.levelScore[0])
-			{
-				scoredStars = 3;
-			}
-			else if (score >= Global.GD.levelScore[1])
-			{
-				scoredStars = 2;
-			}
-			else
-			{
-				scoredStars = 1;
-			}
+			bestCode = true;
+			starList[1].color = red;
 		}
 
-		// Affiche le nombre d'étoile désiré
-		for (int nbStar = 0; nbStar < 4; nbStar++)
+		if (Global.GD.totalStep <= Global.GD.level.bestExec)
 		{
-			if (nbStar == scoredStars)
-				GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, true);
-			else
-				GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, false);
+			bestExec = true;
+			starList[2].color = blue;
 		}
+
+		if (!bestCode && !bestExec)
+			Global.GD.level.score = Star.Done;
+		else if (bestCode && !bestExec)
+			Global.GD.level.score = Star.Code;
+		else if (!bestCode && bestExec)
+			Global.GD.level.score = Star.Exec;
+		else
+			Global.GD.level.score = Star.All;
+
+		//if(Global.GD.level.next!=null) Global.GD.level = Global.GD.level.next;
+		GameStateManager.SaveGD();
+
+		// Détermine le nombre d'étoile à afficher
+		int scoredStars = 0;
+		// if (Global.GD.levelScore != null)
+		// {
+		// 	//check 0, 1, 2 or 3 stars
+		// 	if (score >= Global.GD.levelScore[0])
+		// 	{
+		// 		scoredStars = 3;
+		// 	}
+		// 	else if (score >= Global.GD.levelScore[1])
+		// 	{
+		// 		scoredStars = 2;
+		// 	}
+		// 	else
+		// 	{
+		// 		scoredStars = 1;
+		// 	}
+		// }
+		//
+		// // Affiche le nombre d'étoile désiré
+		// for (int nbStar = 0; nbStar < 4; nbStar++)
+		// {
+		// 	if (nbStar == scoredStars)
+		// 		GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, true);
+		// 	else
+		// 		GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, false);
+		// }
 
 		//save score only if better score
 		int savedScore = PlayerPrefs.GetInt(Global.GD.mode + Path.DirectorySeparatorChar + Global.GD.level.name + Global.GD.scoreKey, 0);

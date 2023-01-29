@@ -43,7 +43,7 @@ public class LevelEditorSystem : FSystem {
 	public static string xmlPath;
 	public static string scenarioPath;
     
-	protected override async void onStart()
+	protected override void onStart()
     {
 	    levelEditor = f_levelEditor.First().GetComponent<LevelEditor>();
 
@@ -271,9 +271,9 @@ public class LevelEditorSystem : FSystem {
 		LoadLevel(Path.GetFileNameWithoutExtension(xmlPath));
 	}
 
-	public async void LoadLevel(string levelName)
+	public void LoadLevel(string levelName)
 	{
-		//if(Global.GD == null) await GameStateManager.LoadGD();
+		//if(Global.GD == null) GameStateManager.LoadGD();
 		if (Global.GD == null)
 		{
 			Global.GD = new GameData();
@@ -284,8 +284,8 @@ public class LevelEditorSystem : FSystem {
 		Level tmp = new Level();
 		tmp.name = levelName;
 		Global.GD.level = tmp;
-		await GameStateManager.SaveGD();
-		await GameStateManager.LoadGD();
+		GameStateManager.SaveGD();
+		GameStateManager.LoadGD();
 		GameObjectManager.loadScene("ScriptEditor");
 	}
 	

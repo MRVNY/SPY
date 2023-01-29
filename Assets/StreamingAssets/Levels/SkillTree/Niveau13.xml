@@ -35,4 +35,6 @@
   <player associatedScriptName="Bob" posY="1" posX="1" direction="2" />
   <script name="Bob" editMode="0" />
   <score twoStars="0" threeStars="5833"/>
+
+  <levelInfo node="IfWhile" type="pool"/>
 </level>

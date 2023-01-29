@@ -6,6 +6,9 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Diagnostics;
+using System.Threading;
+using Debug = UnityEngine.Debug;
 
 
 
@@ -16,6 +19,7 @@ public class SendStatements : FSystem {
         // global int
         public static int lv;
         public static String st_lv;
+        public static DateTime start;
     }
 
     private Family f_actionForLRS = FamilyManager.getFamily(new AllOfComponents(typeof(ActionPerformedForLRS)));
@@ -100,40 +104,40 @@ public class SendStatements : FSystem {
 		public void SendLevel(int lv)//int level)
 		{
         //String st_lv="";
+
         Debug.Log(lv);
         if (lv==0)
           lv=Globals.lv+1;
         Globals.lv=lv;
 				Debug.Log(GBL_Interface.playerName + " try level " +lv.ToString());
-        if (lv <= 20)
-          Globals.st_lv="level "+lv.ToString();
-        else
-          Globals.st_lv="new level";
+        Globals.st_lv="level "+lv.ToString();
 
         GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
         {
             verb = "commence",
-            objectType = Globals.st_lv,
+            objectType = "level",
             activityExtensions = new Dictionary<string, string>()
             {
-                { "lv", lv.ToString() }
+                { "lv", Globals.lv.ToString() }
             }
         });
         }
 
-    public void WinLevel(int score)
+    public void WinLevel(int score)//, int duration)
     {
+      TimeSpan duration = DateTime.Now-Globals.start;
       GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
       {
           verb = "reussit",
-          objectType = Globals.st_lv,
+          objectType = "level",
           activityExtensions = new Dictionary<string, string>()
           {
-            { "score", score.ToString() }
+            { "lv", Globals.lv.ToString()},
+            { "score", score.ToString() },
+            { "duration", duration.TotalSeconds.ToString()}
           }
       });
-
-        Debug.Log(Global.GD.score);
+      Debug.Log(Global.GD.score);
       if (Global.GD.score[Globals.st_lv]==null){
         Global.GD.score[Globals.st_lv]=0;
       }
@@ -142,12 +146,22 @@ public class SendStatements : FSystem {
         //Debug.Log(Global.GD.score[Globals.st_lv]);
       }
     }
+
     public void SendRestart()
     {
       GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
       {
           verb = "recommence",
-          objectType = Globals.st_lv,
+          objectType = "level",//#Globals.st_lv,
+      });
+    }
+
+    public void SendBackMenu()
+    {
+      GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
+      {
+          verb = "revien sur",
+          objectType = "Menu",
       });
     }
 
@@ -156,10 +170,11 @@ public class SendStatements : FSystem {
       GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
       {
           verb = "essaie",
-          objectType = Globals.st_lv,
+          objectType = "level",
           activityExtensions = new Dictionary<string, string>()
           {
-            { "actions", actions.ToString() }
+            { "actions", actions.ToString() },
+            {"lv", Globals.st_lv.ToString()}
           }
       });
     }

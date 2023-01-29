@@ -35,9 +35,11 @@ public class VisualNovelSystem : FSystem
 	bool skipped = false;
 	
 	private GameObject optionPanel;
+	public static VisualNovelSystem Instance;
 
 	protected override async void onStart()
 	{
+		Instance = this;
 		if(LevelGenerator.loadingGD != null) await LevelGenerator.loadingGD;
 		
 		if (Global.GD == null)
@@ -55,7 +57,8 @@ public class VisualNovelSystem : FSystem
 				convoTree = JObject.Parse(File.ReadAllText(treePath + "LevelMap.json"));
 			else convoTree = JObject.Parse(File.ReadAllText(treePath + "Intro.json"));
 			//else convoTree = JObject.Parse(File.ReadAllText(treePath + Global.GD.level.node.name + ".json"));
-			if(Global.GD.level != null)
+			
+			if(Global.GD.level != null && !Global.GD.convoNode.Contains("ask"))
 				Global.GD.convoNode = Global.GD.level.name + ".0";
 			node = Global.GD.convoNode;
 
@@ -73,7 +76,7 @@ public class VisualNovelSystem : FSystem
 		}
 	}
 	
-	private async void setVN()
+	public void setVN()
 	{
 		node = Global.GD.convoNode;
         JToken jNode = convoTree[node];
@@ -117,9 +120,9 @@ public class VisualNovelSystem : FSystem
 				string guessNext = node.Substring(0,node.Length-1) + (int.Parse(node[^1].ToString()) + 1);
 				if(convoTree[guessNext]!=null) next = guessNext;
 			}
-
+			
 			// execute 
-			if (jNode["action"] != null) setActions();
+			if (jNode["action"] != null && !jNode["action"].ToString().Contains("ending")) setActions();
 		}
 	}
 
@@ -172,7 +175,7 @@ public class VisualNovelSystem : FSystem
 			case "askName":
 				toggleUI("askName");
 				skipButton.enabled = false;
-				VN.askName.GetComponentInChildren<Button>().onClick.AddListener(() =>
+				VN.askName.GetComponentInChildren<Button>().onClick.AddListener( () =>
 				{
 					Global.GD.player = VN.askName.GetComponentInChildren<TMP_InputField>().text;
 					Global.GD.convoNode = "gotName";
@@ -186,7 +189,10 @@ public class VisualNovelSystem : FSystem
 				next = action[1]; break;
 			case "changeDiff":
 				int tmp = int.Parse(action[1]);
-				Global.GD.difficulty = Math.Min(Math.Max(0,tmp),2); break;
+				Global.GD.difficulty = Math.Min(Math.Max(0,tmp),2); 
+				Global.GD.convoNode = "";
+				node = "";
+				break;
 		}
 	}
 
@@ -209,7 +215,11 @@ public class VisualNovelSystem : FSystem
 	//Skip Typewriter when it's not finished
 	public async void Next()
 	{
-		if (convoTree[node]["options"] == null && skipped && toWrite.Count==1 && next==null) toggleUI("VN_Off");
+		if ((convoTree[node]==null || convoTree[node]["options"] == null) && skipped && toWrite.Count == 1 && next == null)
+		{
+			toggleUI("VN_Off");
+			toWrite.Clear();
+		}
 
 		else if (skipped)
 		{
@@ -217,6 +227,9 @@ public class VisualNovelSystem : FSystem
 			skipButton.enabled = false;
 			if (toWrite.Count == 0)
 			{
+				// execute 
+				if (convoTree[node]["action"] != null && convoTree[node]["action"].ToString().Contains("ending")) setActions();
+				
 				if (next != null)
 				{
 					Global.GD.convoNode = next;
@@ -236,7 +249,7 @@ public class VisualNovelSystem : FSystem
 			await writing;
 			VN.dialog.text = toWrite[0];
 			
-			if (convoTree[node]["options"] != null && toWrite.Count==1) skipButton.enabled = false;
+			if (convoTree[node]!=null && convoTree[node]["options"] != null && toWrite.Count==1) skipButton.enabled = false;
 		}
 	}
 
@@ -296,6 +309,16 @@ public class VisualNovelSystem : FSystem
 		{
 			Texture2D tex2D = ((DownloadHandlerTexture)www.downloadHandler).texture;
 			img.sprite = Sprite.Create(tex2D, new Rect(0, 0, tex2D.width, tex2D.height), new Vector2(0, 0), 100.0f);
+		}
+	}
+
+	public void endLevelConvo()
+	{
+		if (convoTree[Global.GD.level.name + ".end.0"] != null)
+		{
+			Global.GD.convoNode = Global.GD.level.name + ".end.0";
+			toggleUI("VN_On");
+			setVN();
 		}
 	}
 }

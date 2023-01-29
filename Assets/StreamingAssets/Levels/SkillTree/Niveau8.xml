@@ -45,6 +45,5 @@
   <script name="Bob" editMode="0" />
   <score twoStars="4499" threeStars="5499"/>
 
-  <nodeInfo name="IfWhile" next=""/>
-  <levelInfo node="IfWhile" type="intro"/>
+  <levelInfo node="If" type="outro"/>
 </level>

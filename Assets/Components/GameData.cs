@@ -12,8 +12,19 @@ public class GameData {
 	public Level level;
 	public int ending = 0;
 	public string player = "Student";
-
+	public static List<string> ListComp = new List<string>()
+                    {
+												"If",
+                        "IfElse",
+                        "While",
+                        "For",
+                        "AndOperator",
+												"OrOperator",
+												"NotOperator"
+                    };
+	public static List<string> CompStudent = new List<string>();
 	public Hashtable levelNameList = new Hashtable();
+	public Hashtable compCounter = new Hashtable();
 	public int[] levelScore; //levelToLoadScore[0] = best score (3 stars) ; levelToLoadScore[1] = medium score (2 stars)
 
 	public Node Tree;

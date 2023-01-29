@@ -10,6 +10,7 @@ using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Object = UnityEngine.Object;
+using System.Diagnostics;
 
 /// <summary>
 /// Manage main menu to launch a specific mission
@@ -29,13 +30,13 @@ public class TitleScreenSystem : FSystem {
 	public Task buildingTree;
 
 	private Dictionary<GameObject, List<GameObject>> levelButtons; //key = directory button,  value = list of level buttons
-	
+
 	private string[] languages = new string[] {"en", "fr"};
-	
+
 	public GameObject settingsPanel;
 	public GameObject menuPanel;
 
-	protected override async void onStart()
+	protected override void onStart()
 	{
 		if (funcParam == null)
         {
@@ -46,7 +47,7 @@ public class TitleScreenSystem : FSystem {
             funcLevel = funcData.GetComponent<FunctionalityInLevel>();
         }
 
-		if(Global.GD == null) await GameStateManager.LoadGD();
+		if(Global.GD == null) GameStateManager.LoadGD();
 		if (Global.GD == null || Global.GD.levelNameList == null)
 		{
 			Global.GD = new GameData();
@@ -56,7 +57,9 @@ public class TitleScreenSystem : FSystem {
 			Global.GD.levelNameList = new Hashtable();
 		}
 
-		levelButtons = new Dictionary<GameObject, List<GameObject>>();
+
+		Global.GD.levelNameList = new Hashtable();
+        levelButtons = new Dictionary<GameObject, List<GameObject>>();
 
 		GameObjectManager.setGameObjectState(campagneMenu, false);
 		string levelsPath;
@@ -166,14 +169,14 @@ public class TitleScreenSystem : FSystem {
 						//levelButtons[directory][i].transform.Find("Button").GetComponent<Button>().interactable = false;
 						levelButtons[directory][i].transform.Find("Button").GetComponent<Button>().interactable = true;
 					//scores
-					int scoredStars = PlayerPrefs.GetInt(directoryName + Path.DirectorySeparatorChar + i + Global.GD.scoreKey, 0); //0 star by default
-					Transform scoreCanvas = levelButtons[directory][i].transform.Find("ScoreCanvas");
-					for (int nbStar = 0; nbStar < 4; nbStar++) {
-						if (nbStar == scoredStars)
-							GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, true);
-						else
-							GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, false);
-					}
+					// int scoredStars = PlayerPrefs.GetInt(directoryName + Path.DirectorySeparatorChar + i + Global.GD.scoreKey, 0); //0 star by default
+					// Transform scoreCanvas = levelButtons[directory][i].transform.Find("ScoreCanvas");
+					// for (int nbStar = 0; nbStar < 4; nbStar++) {
+					// 	if (nbStar == scoredStars)
+					// 		GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, true);
+					// 	else
+					// 		GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, false);
+					// }
 				}
 			}
 			//hide other levels
@@ -188,6 +191,9 @@ public class TitleScreenSystem : FSystem {
 	public void launchLevel(string mode, Level level) {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
+		SendStatements.Globals.start = DateTime.Now;
+		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
+		//watch.Start();
 		//SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
 		GameStateManager.SaveGD();
 		GameObjectManager.loadScene("GameScene");
@@ -196,7 +202,7 @@ public class TitleScreenSystem : FSystem {
 	public async void launchLevelMap()
 	{
 		if(buildingTree!=null) await buildingTree;
-		GameStateManager.SaveGD();
+		//GameStateManager.SaveGD();
 		GameObjectManager.loadScene("LevelMap");
 	}
 
@@ -306,8 +312,9 @@ public class TitleScreenSystem : FSystem {
 	public void clearSaves()
 	{
 		GameStateManager.DeleteAllSaveFiles();
+		Global.GD = null;
 	}
-	
+
 	public void openSettings()
 	{
 		GameObjectManager.setGameObjectState(settingsPanel, true);
