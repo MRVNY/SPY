@@ -155,34 +155,37 @@ public class TreeManager : FSystem
 				if (File.Exists(lvl) && lvl.EndsWith(".xml") && !lvl.EndsWith("Scenario.xml")){
 					Debug.Log(lvl);
 					XDocument doc = XDocument.Load(lvl);
-					XElement levelInfo = doc.Element("level").Element("levelInfo");
+					string[] levelInfo = doc.Element("level").Element("levelInfo").ToString().Split("-");
 					XElement competenceInfo = doc.Element("level").Element("blockLimits");
 
 
-					if (levelInfo != null)
+					if (levelInfo.Length==3)
 					{
-						Node parent = findNode(Global.GD.Tree, levelInfo.Attribute("node").Value);
+						string node = levelInfo[0];
+						string type = levelInfo[1];
+						int index = int.Parse(levelInfo[2])-1;
+						
+						Node parent = findNode(Global.GD.Tree, node);
 						if (parent != null)
 						{
 							Level level = makeLevel(Path.GetFileNameWithoutExtension(lvl), 0, Lvltype.normal, parent);
 							//level.name = levelInfo.Attribute("name").Value;
-							string type = levelInfo.Attribute("type").Value;
-							if (levelInfo.LastAttribute.Name == "difficulty")
-							{
-								level.difficulty = int.Parse(levelInfo.Attribute("difficulty").Value);
-							}
+							// if (levelInfo.LastAttribute.Name == "difficulty")
+							// {
+							// 	level.difficulty = int.Parse(levelInfo.Attribute("difficulty").Value);
+							// }
 
 							switch (type)
 							{
 								case "intro":
-									parent.introLevels.Add(level);
+									parent.introLevels.Insert(index,level);
 									break;
 								case "outro":
-									parent.outroLevels.Add(level);
+									parent.outroLevels.Insert(index,level);
 									break;
 								case "pool":
-									parent.levelPool.Add(level);
-									parent.trainingLevels.Add(level);
+									parent.levelPool.Insert(index,level);
+									parent.trainingLevels.Insert(index,level);
 									break;
 							}
 
