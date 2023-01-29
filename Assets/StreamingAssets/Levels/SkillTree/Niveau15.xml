@@ -52,4 +52,6 @@
 	</while>
   </script>
   <score twoStars="0" threeStars="4166"/>
+
+  <levelInfo node="Intro" type="pool"/>
 </level>

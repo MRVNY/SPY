@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <level>
+  <levelInfo node="Intro" type="pool"/>
     <map>
         <line><cell value="-1" /><cell value="-1" /><cell value="-1" /><cell value="-1" /><cell value="-1" /><cell value="-1" /><cell value="-1" /><cell value="-1" /></line>
         <line><cell value= "1" /><cell value= "2" /><cell value= "1" /><cell value= "1" /><cell value= "1" /><cell value= "1" /><cell value= "1" /><cell value= "1" /></line>

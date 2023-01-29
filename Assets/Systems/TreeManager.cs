@@ -153,6 +153,7 @@ public class TreeManager : FSystem
 			{
 
 				if (File.Exists(lvl) && lvl.EndsWith(".xml") && !lvl.EndsWith("Scenario.xml")){
+					Debug.Log(lvl);
 					XDocument doc = XDocument.Load(lvl);
 					XElement levelInfo = doc.Element("level").Element("levelInfo");
 					XElement competenceInfo = doc.Element("level").Element("blockLimits");

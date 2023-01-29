@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <level>
+  <levelInfo node="Intro" type="pool"/>
     <map>
         <line>
             <cell value="-1" />
@@ -96,6 +97,4 @@
     <score twoStars="0" threeStars="10500"/>
     <star code="1" exec="1"/>
 
-    <nodeInfo name="Intro" next="If,While"/>
-    <levelInfo node="Intro" type="intro"/>
 </level>

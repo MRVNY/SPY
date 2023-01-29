@@ -40,6 +40,5 @@
   <script name="Bob" editMode="0" />
   <score twoStars="3666" threeStars="4666"/>
 
-  <nodeInfo name="If" next="IfWhile"/>
   <levelInfo node="If" type="intro"/>
 </level>
