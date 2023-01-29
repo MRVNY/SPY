@@ -3,8 +3,8 @@
 <nodeInfo name="Intro" next="If,For"/>
 <nodeInfo name="If" next="If_For"/>
 <nodeInfo name="For" next="If_For"/>
-<nodeInfo name="If_For" next="If_For_While,If_For_Cond"/>
-<nodeInfo name="If_For_While" next="If_For_While_Cond"/>
-<nodeInfo name="If_For_Cond" next="If_For_While_Cond"/>
-<nodeInfo name="If_For_While_Cond" next=""/>
+<nodeInfo name="If_For" next="If_For_While,If_For_Op"/>
+<nodeInfo name="If_For_While" next="If_For_While_Op"/>
+<nodeInfo name="If_For_Op" next="If_For_While_Op"/>
+<nodeInfo name="If_For_While_Op" next=""/>
 </level>

@@ -31,12 +31,12 @@
         <line>
             <cell value="-1" />
             <cell value="2" />
-            <cell value="3" />
             <cell value="0" />
             <cell value="0" />
             <cell value="0" />
             <cell value="0" />
             <cell value="0" />
+            <cell value="1" />
             <cell value="0" />
             <cell value="0" />
             <cell value="-1" />
@@ -48,7 +48,7 @@
             <cell value="0" />
             <cell value="0" />
             <cell value="0" />
-            <cell value="0" />
+            <cell value="3" />
             <cell value="0" />
             <cell value="0" />
             <cell value="1" />
@@ -69,15 +69,15 @@
         </line>
     </map>
     <blockLimits>
-        <blockLimit blockType="Forward" limit="-1" />
-        <blockLimit blockType="TurnLeft" limit="-1" />
-        <blockLimit blockType="TurnRight" limit="-1" />
+        <blockLimit blockType="Forward" limit="1" />
+        <blockLimit blockType="TurnLeft" limit="0" />
+        <blockLimit blockType="TurnRight" limit="1" />
         <blockLimit blockType="Wait" limit="0" />
         <blockLimit blockType="Activate" limit="0" />
         <blockLimit blockType="TurnBack" limit="0" />
-        <blockLimit blockType="If" limit="1" />
-        <blockLimit blockType="IfElse" limit="0" />
-        <blockLimit blockType="For" limit="0" />
+        <blockLimit blockType="If" limit="0" />
+        <blockLimit blockType="IfElse" limit="1" />
+        <blockLimit blockType="For" limit="1" />
         <blockLimit blockType="While" limit="0" />
         <blockLimit blockType="Forever" limit="0" />
         <blockLimit blockType="AndOperator" limit="0" />
