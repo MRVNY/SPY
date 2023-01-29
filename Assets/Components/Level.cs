@@ -1,6 +1,8 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 
 [Serializable]
 public class Level
@@ -15,10 +17,11 @@ public class Level
 	
 	public int bestCode = Int32.MaxValue;
 	public int bestExec = Int32.MaxValue;
-	
+
 	public Star score = Star.Undone;
 	public int codeScore = 0;
 	public int execScore = 0;
+	public Hashtable Competence_lv;
 }
 
 public enum Lvltype { normal, debug };

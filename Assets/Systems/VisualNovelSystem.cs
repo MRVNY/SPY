@@ -39,13 +39,31 @@ public class VisualNovelSystem : FSystem
 
 	protected override async void onStart()
 	{
+<<<<<<< HEAD
+		//if(LevelGenerator.loadingGD != null) await LevelGenerator.loadingGD;
+=======
 		Instance = this;
 		if(LevelGenerator.loadingGD != null) await LevelGenerator.loadingGD;
+>>>>>>> origin/LevelEditor
 		
-		if (Global.GD == null)
-			return;
+		//if (Global.GD == null)
+		//	return;
 
 		VN = f_VN.First().GetComponent<VisualNovel>();
+<<<<<<< HEAD
+		//skipButton = VN.dialog.transform.parent.GetComponent<Button>();
+		//skipButton.onClick.AddListener(() => { Skip(); });
+        optionPanel = VN.options[0].transform.parent.parent.gameObject;
+		toggleUI("VN_Off");
+		
+		//if (Global.GD.convoNode != null)
+		//{
+  //          //Debug.Log(Global.GD.level.node.name);
+		//	if(SceneManager.GetActiveScene().name == "LevelMap")
+		//		convoTree = JObject.Parse(File.ReadAllText(treePath + "LevelMap.json"));
+		//    else convoTree = JObject.Parse(File.ReadAllText(treePath + Global.GD.level.node.name + ".json"));
+		//	node = Global.GD.convoNode;
+=======
 		skipButton = VN.dialog.transform.parent.GetComponent<Button>();
 		skipButton.onClick.AddListener(() => { Next(); });
 		optionPanel = VN.options[0].transform.parent.parent.gameObject;
@@ -61,19 +79,20 @@ public class VisualNovelSystem : FSystem
 			if(Global.GD.level != null && !Global.GD.convoNode.Contains("ask"))
 				Global.GD.convoNode = Global.GD.level.name + ".0";
 			node = Global.GD.convoNode;
+>>>>>>> origin/LevelEditor
 
-			imgPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
-			          Path.DirectorySeparatorChar + Global.GD.mode + Path.DirectorySeparatorChar +
-			          "Images" + Path.DirectorySeparatorChar;
+		//	imgPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
+		//	          Path.DirectorySeparatorChar + Global.GD.mode + Path.DirectorySeparatorChar +
+		//	          "Images" + Path.DirectorySeparatorChar;
 
-			//Global.GD.gameLanguage = "en";
+		//	//Global.GD.gameLanguage = "en";
 			
-			if (convoTree[node] != null)
-			{
-				toggleUI("VN_On");
-				setVN();
-			}
-		}
+		//	if (convoTree[node] != null)
+		//	{
+		//		toggleUI("VN_On");
+		//		setVN();
+		//	}
+		//}
 	}
 	
 	public void setVN()

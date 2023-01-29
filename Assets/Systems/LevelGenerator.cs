@@ -50,8 +50,9 @@ public class LevelGenerator : FSystem {
 			GameObjectManager.loadScene("TitleScreen");
 		else
 		{
-			Level = GameObject.Find("Level");
-			XmlDocument doc = new XmlDocument();
+						Level = GameObject.Find("Level");
+            Global.GD.level.Competence_lv = new Hashtable();
+            XmlDocument doc = new XmlDocument();
 			if (Application.platform == RuntimePlatform.WebGLPlayer)
 			{
 				MainLoop.instance.StartCoroutine(GetLevelWebRequest(doc));
