@@ -83,7 +83,7 @@ public class TitleScreenSystem : FSystem {
 			foreach (string directory in Directory.GetDirectories(levelsPath))
 			{
 				levels = readScenario(directory);
-				if (levels != null)
+				if (levels != null && levels.Count > 0)
 					Global.GD.levelNameList[Path.GetFileNameWithoutExtension(directory)] = levels; //key = directory name
 			}
 		}
