@@ -48,4 +48,7 @@
       </for>
   </script>
   <score twoStars="0" threeStars="6888"/>
+
+  <levelInfo node="While" type="outro"/>
+
 </level>

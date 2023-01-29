@@ -166,14 +166,14 @@ public class TitleScreenSystem : FSystem {
 						//levelButtons[directory][i].transform.Find("Button").GetComponent<Button>().interactable = false;
 						levelButtons[directory][i].transform.Find("Button").GetComponent<Button>().interactable = true;
 					//scores
-					int scoredStars = PlayerPrefs.GetInt(directoryName + Path.DirectorySeparatorChar + i + Global.GD.scoreKey, 0); //0 star by default
-					Transform scoreCanvas = levelButtons[directory][i].transform.Find("ScoreCanvas");
-					for (int nbStar = 0; nbStar < 4; nbStar++) {
-						if (nbStar == scoredStars)
-							GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, true);
-						else
-							GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, false);
-					}
+					// int scoredStars = PlayerPrefs.GetInt(directoryName + Path.DirectorySeparatorChar + i + Global.GD.scoreKey, 0); //0 star by default
+					// Transform scoreCanvas = levelButtons[directory][i].transform.Find("ScoreCanvas");
+					// for (int nbStar = 0; nbStar < 4; nbStar++) {
+					// 	if (nbStar == scoredStars)
+					// 		GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, true);
+					// 	else
+					// 		GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, false);
+					// }
 				}
 			}
 			//hide other levels

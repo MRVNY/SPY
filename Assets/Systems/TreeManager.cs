@@ -55,6 +55,7 @@ public class TreeManager : FSystem
 		level.difficulty = difficulty;
 		level.type = Lvltype.normal;
 		level.node = node;
+		level.next = new List<Level>();
 		return level;
 	}
 
@@ -106,59 +107,82 @@ public class TreeManager : FSystem
 	
 	public static async Task ConstructTree()
 	{
-		Global.GD.path = Application.streamingAssetsPath + "/Levels/";
+		Global.GD.path = Application.streamingAssetsPath + Path.DirectorySeparatorChar +
+		                 "Levels" + Path.DirectorySeparatorChar;
 		//get all the folder names under a path
 		foreach (string directory in Directory.GetDirectories(Global.GD.path))
 		{
-			foreach (string lvl in Directory.GetFiles(directory))
-			{
-				if (File.Exists(lvl) && lvl.EndsWith(".xml") && !lvl.EndsWith("Scenario.xml")){
-					XDocument doc = XDocument.Load(lvl);
-					XElement levelInfo = doc.Element("level").Element("levelInfo");
-					XElement nodeInfo = doc.Element("level").Element("nodeInfo");
+			if(File.Exists(directory+Path.DirectorySeparatorChar+"Nodes.xml")){
+				string nodesXml = Directory.GetFiles(directory,"*Nodes.xml").First();
+				if (File.Exists(nodesXml) && nodesXml.EndsWith("Nodes.xml"))
+				{
+					XDocument doc = XDocument.Load(nodesXml);
 
-					if (nodeInfo != null)
+					foreach (var nodeInfo in doc.Element("level").Elements("nodeInfo").ToList())
 					{
-						Node target = findNode(Global.GD.Tree, nodeInfo.Attribute("name").Value);
-						if (target == null)
+						if (nodeInfo != null)
 						{
-							target = makeNode(nodeInfo.Attribute("name").Value);
-							Global.GD.Tree = target;
-						}
-
-						foreach (var next in nodeInfo.Attribute("next").Value.Split(','))
-						{
-							if (next != "")
+							Node target = findNode(Global.GD.Tree, nodeInfo.Attribute("name").Value);
+							if (target == null)
 							{
-								Node nextNode = findNode(Global.GD.Tree, next);
-								if(nextNode == null) nextNode = makeNode(next);
-								if(!target.nextNodes.Contains(nextNode)) target.nextNodes.Add(nextNode);
+								target = makeNode(nodeInfo.Attribute("name").Value);
+								Global.GD.Tree = target;
+							}
+
+							foreach (var next in nodeInfo.Attribute("next").Value.Split(','))
+							{
+								if (next != "")
+								{
+									Node nextNode = findNode(Global.GD.Tree, next);
+									if (nextNode == null) nextNode = makeNode(next);
+									if (!target.nextNodes.Contains(nextNode)) target.nextNodes.Add(nextNode);
+								}
 							}
 						}
 					}
+				}
+			}
+			
+			// var files = Directory.GetFiles(directory, "*.xml").ToList();
+			// files.Remove(Directory.GetFiles(directory, "*Scenario.xml").First());
+			// files.Sort((s, s1) => 
+			// 	int.Parse(Path.GetFileNameWithoutExtension(s).Substring(6)).CompareTo(
+			// 		int.Parse(Path.GetFileNameWithoutExtension(s1).Substring(6))));
+			// Debug.Log(files);
+			foreach (string lvl in Directory.GetFiles(directory))
+			{
+
+				if (File.Exists(lvl) && lvl.EndsWith(".xml") && !lvl.EndsWith("Scenario.xml")){
+					XDocument doc = XDocument.Load(lvl);
+					XElement levelInfo = doc.Element("level").Element("levelInfo");
+
 
 					if (levelInfo != null)
 					{
 						Node parent = findNode(Global.GD.Tree, levelInfo.Attribute("node").Value);
-						Level level = makeLevel(Path.GetFileNameWithoutExtension(lvl),0,Lvltype.normal, parent);
-						//level.name = levelInfo.Attribute("name").Value;
-						string type = levelInfo.Attribute("type").Value;
-						if (levelInfo.LastAttribute.Name == "difficulty")
+						if (parent != null)
 						{
-							level.difficulty = int.Parse(levelInfo.Attribute("difficulty").Value);
-						}
+							Level level = makeLevel(Path.GetFileNameWithoutExtension(lvl), 0, Lvltype.normal, parent);
+							//level.name = levelInfo.Attribute("name").Value;
+							string type = levelInfo.Attribute("type").Value;
+							if (levelInfo.LastAttribute.Name == "difficulty")
+							{
+								level.difficulty = int.Parse(levelInfo.Attribute("difficulty").Value);
+							}
 
-						switch (type)
-						{
-							case "intro":
-								parent.introLevels.Add(level);
-								break;
-							case "outro":
-								parent.outroLevels.Add(level);
-								break;
-							case "pool":
-								parent.levelPool.Add(level);
-								break;
+							switch (type)
+							{
+								case "intro":
+									parent.introLevels.Add(level);
+									break;
+								case "outro":
+									parent.outroLevels.Add(level);
+									break;
+								case "pool":
+									parent.levelPool.Add(level);
+									parent.trainingLevels.Add(level);
+									break;
+							}
 						}
 					}
 					// else
@@ -169,6 +193,40 @@ public class TreeManager : FSystem
 					// 	level.name = Path.GetFileName(lvl);
 					// }
 				}
+			}
+		}
+		LinkLevels(Global.GD.Tree);
+	}
+	
+	private static void LinkLevels(Node node)
+	{
+		if (node != null)
+		{
+			for(int i=0; i<node.introLevels.Count-1; i++)
+			{
+				node.introLevels[i].next.Add(node.introLevels[i + 1]);
+			}
+
+			if (node.trainingLevels.Count > 0)
+			{
+				node.introLevels.Last().next.Add(node.trainingLevels[0]);
+				for (int i = 0; i < node.trainingLevels.Count - 1; i++)
+				{
+					node.trainingLevels[i].next.Add(node.trainingLevels[i + 1]);
+				}
+
+				node.trainingLevels.Last().next.Add(node.outroLevels[0]);
+			}
+
+			for(int i=0; i<node.outroLevels.Count-1; i++)
+			{
+				node.outroLevels[i].next.Add(node.outroLevels[i + 1]);
+			}
+			
+			foreach (var next in node.nextNodes)
+			{
+				node.outroLevels.Last().next.Add(next.introLevels[0]);
+				LinkLevels(next);
 			}
 		}
 	}

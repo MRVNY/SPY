@@ -67,6 +67,6 @@
 
   <score twoStars="3892" threeStars="3976"/>
 
-  <nodeInfo name="While" next="IfWhile"/>
-  <levelInfo node="While" type="intro"/>
+  <levelInfo node="If" type="pool"/>
+
 </level>

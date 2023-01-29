@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using UnityEngine;
 using FYFY;
+using UnityEditor;
 using UnityEngine.Tilemaps;
 
 /// <summary>
@@ -60,7 +61,7 @@ public class LevelMapSystem : FSystem
 		if (Global.GD.player == "Student") Global.GD.convoNode = "askName";
 		else if (Global.GD.level != null && Global.GD.level.node != null)
 		{
-			if(Global.GD.level.node.levelPool.Contains(Global.GD.level)) 
+			if(Global.GD.level.node.trainingLevels.First()==Global.GD.level) 
 				Global.GD.convoNode = "askDifficulty";
 			else Global.GD.convoNode = Global.GD.level.name + ".0";	
 		}
@@ -140,7 +141,7 @@ public class LevelMapSystem : FSystem
 
 		foreach (var lvl in node.introLevels)
 			if(lvl != node.introLevels.First()) pos = RoadFoward(pos, lvl);
-		foreach (var lvl in node.levelPool)
+		foreach (var lvl in node.trainingLevels)
 			pos = RoadFoward(pos, lvl);
 		foreach (var lvl in node.outroLevels)
 			pos = RoadFoward(pos, lvl);
@@ -183,22 +184,28 @@ public class LevelMapSystem : FSystem
 
 	private Vector3Int RoadFoward(Vector3Int pos, Level lvl)
 	{
-		pos += Vector3Int.right;
-		LM.Map.SetTile(pos, LM.Road);
-		pos += Vector3Int.right;
+		if (!LevelDict.ContainsKey(pos+2*Vector3Int.right))
+		{
+			pos += Vector3Int.right;
+			LM.Map.SetTile(pos, LM.Road);
+			pos += Vector3Int.right;
 
-		if (lvl == lvl.node.outroLevels.Last())
-		{
-			LM.Map.SetTile(pos, LM.Castle);
+			if (lvl == lvl.node.outroLevels.Last() && lvl.node.introLevels.First().score > 0)
+			{
+				LM.Map.SetTile(pos, LM.Castle);
+			}
+			else
+			{
+				if ((int)lvl.score > 0 || (Global.GD.level != null &&
+				                           (Global.GD.level == lvl || Global.GD.level.next.Contains(lvl))))
+					LM.Map.SetTile(pos, LM.Base);
+				else LM.Map.SetTile(pos, LM.LockedBase);
+			}
+
+			LM.Stars.SetTile(pos, Scores[(int)lvl.score]);
+			LevelDict.Add(pos, lvl);
 		}
-		else
-		{
-			if((int)lvl.score==0 && Global.GD.level!=lvl) LM.Map.SetTile(pos, LM.LockedBase);
-			else LM.Map.SetTile(pos, LM.Base);
-		}
-		LM.Stars.SetTile(pos, Scores[(int)lvl.score]);
-		LevelDict.Add(pos, lvl);
-		
+
 		return pos;
 	}
 

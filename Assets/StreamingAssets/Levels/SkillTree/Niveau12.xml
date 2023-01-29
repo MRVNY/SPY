@@ -51,4 +51,7 @@
     </forever>
   </script> 
   <score twoStars="4266" threeStars="4333"/>
+
+  <nodeInfo name="IfWhile" next=""/>
+  <levelInfo node="IfWhile" type="intro"/>
 </level>

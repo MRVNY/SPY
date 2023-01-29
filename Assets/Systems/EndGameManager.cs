@@ -226,8 +226,9 @@ public class EndGameManager : FSystem {
 		else
 			Global.GD.level.score = Star.All;
 
+		//if(Global.GD.level.next!=null) Global.GD.level = Global.GD.level.next;
 		await GameStateManager.SaveGD();
-		
+
 		// Détermine le nombre d'étoile à afficher
 		int scoredStars = 0;
 		// if (Global.GD.levelScore != null)
