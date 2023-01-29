@@ -8,6 +8,7 @@ using System.Xml;
 using UnityEngine;
 using FYFY;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 /// <summary>
@@ -42,6 +43,7 @@ public class LevelMapSystem : FSystem
 			Global.GD = new GameData();
 			Global.GD.path = Application.streamingAssetsPath + "/Levels/";
 			await TreeManager.ConstructTree();
+			Global.GD.Tree.introLevels.First().active = true;
 		}
 
 		//LoadLevels();
@@ -61,8 +63,10 @@ public class LevelMapSystem : FSystem
 		if (Global.GD.player == "Student") Global.GD.convoNode = "askName";
 		else if (Global.GD.level != null && Global.GD.level.node != null)
 		{
-			if(Global.GD.level.node.trainingLevels.First()==Global.GD.level) 
+			if (Global.GD.level.node.trainingLevels.First() == Global.GD.level)
+			{
 				Global.GD.convoNode = "askDifficulty";
+			}
 			else Global.GD.convoNode = Global.GD.level.name + ".0";	
 		}
 	}
@@ -124,23 +128,16 @@ public class LevelMapSystem : FSystem
 		GameObjectManager.loadScene("GameScene");
 	}
 
+	public void toTiltle()
+	{
+		GameStateManager.SaveGD();
+		GameObjectManager.loadScene("TitleScreen");
+	}
+
 	private void ConstructRoad(Node node, Vector3Int pos, int split)
 	{
-		if(node.introLevels.Count > 0)
-		{
-			Level first = node.introLevels.First();
-			if (!LevelDict.ContainsKey(pos))
-			{
-				if ((int)first.score > 0 || (Global.GD.level != null && (Global.GD.level == first || Global.GD.level.next.Contains(first))))
-					LM.Map.SetTile(pos, LM.Base);
-				else LM.Map.SetTile(pos, LM.LockedBase);
-				LM.Stars.SetTile(pos, Scores[(int)first.score]);
-				LevelDict.Add(pos, first);
-			}
-		}
-
 		foreach (var lvl in node.introLevels)
-			if(lvl != node.introLevels.First()) pos = RoadFoward(pos, lvl);
+			pos = RoadFoward(pos, lvl);
 		foreach (var lvl in node.trainingLevels)
 			pos = RoadFoward(pos, lvl);
 		foreach (var lvl in node.outroLevels)
@@ -186,19 +183,30 @@ public class LevelMapSystem : FSystem
 	{
 		if (!LevelDict.ContainsKey(pos+2*Vector3Int.right))
 		{
-			pos += Vector3Int.right;
-			LM.Map.SetTile(pos, LM.Road);
-			pos += Vector3Int.right;
-
+			if (lvl != lvl.node.introLevels.First())
+			{
+				pos += Vector3Int.right;
+				LM.Map.SetTile(pos, LM.Road);
+				pos += Vector3Int.right;
+			}
+			
 			if (lvl == lvl.node.outroLevels.Last() && (lvl.node.introLevels.First().score > 0 || lvl.node == Global.GD.Tree))
 			{
 				LM.Map.SetTile(pos, LM.Castle);
+				if(lvl.score > 0)
+					foreach (var next in lvl.next)
+						next.active = true;
 			}
 			else
 			{
-				if ((int)lvl.score > 0 || (Global.GD.level != null &&
+				if (lvl.active || (int)lvl.score > 0 || (Global.GD.level != null &&
 				                           (Global.GD.level == lvl || Global.GD.level.next.Contains(lvl))))
+				{
 					LM.Map.SetTile(pos, LM.Base);
+					if ((int)lvl.score > 0)
+						foreach (var next in lvl.next)
+							next.active = true;
+				}
 				else LM.Map.SetTile(pos, LM.LockedBase);
 			}
 
@@ -297,5 +305,7 @@ public class LevelMapSystem : FSystem
 		}
 
 		Global.GD.ending = -2;
+		await Task.Delay(1000);
+		SceneManager.LoadScene("TitleScreen");
 	}
 }

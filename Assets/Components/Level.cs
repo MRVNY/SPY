@@ -6,8 +6,9 @@ using UnityEngine;
 public class Level
 {
 	public Node node;
-	
+
 	public string name = "Niveau1";
+	public bool active = false;
 	public int difficulty = 0;
 	public Lvltype type = Lvltype.normal;
 	public List<Level> next;

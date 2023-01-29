@@ -10,6 +10,11 @@ public class VisualNovelSystem_wrapper : BaseWrapper
 		MainLoop.initAppropriateSystemField (system, "skipButton", skipButton);
 	}
 
+	public void setVN()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "setVN", null);
+	}
+
 	public void Next()
 	{
 		MainLoop.callAppropriateSystemMethod (system, "Next", null);

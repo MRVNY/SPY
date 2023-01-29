@@ -57,7 +57,8 @@ public class VisualNovelSystem : FSystem
 				convoTree = JObject.Parse(File.ReadAllText(treePath + "LevelMap.json"));
 			else convoTree = JObject.Parse(File.ReadAllText(treePath + "Intro.json"));
 			//else convoTree = JObject.Parse(File.ReadAllText(treePath + Global.GD.level.node.name + ".json"));
-			if(Global.GD.level != null)
+			
+			if(Global.GD.level != null && !Global.GD.convoNode.Contains("ask"))
 				Global.GD.convoNode = Global.GD.level.name + ".0";
 			node = Global.GD.convoNode;
 
@@ -75,7 +76,7 @@ public class VisualNovelSystem : FSystem
 		}
 	}
 	
-	private void setVN()
+	public void setVN()
 	{
 		node = Global.GD.convoNode;
         JToken jNode = convoTree[node];
@@ -119,6 +120,9 @@ public class VisualNovelSystem : FSystem
 				string guessNext = node.Substring(0,node.Length-1) + (int.Parse(node[^1].ToString()) + 1);
 				if(convoTree[guessNext]!=null) next = guessNext;
 			}
+			
+			// execute 
+			if (jNode["action"] != null && !jNode["action"].ToString().Contains("ending")) setActions();
 		}
 	}
 
@@ -221,7 +225,7 @@ public class VisualNovelSystem : FSystem
 			if (toWrite.Count == 0)
 			{
 				// execute 
-				if (convoTree[node]["action"] != null) setActions();
+				if (convoTree[node]["action"] != null && convoTree[node]["action"].ToString().Contains("ending")) setActions();
 				
 				if (next != null)
 				{
