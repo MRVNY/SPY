@@ -131,9 +131,9 @@ public class LevelMapSystem : FSystem
 			Level first = node.introLevels.First();
 			if (!LevelDict.ContainsKey(pos))
 			{
-				if ((int)first.score == 0 && Global.GD.level != first && Global.GD.Tree.introLevels.First() != first)
-					LM.Map.SetTile(pos, LM.LockedBase);
-				else LM.Map.SetTile(pos, LM.Base);
+				if ((int)first.score > 0 || (Global.GD.level != null && (Global.GD.level == first || Global.GD.level.next.Contains(first))))
+					LM.Map.SetTile(pos, LM.Base);
+				else LM.Map.SetTile(pos, LM.LockedBase);
 				LM.Stars.SetTile(pos, Scores[(int)first.score]);
 				LevelDict.Add(pos, first);
 			}
@@ -190,7 +190,7 @@ public class LevelMapSystem : FSystem
 			LM.Map.SetTile(pos, LM.Road);
 			pos += Vector3Int.right;
 
-			if (lvl == lvl.node.outroLevels.Last() && lvl.node.introLevels.First().score > 0)
+			if (lvl == lvl.node.outroLevels.Last() && (lvl.node.introLevels.First().score > 0 || lvl.node == Global.GD.Tree))
 			{
 				LM.Map.SetTile(pos, LM.Castle);
 			}

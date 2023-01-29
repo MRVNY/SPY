@@ -140,10 +140,10 @@ public class EndGameManager : FSystem {
 			GameObjectManager.setGameObjectState(Menu, true);
 			GameObjectManager.setGameObjectState(Next, true);
 			//Check if next level exists in campaign
-			if (Global.GD.level.next != null)
-			{
-				GameObjectManager.setGameObjectState(Next, false);
-			}
+			// if (Global.GD.level.next.Count)
+			// {
+			// 	GameObjectManager.setGameObjectState(Next, false);
+			// }
 		}
 		else if (f_requireEndPanel.First().GetComponent<NewEnd>().endType == NewEnd.BadCondition)
 		{
