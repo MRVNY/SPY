@@ -11,6 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Object = UnityEngine.Object;
 using System.Diagnostics;
+using Debug = UnityEngine.Debug;
 
 /// <summary>
 /// Manage main menu to launch a specific mission
@@ -66,10 +67,10 @@ public class TitleScreenSystem : FSystem {
 		if (Application.platform == RuntimePlatform.WebGLPlayer)
 		{
 			//paramFunction();
-			Global.GD.levelNameList["SkillTree"] = new List<string>();
+			Global.GD.levelNameList["OLD"] = new List<string>();
 			for (int i = 1; i <= 20; i++)
-				((List<string>)Global.GD.levelNameList["SkillTree"]).Add(Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
-				                                                         Path.DirectorySeparatorChar + "SkillTree" + Path.DirectorySeparatorChar +"Niveau" + i + ".xml");
+				((List<string>)Global.GD.levelNameList["OLD"]).Add(Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
+				                                                         Path.DirectorySeparatorChar + "OLD" + Path.DirectorySeparatorChar +"Niveau" + i + ".xml");
 			// Hide Competence button
 			GameObjectManager.setGameObjectState(compLevelButton, false);
 			ParamCompetenceSystem.instance.Pause = true;
@@ -88,7 +89,7 @@ public class TitleScreenSystem : FSystem {
 		}
 
 		//create level directory buttons
-		foreach (string key in new List<string>{"SkillTree", "Homemade"})
+		foreach (string key in Global.GD.levelNameList.Keys)
 		{
 			GameObject directoryButton = Object.Instantiate<GameObject>(Resources.Load("Prefabs/Button") as GameObject, cList.transform);
 			directoryButton.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = key;
@@ -115,19 +116,28 @@ public class TitleScreenSystem : FSystem {
 	}
 
 	public static List<string> readScenario(string repositoryPath) {
-		if (File.Exists(repositoryPath + Path.DirectorySeparatorChar + "Scenario.xml")) {
-			List<string> levelNameList = new List<string>();
-			XmlDocument doc = new XmlDocument();
-			doc.Load(repositoryPath + Path.DirectorySeparatorChar + "Scenario.xml");
-			XmlNode root = doc.ChildNodes[1]; //root = <scenario/>
-			foreach (XmlNode child in root.ChildNodes) {
-				if (child.Name.Equals("level")) {
-					levelNameList.Add(repositoryPath + Path.DirectorySeparatorChar + (child.Attributes.GetNamedItem("name").Value));
-				}
+		List<string> levelNameList = new List<string>();
+		foreach (var file in Directory.GetFiles(repositoryPath, "*.xml"))
+		{
+			if (!file.EndsWith("Scenario.xml"))
+			{
+				levelNameList.Add(Path.GetFileNameWithoutExtension(file));
 			}
-			return levelNameList;
 		}
-		return null;
+		return levelNameList;
+		// if (File.Exists(repositoryPath + Path.DirectorySeparatorChar + "Scenario.xml")) {
+		// 	List<string> levelNameList = new List<string>();
+		// 	XmlDocument doc = new XmlDocument();
+		// 	doc.Load(repositoryPath + Path.DirectorySeparatorChar + "Scenario.xml");
+		// 	XmlNode root = doc.ChildNodes[1]; //root = <scenario/>
+		// 	foreach (XmlNode child in root.ChildNodes) {
+		// 		if (child.Name.Equals("level")) {
+		// 			levelNameList.Add(repositoryPath + Path.DirectorySeparatorChar + (child.Attributes.GetNamedItem("name").Value));
+		// 		}
+		// 	}
+		// 	return levelNameList;
+		// }
+		// return null;
 	}
 
 	protected override void onProcess(int familiesUpdateCount) {
@@ -192,7 +202,7 @@ public class TitleScreenSystem : FSystem {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
 		SendStatements.Globals.start = DateTime.Now;
-		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
+		//SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
 		//watch.Start();
 		//SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
 		GameStateManager.SaveGD();

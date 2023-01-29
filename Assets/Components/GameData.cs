@@ -8,7 +8,7 @@ using System.IO;
 [Serializable]
 public class GameData {
 	public string path = "/StreamingAssets/Levels/";
-	public string mode = "SkillTree"; //SkillTree / Homemade
+	public string mode = "OLD"; //OLD / Homemade
 	public Level level;
 	public int ending = 0;
 	public string player = "Student";

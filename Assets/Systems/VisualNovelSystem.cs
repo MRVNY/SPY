@@ -62,9 +62,7 @@ public class VisualNovelSystem : FSystem
 				Global.GD.convoNode = Global.GD.level.name + ".0";
 			node = Global.GD.convoNode;
 
-			imgPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
-			          Path.DirectorySeparatorChar + Global.GD.mode + Path.DirectorySeparatorChar +
-			          "Images" + Path.DirectorySeparatorChar;
+			imgPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Images" + Path.DirectorySeparatorChar;
 
 			//Global.GD.gameLanguage = "en";
 			
