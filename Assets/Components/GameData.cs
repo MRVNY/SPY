@@ -39,6 +39,7 @@ public class GameData {
 	public int totalActionBlocUsed;
 	public int totalExecute;
 	public int totalCoin;
+	public int difficulty = 1;
 
 	public float gameSpeed_default = 1f;
 	public float gameSpeed_current = 1f;
@@ -46,6 +47,9 @@ public class GameData {
 
 	public string gameLanguage = "en";
 	public string convoNode = "-1";
+<<<<<<< HEAD
     //public var watch = new System.Diagnostics.Stopwatch();
 
+=======
+>>>>>>> origin/LevelEditor
 }

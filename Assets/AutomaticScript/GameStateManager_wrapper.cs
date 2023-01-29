@@ -10,6 +10,16 @@ public class GameStateManager_wrapper : BaseWrapper
 		MainLoop.initAppropriateSystemField (system, "playButtonAmount", playButtonAmount);
 	}
 
+	public void SaveGD()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "SaveGD", null);
+	}
+
+	public void LoadGD()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "LoadGD", null);
+	}
+
 	public void LoadState()
 	{
 		MainLoop.callAppropriateSystemMethod (system, "LoadState", null);

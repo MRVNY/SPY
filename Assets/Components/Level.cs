@@ -12,8 +12,8 @@ public class Level
 	public string name = "Niveau1";
 	public int difficulty = 0;
 	public Lvltype type = Lvltype.normal;
-	public Level next;
-
+	public List<Level> next;
+	
 	public int bestCode = Int32.MaxValue;
 	public int bestExec = Int32.MaxValue;
 

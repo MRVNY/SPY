@@ -36,7 +36,7 @@ public class TitleScreenSystem : FSystem {
 	public GameObject settingsPanel;
 	public GameObject menuPanel;
 
-	protected override async void onStart()
+	protected override void onStart()
 	{
 		if (funcParam == null)
         {
@@ -47,13 +47,14 @@ public class TitleScreenSystem : FSystem {
             funcLevel = funcData.GetComponent<FunctionalityInLevel>();
         }
 
-		await GameStateManager.LoadGD();
+		if(Global.GD == null) GameStateManager.LoadGD();
 		if (Global.GD == null || Global.GD.levelNameList == null)
 		{
 			Global.GD = new GameData();
 			Global.GD.score = new Hashtable();
-			Global.GD.path = Application.streamingAssetsPath + "/Levels/";
+			Global.GD.path = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" + Path.DirectorySeparatorChar;
 			buildingTree = TreeManager.ConstructTree();
+			Global.GD.levelNameList = new Hashtable();
 		}
 
 
@@ -168,14 +169,14 @@ public class TitleScreenSystem : FSystem {
 						//levelButtons[directory][i].transform.Find("Button").GetComponent<Button>().interactable = false;
 						levelButtons[directory][i].transform.Find("Button").GetComponent<Button>().interactable = true;
 					//scores
-					int scoredStars = PlayerPrefs.GetInt(directoryName + Path.DirectorySeparatorChar + i + Global.GD.scoreKey, 0); //0 star by default
-					Transform scoreCanvas = levelButtons[directory][i].transform.Find("ScoreCanvas");
-					for (int nbStar = 0; nbStar < 4; nbStar++) {
-						if (nbStar == scoredStars)
-							GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, true);
-						else
-							GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, false);
-					}
+					// int scoredStars = PlayerPrefs.GetInt(directoryName + Path.DirectorySeparatorChar + i + Global.GD.scoreKey, 0); //0 star by default
+					// Transform scoreCanvas = levelButtons[directory][i].transform.Find("ScoreCanvas");
+					// for (int nbStar = 0; nbStar < 4; nbStar++) {
+					// 	if (nbStar == scoredStars)
+					// 		GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, true);
+					// 	else
+					// 		GameObjectManager.setGameObjectState(scoreCanvas.GetChild(nbStar).gameObject, false);
+					// }
 				}
 			}
 			//hide other levels
@@ -193,12 +194,15 @@ public class TitleScreenSystem : FSystem {
 		SendStatements.Globals.start = DateTime.Now;
 		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
 		//watch.Start();
+		//SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
+		GameStateManager.SaveGD();
 		GameObjectManager.loadScene("GameScene");
 	}
 
 	public async void launchLevelMap()
 	{
 		if(buildingTree!=null) await buildingTree;
+		//GameStateManager.SaveGD();
 		GameObjectManager.loadScene("LevelMap");
 	}
 
@@ -308,6 +312,7 @@ public class TitleScreenSystem : FSystem {
 	public void clearSaves()
 	{
 		GameStateManager.DeleteAllSaveFiles();
+		Global.GD = null;
 	}
 
 	public void openSettings()

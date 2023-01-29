@@ -220,7 +220,7 @@ public class UISystem : FSystem {
 	// Permet de relancer le niveau au début
 	public void restartScene(){
 		initZeroVariableLevel();
-		GameObjectManager.loadScene("MainScene");
+		GameObjectManager.loadScene("GameScene");
 		SendStatements.instance.SendRestart();
 	}
 
@@ -256,11 +256,12 @@ public class UISystem : FSystem {
 	// On charge la scéne suivante
 	public void nextLevel(){
 		// On imcrémente le numéro du niveau
-		Global.GD.level = Global.GD.level.next;
+		//Global.GD.level = Global.GD.level.next[0];
 		// On efface l'historique
 		HistoryManager.actionsHistory = null;
 		// On recharge la scéne (mais avec le nouveau numéro de niveau)
-		restartScene();
+		//restartScene();
+		GameObjectManager.loadScene("LevelMap");
 	}
 
 

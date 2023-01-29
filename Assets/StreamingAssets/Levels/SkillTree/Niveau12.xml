@@ -41,14 +41,17 @@
   <door posY="6" posX="1" direction="2" slotId="0" />
   <door posY="6" posX="5" direction="2" slotId="1" />
   <player associatedScriptName="Bob" posY="6" posX="3" direction="0" />
-  <script name="Bob" editMode="0" />
-  <enemy associatedScriptName="Guarde" posY="2" posX="2" direction="2" range="1" selfRange="False" typeRange="0" />
-  <script name="Guarde">
-      <forever>
-        <action type="Forward"/>
-        <action type="Forward"/>
-        <action type="TurnRight"/>
-      </forever>
-  </script>
+  <script name="Bob" editMode="3" />
+  <enemy associatedScriptName="Guarde" posY="2" posX="2" direction="2" range="1" selfRange="False" typeRange="1" />
+  <script name="Guarde" >
+    <forever>
+      <action type="Forward"/>
+      <action type="Forward"/>
+      <action type="TurnRight"/>
+    </forever>
+  </script> 
   <score twoStars="4266" threeStars="4333"/>
+
+  <nodeInfo name="IfWhile" next=""/>
+  <levelInfo node="IfWhile" type="intro"/>
 </level>
