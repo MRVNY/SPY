@@ -46,193 +46,22 @@
                 "en-US": "et"
             }
         },
-        "level 1": {
+        "level": {
             "description": {
                 "en-US": ""
             },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level1",
+            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level",
             "name": {
-                "en-US": "level 1"
+                "en-US": "level"
             }
         },
-        "level 10": {
+        "menu": {
             "description": {
                 "en-US": ""
             },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level10",
+            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/menu",
             "name": {
-                "en-US": "level 10"
-            }
-        },
-        "level 11": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level11",
-            "name": {
-                "en-US": "level 11"
-            }
-        },
-        "level 12": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level12",
-            "name": {
-                "en-US": "level 12"
-            }
-        },
-        "level 13": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level13",
-            "name": {
-                "en-US": "level 13"
-            }
-        },
-        "level 14": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level14",
-            "name": {
-                "en-US": "level 14"
-            }
-        },
-        "level 15": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level15",
-            "name": {
-                "en-US": "level 15"
-            }
-        },
-        "level 16": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level16",
-            "name": {
-                "en-US": "level 16"
-            }
-        },
-        "level 17": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level17",
-            "name": {
-                "en-US": "level 17"
-            }
-        },
-        "level 18": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level18",
-            "name": {
-                "en-US": "level 18"
-            }
-        },
-        "level 19": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level19",
-            "name": {
-                "en-US": "level 19"
-            }
-        },
-        "level 2": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level2",
-            "name": {
-                "en-US": "level 2"
-            }
-        },
-        "level 20": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level20",
-            "name": {
-                "en-US": "level 20"
-            }
-        },
-        "level 3": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level3",
-            "name": {
-                "en-US": "level 3"
-            }
-        },
-        "level 4": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level4",
-            "name": {
-                "en-US": "level 4"
-            }
-        },
-        "level 5": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level5",
-            "name": {
-                "en-US": "level 5"
-            }
-        },
-        "level 6": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level6",
-            "name": {
-                "en-US": "level 6"
-            }
-        },
-        "level 7": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level7",
-            "name": {
-                "en-US": "level 7"
-            }
-        },
-        "level 8": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level8",
-            "name": {
-                "en-US": "level 8"
-            }
-        },
-        "level 9": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/level9",
-            "name": {
-                "en-US": "level 9"
-            }
-        },
-        "new level": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/new_level",
-            "name": {
-                "en-US": "new level"
+                "en-US": "menu"
             }
         },
         "non": {
@@ -316,9 +145,18 @@
             "description": {
                 "en-US": ""
             },
-            "id": "https://w3id.org/xapi/gblxapi/extensions/actions",
+            "id": "https://w3id.org/xapi/gblxapi/extensions/invalid/actions",
             "name": {
                 "en-US": "actions"
+            }
+        },
+        "duration": {
+            "description": {
+                "en-US": ""
+            },
+            "id": "https://w3id.org/xapi/gblxapi/extensions/duration",
+            "name": {
+                "en-US": "duration"
             }
         },
         "lv": {
@@ -361,13 +199,13 @@
                 "en-US": "active"
             }
         },
-        "chosit": {
+        "choisit": {
             "description": {
                 "en-US": ""
             },
             "id": "https://w3id.org/xapi/gblxapi/verbs/invalid/choisit",
             "name": {
-                "en-US": "chosit"
+                "en-US": "choisit"
             }
         },
         "commence": {
@@ -431,6 +269,15 @@
             "id": "https://w3id.org/xapi/gblxapi/verbs/invalid/reussit",
             "name": {
                 "en-US": "reussit"
+            }
+        },
+        "reviens sur": {
+            "description": {
+                "en-US": ""
+            },
+            "id": "https://w3id.org/xapi/gblxapi/verbs/invalid/reviens_sur",
+            "name": {
+                "en-US": "reviens sur"
             }
         }
     }

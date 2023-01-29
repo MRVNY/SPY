@@ -105,7 +105,7 @@ public class TreeManager : FSystem
 		}
 		return null;
 	}
-	
+
 	public static async Task ConstructTree()
 	{
 		Global.GD.path = Application.streamingAssetsPath + "/Levels/";
@@ -114,11 +114,16 @@ public class TreeManager : FSystem
 		{
 			foreach (string lvl in Directory.GetFiles(directory))
 			{
+				//
 				if (File.Exists(lvl) && lvl.EndsWith(".xml") && !lvl.EndsWith("Scenario.xml")){
 					XDocument doc = XDocument.Load(lvl);
 					XElement levelInfo = doc.Element("level").Element("levelInfo");
 					XElement nodeInfo = doc.Element("level").Element("nodeInfo");
+					XElement competenceInfo = doc.Element("level").Element("blockLimits");
+					IEnumerable<XElement> allChildElements = competenceInfo.Elements();
 
+					//Level = GameObject.Find("Level");
+					Debug.Log(lvl);
 					if (nodeInfo != null)
 					{
 						Node target = findNode(Global.GD.Tree, nodeInfo.Attribute("name").Value);
@@ -138,6 +143,8 @@ public class TreeManager : FSystem
 							}
 						}
 					}
+					else Debug.Log("whyNull");
+
 
 					if (levelInfo != null)
 					{
@@ -162,6 +169,27 @@ public class TreeManager : FSystem
 								parent.levelPool.Add(level);
 								break;
 						}
+						if (competenceInfo != null)
+						{
+							Debug.Log("notnull");
+							foreach(XElement element in allChildElements)
+							{
+	              Debug.Log("child");
+	                            //Debug.Log(element.Attribute("limit").Value);
+	              if (element.Attribute("limit").Value!="1")
+								{
+	                  string block_name = element.Attribute("blockType").Value;
+										Debug.Log(block_name);
+										if (("If"==block_name) | ("IfElse"==block_name)) level.Competence_lv["If"]=1;
+										else if ("While"==block_name) level.Competence_lv["While"]=1;
+										else if ("For"==block_name) level.Competence_lv["For"]=1;
+										else if (("AndOperator"==block_name) | ("OrOperator"==block_name) | ("NotOperator"==block_name)) level.Competence_lv["Operator"]=1;
+										else break;
+										Debug.Log(level.Competence_lv);
+								}
+							}
+						}
+						else Debug.Log("whyNull");
 					}
 					// else
 					// {

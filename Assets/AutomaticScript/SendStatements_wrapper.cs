@@ -33,6 +33,11 @@ public class SendStatements_wrapper : BaseWrapper
 		MainLoop.callAppropriateSystemMethod (system, "SendRestart", null);
 	}
 
+	public void SendBackMenu()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "SendBackMenu", null);
+	}
+
 	public void SendActions(System.String actions)
 	{
 		MainLoop.callAppropriateSystemMethod (system, "SendActions", actions);

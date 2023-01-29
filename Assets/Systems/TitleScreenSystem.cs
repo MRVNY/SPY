@@ -10,6 +10,7 @@ using System.Collections;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Object = UnityEngine.Object;
+using System.Diagnostics;
 
 /// <summary>
 /// Manage main menu to launch a specific mission
@@ -29,9 +30,9 @@ public class TitleScreenSystem : FSystem {
 	public Task buildingTree;
 
 	private Dictionary<GameObject, List<GameObject>> levelButtons; //key = directory button,  value = list of level buttons
-	
+
 	private string[] languages = new string[] {"en", "fr"};
-	
+
 	public GameObject settingsPanel;
 	public GameObject menuPanel;
 
@@ -57,8 +58,7 @@ public class TitleScreenSystem : FSystem {
 
 
 		Global.GD.levelNameList = new Hashtable();
-
-		levelButtons = new Dictionary<GameObject, List<GameObject>>();
+        levelButtons = new Dictionary<GameObject, List<GameObject>>();
 
 		GameObjectManager.setGameObjectState(campagneMenu, false);
 		string levelsPath;
@@ -190,7 +190,9 @@ public class TitleScreenSystem : FSystem {
 	public void launchLevel(string mode, Level level) {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
+		SendStatements.Globals.start = DateTime.Now;
 		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
+		//watch.Start();
 		GameObjectManager.loadScene("GameScene");
 	}
 
@@ -307,7 +309,7 @@ public class TitleScreenSystem : FSystem {
 	{
 		GameStateManager.DeleteAllSaveFiles();
 	}
-	
+
 	public void openSettings()
 	{
 		GameObjectManager.setGameObjectState(settingsPanel, true);

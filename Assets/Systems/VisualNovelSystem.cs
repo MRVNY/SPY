@@ -36,36 +36,37 @@ public class VisualNovelSystem : FSystem
 
 	protected override async void onStart()
 	{
-		if(LevelGenerator.loadingGD != null) await LevelGenerator.loadingGD;
+		//if(LevelGenerator.loadingGD != null) await LevelGenerator.loadingGD;
 		
-		if (Global.GD == null)
-			return;
+		//if (Global.GD == null)
+		//	return;
 
 		VN = f_VN.First().GetComponent<VisualNovel>();
-		skipButton = VN.dialog.transform.parent.GetComponent<Button>();
-		skipButton.onClick.AddListener(() => { Skip(); });
-		optionPanel = VN.options[0].transform.parent.parent.gameObject;
+		//skipButton = VN.dialog.transform.parent.GetComponent<Button>();
+		//skipButton.onClick.AddListener(() => { Skip(); });
+        optionPanel = VN.options[0].transform.parent.parent.gameObject;
 		toggleUI("VN_Off");
 		
-		if (Global.GD.convoNode != null)
-		{
-			if(SceneManager.GetActiveScene().name == "LevelMap")
-				convoTree = JObject.Parse(File.ReadAllText(treePath + "LevelMap.json"));
-			else convoTree = JObject.Parse(File.ReadAllText(treePath + Global.GD.level.node.name + ".json"));
-			node = Global.GD.convoNode;
+		//if (Global.GD.convoNode != null)
+		//{
+  //          //Debug.Log(Global.GD.level.node.name);
+		//	if(SceneManager.GetActiveScene().name == "LevelMap")
+		//		convoTree = JObject.Parse(File.ReadAllText(treePath + "LevelMap.json"));
+		//    else convoTree = JObject.Parse(File.ReadAllText(treePath + Global.GD.level.node.name + ".json"));
+		//	node = Global.GD.convoNode;
 
-			imgPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
-			          Path.DirectorySeparatorChar + Global.GD.mode + Path.DirectorySeparatorChar +
-			          "Images" + Path.DirectorySeparatorChar;
+		//	imgPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Levels" +
+		//	          Path.DirectorySeparatorChar + Global.GD.mode + Path.DirectorySeparatorChar +
+		//	          "Images" + Path.DirectorySeparatorChar;
 
-			//Global.GD.gameLanguage = "en";
+		//	//Global.GD.gameLanguage = "en";
 			
-			if (convoTree[node] != null)
-			{
-				toggleUI("VN_On");
-				setVN();
-			}
-		}
+		//	if (convoTree[node] != null)
+		//	{
+		//		toggleUI("VN_On");
+		//		setVN();
+		//	}
+		//}
 	}
 	
 	private async void setVN()

@@ -20,7 +20,7 @@ public class EndGameManager : FSystem {
 	private Family f_exit = FamilyManager.getFamily(new AllOfComponents(typeof(Position), typeof(AudioSource)), new AnyOfTags("Exit"));
 
 	private Family f_playingMode = FamilyManager.getFamily(new AllOfComponents(typeof(PlayMode)));
-	
+
 	public GameObject playButtonAmount;
 	public GameObject endPanel;
 
@@ -116,7 +116,31 @@ public class EndGameManager : FSystem {
 		else if (f_requireEndPanel.First().GetComponent<NewEnd>().endType == NewEnd.Win)
 		{
 			int score = (10000 / (Global.GD.totalActionBlocUsed + 1) + 5000 / (Global.GD.totalStep + 1) + 6000 / (Global.GD.totalExecute + 1) + 5000 * Global.GD.totalCoin);
-			SendStatements.instance.WinLevel(score);
+      SendStatements.instance.WinLevel(score);
+			//if (Global.GD.levelScore==null)
+			if (Global.GD.score[Global.GD.scoreKey]==null)
+			{
+				Debug.Log("null");
+				Debug.Log(Global.GD.level.Competence_lv["For"]);
+				foreach(DictionaryEntry s in Global.GD.level.Competence_lv){
+					Debug.Log(s.Key);
+					if (Global.GD.compCounter[s.Key]==null){
+						Global.GD.compCounter[s.Key]=1;
+						Debug.Log("Learned");
+					}
+					else{
+						Debug.Log("here");
+						Global.GD.compCounter[s.Key]=1+  (int)Global.GD.compCounter[s.Key];
+						if ((int)Global.GD.compCounter[s.Key]==1){
+							Debug.Log("Learned");
+						}
+					}
+				}
+			}
+			else{
+				Debug.Log(Global.GD.levelScore);
+			}
+			//Global.GD
 			Transform verticalCanvas = endPanel.transform.Find("VerticalCanvas");
 			GameObjectManager.setGameObjectState(verticalCanvas.Find("ScoreCanvas").gameObject, true);
 			verticalCanvas.GetComponentInChildren<TextMeshProUGUI>().text = "Bravo vous avez gagné !\nScore: " + score;
