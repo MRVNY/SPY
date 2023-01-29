@@ -10,40 +10,49 @@
                 "en-US": "action"
             }
         },
-        "attendre": {
+        "competence_for": {
             "description": {
                 "en-US": ""
             },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/attendre",
+            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/competence_for",
             "name": {
-                "en-US": "attendre"
+                "en-US": "competence_for"
             }
         },
-        "avancer": {
+        "competence_if": {
             "description": {
                 "en-US": ""
             },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/avancer",
+            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/competence_if",
             "name": {
-                "en-US": "avancer"
+                "en-US": "competence_if"
             }
         },
-        "boucle_for": {
+        "competence_operator": {
             "description": {
                 "en-US": ""
             },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/for",
+            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/competence_operator",
             "name": {
-                "en-US": "boucle_for"
+                "en-US": "competence_operator"
             }
         },
-        "et": {
+        "competence_while": {
             "description": {
                 "en-US": ""
             },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/et",
+            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/competence_while",
             "name": {
-                "en-US": "et"
+                "en-US": "competence_while"
+            }
+        },
+        "donnee_personnel": {
+            "description": {
+                "en-US": ""
+            },
+            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/donnee_personnel",
+            "name": {
+                "en-US": "donnee_personnel"
             }
         },
         "level": {
@@ -64,42 +73,6 @@
                 "en-US": "menu"
             }
         },
-        "non": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/non",
-            "name": {
-                "en-US": "non"
-            }
-        },
-        "ou": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/ou",
-            "name": {
-                "en-US": "ou"
-            }
-        },
-        "pivoter_a_droite": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/pivoter_a_droite",
-            "name": {
-                "en-US": "pivoter_a_droite"
-            }
-        },
-        "pivoter_a_gauche": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/pivoter_a_gauche",
-            "name": {
-                "en-US": "pivoter_a_gauche"
-            }
-        },
         "score": {
             "description": {
                 "en-US": ""
@@ -117,24 +90,6 @@
             "name": {
                 "en-US": "serious-game spy"
             }
-        },
-        "si": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/si",
-            "name": {
-                "en-US": "si"
-            }
-        },
-        "terminal": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/activities/invalid/terminal",
-            "name": {
-                "en-US": "terminal"
-            }
         }
     },
     "content": {},
@@ -150,6 +105,24 @@
                 "en-US": "actions"
             }
         },
+        "code_length": {
+            "description": {
+                "en-US": ""
+            },
+            "id": "https://w3id.org/xapi/gblxapi/extensions/code_length",
+            "name": {
+                "en-US": "code_length"
+            }
+        },
+        "competence_nb": {
+            "description": {
+                "en-US": ""
+            },
+            "id": "https://w3id.org/xapi/gblxapi/extensions/competence_nb",
+            "name": {
+                "en-US": "competence_nb"
+            }
+        },
         "duration": {
             "description": {
                 "en-US": ""
@@ -159,6 +132,15 @@
                 "en-US": "duration"
             }
         },
+        "execution_length": {
+            "description": {
+                "en-US": ""
+            },
+            "id": "https://w3id.org/xapi/gblxapi/extensions/execution_length",
+            "name": {
+                "en-US": "execution_length"
+            }
+        },
         "lv": {
             "description": {
                 "en-US": ""
@@ -166,6 +148,15 @@
             "id": "https://w3id.org/xapi/gblxapi/extensions/invalid/level",
             "name": {
                 "en-US": "lv"
+            }
+        },
+        "nb_lv_completed": {
+            "description": {
+                "en-US": ""
+            },
+            "id": "https://w3id.org/xapi/gblxapi/extensions/nb_lv_completed",
+            "name": {
+                "en-US": "nb_lv_completed"
             }
         },
         "score": {
@@ -226,15 +217,6 @@
                 "en-US": "demarre"
             }
         },
-        "dure": {
-            "description": {
-                "en-US": ""
-            },
-            "id": "https://w3id.org/xapi/gblxapi/verbs/invalid/dure",
-            "name": {
-                "en-US": "dure"
-            }
-        },
         "essaie": {
             "description": {
                 "en-US": ""
@@ -242,6 +224,15 @@
             "id": "https://w3id.org/xapi/gblxapi/verbs/invalid/essaie",
             "name": {
                 "en-US": "essaie"
+            }
+        },
+        "maitrise": {
+            "description": {
+                "en-US": ""
+            },
+            "id": "https://w3id.org/xapi/gblxapi/verbs/invalid/maitrise",
+            "name": {
+                "en-US": "maitrise"
             }
         },
         "quitte": {
@@ -262,6 +253,15 @@
                 "en-US": "recommence"
             }
         },
+        "reinitialise": {
+            "description": {
+                "en-US": ""
+            },
+            "id": "https://w3id.org/xapi/gblxapi/verbs/invalid/reinitialise",
+            "name": {
+                "en-US": "reinitialise"
+            }
+        },
         "reussit": {
             "description": {
                 "en-US": ""
@@ -271,13 +271,13 @@
                 "en-US": "reussit"
             }
         },
-        "reviens sur": {
+        "revient sur": {
             "description": {
                 "en-US": ""
             },
-            "id": "https://w3id.org/xapi/gblxapi/verbs/invalid/reviens_sur",
+            "id": "https://w3id.org/xapi/gblxapi/verbs/invalid/revient_sur",
             "name": {
-                "en-US": "reviens sur"
+                "en-US": "revient sur"
             }
         }
     }

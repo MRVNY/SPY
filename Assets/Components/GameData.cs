@@ -20,7 +20,8 @@ public class GameData {
                         "For",
                         "AndOperator",
 												"OrOperator",
-												"NotOperator"
+												"NotOperator",
+												"Forward"
                     };
 	public static List<string> CompStudent = new List<string>();
 	public Hashtable levelNameList = new Hashtable();
