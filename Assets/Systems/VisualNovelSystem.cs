@@ -215,7 +215,7 @@ public class VisualNovelSystem : FSystem
 	//Skip Typewriter when it's not finished
 	public async void Next()
 	{
-		if (convoTree[node]["options"] == null && skipped && toWrite.Count == 1 && next == null)
+		if (convoTree[node] == null || (convoTree[node]["options"] == null && skipped && toWrite.Count == 1 && next == null))
 		{
 			toggleUI("VN_Off");
 			toWrite.Clear();
@@ -249,7 +249,7 @@ public class VisualNovelSystem : FSystem
 			await writing;
 			VN.dialog.text = toWrite[0];
 			
-			if (convoTree[node]["options"] != null && toWrite.Count==1) skipButton.enabled = false;
+			if (convoTree[node]==null || convoTree[node]["options"] != null && toWrite.Count==1) skipButton.enabled = false;
 		}
 	}
 
