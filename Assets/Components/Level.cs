@@ -15,8 +15,8 @@ public class Level
 	public Lvltype type = Lvltype.normal;
 	public List<Level> next;
 	
-	public int bestCode = Int32.MaxValue;
-	public int bestExec = Int32.MaxValue;
+	public int bestCode = 50;
+	public int bestExec = 50;
 
 	public Star score = Star.Undone;
 	public int codeScore = 0;

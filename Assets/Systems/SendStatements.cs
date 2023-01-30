@@ -109,11 +109,11 @@ public class SendStatements : FSystem {
 		{
         //String st_lv="";
 
-        Debug.Log(lv);
+        // Debug.Log(lv);
         // if (lv==0)
         //   lv=Globals.lv+1;
         Globals.lv=lv;
-				Debug.Log(GBL_Interface.playerName + " try level " +lv.ToString());
+        // Debug.Log(GBL_Interface.playerName + " try level " +lv.ToString());
         Globals.st_lv="level "+lv.ToString();
         SendStatements.Globals.start = DateTime.Now;
         GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
@@ -145,7 +145,7 @@ public class SendStatements : FSystem {
             { "execution_length", execution_length.ToString()}
           }
       });
-      Debug.Log(Global.GD.score);
+      // Debug.Log(Global.GD.score);
       if (Global.GD.score[Globals.st_lv]==null){
         Global.GD.score[Globals.st_lv]=0;
       }

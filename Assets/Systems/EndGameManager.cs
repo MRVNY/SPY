@@ -125,11 +125,11 @@ public class EndGameManager : FSystem {
 		{
 			int score = (10000 / (Global.GD.totalActionBlocUsed + 1) + 5000 / (Global.GD.totalStep + 1) + 6000 / (Global.GD.totalExecute + 1) + 5000 * Global.GD.totalCoin);
 
-			Debug.Log(Global.GD.score[Global.GD.scoreKey]==null);
-			Debug.Log("before"+SendStatements.Globals.nb_lv_completed);
+			// Debug.Log(Global.GD.score[Global.GD.scoreKey]==null);
+			// Debug.Log("before"+SendStatements.Globals.nb_lv_completed);
 
 			SendStatements.Globals.nb_lv_completed=SendStatements.Globals.nb_lv_completed+1;
-			Debug.Log("number"+SendStatements.Globals.nb_lv_completed);
+			// Debug.Log("number"+SendStatements.Globals.nb_lv_completed);
 
 			if (Global.GD.score[Global.GD.scoreKey]==null)
 			{

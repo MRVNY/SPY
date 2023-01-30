@@ -63,7 +63,7 @@ public class LevelMapSystem : FSystem
 		if (Global.GD.player == "Student") Global.GD.convoNode = "askName";
 		else if (Global.GD.level != null && Global.GD.level.node != null)
 		{
-			if (Global.GD.level.score>0 && Global.GD.level.next[0].score==0 && Global.GD.level.node.trainingLevels.First() == Global.GD.level)
+			if (Global.GD.level.score>0 && Global.GD.level.next.Count>0 && Global.GD.level.next[0].score==0 && Global.GD.level.node.trainingLevels.First() == Global.GD.level)
 			{
 				Global.GD.convoNode = "askDifficulty";
 			}
@@ -147,18 +147,10 @@ public class LevelMapSystem : FSystem
 		switch (node.nextNodes.Count)
 		{
 			case 1:
-				if (node.introLevels.First().name == "If_For-intro-1")
-				{
-					Debug.Log(node.introLevels.First().next);
-				}
 				if (pos.x > 0) pos = RoadMerge(pos, split);
 				if(LM.Map.GetTile(pos)!=LM.Base) ConstructRoad(node.nextNodes[0], pos, 0);
 				break;
 			case 2:
-				if (node.introLevels.First().name == "If_For-intro-1")
-				{
-					Debug.Log(node.introLevels.First().next);
-				}
 				(Vector3Int,Vector3Int) upAndDown = RoadSplit(pos);
 				ConstructRoad(node.nextNodes[0], upAndDown.Item1, 1);
 				ConstructRoad(node.nextNodes[1], upAndDown.Item2, -1);
@@ -221,7 +213,7 @@ public class LevelMapSystem : FSystem
 				                           (Global.GD.level == lvl || Global.GD.level.next.Contains(lvl))))
 				{
 					LM.Map.SetTile(pos, LM.Base);
-					if ((int)lvl.score > 0)
+					if (lvl.score > 0)
 						foreach (var next in lvl.next)
 							next.active = true;
 				}

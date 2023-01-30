@@ -63,8 +63,6 @@ public class VisualNovelSystem : FSystem
 			node = Global.GD.convoNode;
 
 			imgPath = Application.streamingAssetsPath + Path.DirectorySeparatorChar + "Images" + Path.DirectorySeparatorChar;
-
-			//Global.GD.gameLanguage = "en";
 			
 			if (convoTree[node] != null)
 			{
@@ -120,7 +118,7 @@ public class VisualNovelSystem : FSystem
 			}
 			
 			// execute 
-			if (jNode["action"] != null && !jNode["action"].ToString().Contains("ending")) setActions();
+			if (jNode["action"] != null) setActions();
 			
 			// if(!Global.GD.playedConvoNodes.Contains(node)) Global.GD.playedConvoNodes.Add(node);
 		}

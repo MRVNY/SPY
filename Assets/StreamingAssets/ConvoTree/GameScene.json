@@ -183,7 +183,7 @@
         "fr": "Aha! Exactement ce que nous pensions!\nVous savez ce qui est le meilleur ami de IF?\nELSE bien sûr!\nC'est comme IF mais pour quand la condition n'est pas remplie. Donc avec les deux, vous pouvez couvrir les deux situations, cool!\nJ'ai hâte de les voir dans les prochains niveaux!"
     },
 
-    "If-outro-1.end.1": {
+    "If-outro-1.end.0": {
         "en": "Good job! We've passed another tower!\nHey, there's something written on the terminal, let me decypher it...\n\"Project SPY: Phase I complete, connection established.\"\nHmmm, I wonder what that means...",
         "fr": "Bonne job! Nous avons passé une autre tour!\nHey, il y a quelque chose d'écrit sur le terminal, laissez-moi le décrypter...\n\"Projet SPY: Phase I terminée, connexion établie.\"\nHmmm, je me demande ce que cela signifie..."
     },
@@ -198,7 +198,7 @@
         "fr": "Hey regardez, il y a quelques nouveaux blocs dans la section opérateur! Eh bien, je pense qu'ils devraient combiner et changer de condition.\nComme si je veux vérifier s'il n'y a pas de mur, je peux juste mettre NOT devant.\nDe plus, si je veux vérifier deux conditions en même temps, je peux utiliser AND pour voir si les deux conditions sont remplies, et OR pour voir si au moins l'une d'elles est remplie.\nSuper utile!"
     },
 
-    "If_For_Op_outro-1.0": {
+    "If_For_Op_outro-1.end.0": {
         "en": "Phew, that was hard! I'm glad we made it through.\nHey, more data on the terminal, let me decypher it...\n\"Day 54: Subject escaped, experiment failed, computational brain stopped functioning\"\nYikes, am I the only one who's getting the creeps?",
         "fr": "Phew, c'était dur! Je suis content que nous ayons réussi.\nHey, plus de données sur le terminal, laissez-moi le décrypter...\n\"Jour 54: Le sujet s'est échappé, l'expérience a échoué, le cerveau informatique a cessé de fonctionner\"\nYikes, suis-je le seul qui a les frissons?"
     },
@@ -328,14 +328,14 @@
     },
 
     "ending1": {
-        "en": "Oh don't apologize, thanks to you, I get to experience what's like to be alive, I'm grateful for that.\nI know you'll do great things with this knowledge, I'm sure of it!\nWhenever you use it, please remember me OK?",
-        "fr": "Oh ne t'excuse pas, grâce à toi, je peux vivre ce que c'est que d'être vivant, je suis reconnaissant pour ça.\nJe sais que tu feras de grandes choses avec ces connaissances, je suis sûr de ça !\nChaque fois que tu l'utiliseras, souviens-toi de moi OK ?",
+        "en": "Oh don't apologize, thanks to you, I get to experience what's like to be alive, I'm grateful for that.\nI know you'll do great things with this knowledge, I'm sure of it!\nWhenever you use it, please remember me OK?\n ",
+        "fr": "Oh ne t'excuse pas, grâce à toi, je peux vivre ce que c'est que d'être vivant, je suis reconnaissant pour ça.\nJe sais que tu feras de grandes choses avec ces connaissances, je suis sûr de ça !\nChaque fois que tu l'utiliseras, souviens-toi de moi OK ?\n ",
         "action": "ending1"
     },
 
     "ending2": {
-        "en": "Really? Wow I don't know what to say!\nBut what about you?\n\"Initiating transfer\"\nOh no! It's too late, please, you have to come back! I'll wait for you here!",
-        "fr": "Vraiment ? Wow, je ne sais pas quoi dire ! Mais toi ? \"Initiation au transfert\" Oh non ! C'est trop tard, s'il te plaît, tu dois revenir ! Je t'attendrai ici !",
+        "en": "Really? Wow I don't know what to say!\nBut what about you?\n\"Initiating transfer\"\nOh no! It's too late, please, you have to come back! I'll wait for you here!\n ",
+        "fr": "Vraiment ? Wow, je ne sais pas quoi dire ! Mais toi ? \"Initiation au transfert\" Oh non ! C'est trop tard, s'il te plaît, tu dois revenir ! Je t'attendrai ici !\n ",
         "action": "ending2"
     }
 }

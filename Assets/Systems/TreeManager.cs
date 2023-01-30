@@ -213,13 +213,7 @@ public class TreeManager : FSystem
 							else Debug.Log("whyNull");
 						}
 					}
-					// else
-					// {
-					// 	Node parent = findNode(Global.GD.Tree, "Intro");
-					// 	Level level = new Level();
-					// 	//level.name = levelInfo.Attribute("name").Value;
-					// 	level.name = Path.GetFileName(lvl);
-					// }
+	
 				}
 			}
 		}
