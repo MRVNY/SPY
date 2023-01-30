@@ -17,7 +17,7 @@ public class SendStatements : FSystem {
     public static class Globals
     {
         // global int
-        public static int lv;
+        public static string lv;
         public static String st_lv;
         public static DateTime start;
     }
@@ -101,16 +101,16 @@ public class SendStatements : FSystem {
             objectType = "menu"
         });
     }
-		public void SendLevel(int lv)//int level)
+		public void SendLevel(string lv)//int level)
 		{
         //String st_lv="";
 
         Debug.Log(lv);
-        if (lv==0)
-          lv=Globals.lv+1;
+        // if (lv==0)
+        //   lv=Globals.lv+1;
         Globals.lv=lv;
-				Debug.Log(GBL_Interface.playerName + " try level " +lv.ToString());
-        Globals.st_lv="level "+lv.ToString();
+				Debug.Log(GBL_Interface.playerName + " try " +lv);
+        Globals.st_lv=lv;
 
         GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
         {
@@ -118,7 +118,7 @@ public class SendStatements : FSystem {
             objectType = "level",
             activityExtensions = new Dictionary<string, string>()
             {
-                { "lv", Globals.lv.ToString() }
+                { "lv", Globals.lv }
             }
         });
         }
@@ -132,7 +132,7 @@ public class SendStatements : FSystem {
           objectType = "level",
           activityExtensions = new Dictionary<string, string>()
           {
-            { "lv", Globals.lv.ToString()},
+            { "lv", Globals.lv},
             { "score", score.ToString() },
             { "duration", duration.TotalSeconds.ToString()}
           }

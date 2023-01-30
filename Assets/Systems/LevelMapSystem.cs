@@ -123,7 +123,7 @@ public class LevelMapSystem : FSystem
 	public void launchLevel(string mode, Level level) {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
-		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
+		SendStatements.instance.SendLevel(level.name);
 		GameStateManager.SaveGD();
 		GameObjectManager.loadScene("GameScene");
 	}

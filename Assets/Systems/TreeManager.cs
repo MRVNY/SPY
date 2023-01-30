@@ -155,7 +155,7 @@ public class TreeManager : FSystem
 				if (File.Exists(lvl) && lvl.EndsWith(".xml") && !lvl.EndsWith("Scenario.xml")){
 					Debug.Log(lvl);
 					XDocument doc = XDocument.Load(lvl);
-					string[] levelInfo = doc.Element("level").Element("levelInfo").ToString().Split("-");
+					string[] levelInfo = Path.GetFileNameWithoutExtension(lvl).Split("-");
 					XElement competenceInfo = doc.Element("level").Element("blockLimits");
 
 
@@ -256,6 +256,10 @@ public class TreeManager : FSystem
 			
 			foreach (var next in node.nextNodes)
 			{
+				if (next.introLevels.Count==0)
+				{
+					Debug.Log(next.introLevels[0]);
+				}
 				node.outroLevels.Last().next.Add(next.introLevels[0]);
 				LinkLevels(next);
 			}

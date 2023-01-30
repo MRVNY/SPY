@@ -18,7 +18,7 @@ public class SendStatements_wrapper : BaseWrapper
 		MainLoop.callAppropriateSystemMethod (system, "testSendStatement", null);
 	}
 
-	public void SendLevel(System.Int32 lv)
+	public void SendLevel(System.String lv)
 	{
 		MainLoop.callAppropriateSystemMethod (system, "SendLevel", lv);
 	}
