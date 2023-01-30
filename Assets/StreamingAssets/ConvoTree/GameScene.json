@@ -173,6 +173,41 @@
         "img": "WaitIcon.png"
     },
 
+    "If-intro-1.0": {
+        "en": "Hey would you look at that! There a new block we can use!\nIt has IF written on it, I wonder if it has something to do with executing the action when a condition is met?\nLike when there's awall in front of me, I shuold turn.",
+        "fr": "Hey regardez ça! Il y a un nouveau bloc que nous pouvons utiliser!\nIl y a écrit IF dessus, je me demande si cela a quelque chose à voir avec l'exécution de l'action lorsque la condition est remplie?\nComme quand il y a un mur devant moi, je devrais tourner."
+    },
+
+    "If-intro-1.end.0": {
+        "en": "Aha! Exactly what we thought!\nYou know what's the best friend of IF?\nELSE of course!\nIt's like IF but for when the condition is not met. So with both, you can cover both situations, cool!\nI'm looking forward to seeing them in future levels!",
+        "fr": "Aha! Exactement ce que nous pensions!\nVous savez ce qui est le meilleur ami de IF?\nELSE bien sûr!\nC'est comme IF mais pour quand la condition n'est pas remplie. Donc avec les deux, vous pouvez couvrir les deux situations, cool!\nJ'ai hâte de les voir dans les prochains niveaux!"
+    },
+
+    "If-outro-1.end.1": {
+        "en": "Good job! We've passed another tower!\nHey, there's something written on the terminal, let me decypher it...\n\"Project SPY: Phase I complete, connection established.\"\nHmmm, I wonder what that means...",
+        "fr": "Bonne job! Nous avons passé une autre tour!\nHey, il y a quelque chose d'écrit sur le terminal, laissez-moi le décrypter...\n\"Projet SPY: Phase I terminée, connexion établie.\"\nHmmm, je me demande ce que cela signifie..."
+    },
+
+    "If_For-intro-1.0": {
+        "en": "Huh? There isn't any new block showing up, weird...\nOhhhhh, but this area contains blocks from the two areas, it must be a fusion of blocks!\nI hope the difficuly won't double though...",
+        "fr": "Huh? Il n'y a aucun nouveau bloc qui apparaît, bizarre...\nOhhhhh, mais cette zone contient des blocs des deux zones, il doit s'agir d'une fusion de blocs!\nJ'espère que la difficulté ne doublera pas..."
+    },
+
+    "If_For_Op-intro-1.0": {
+        "en": "Hey look, There are some new blocks in the operator section! Well I think they supposed to combine and change condition.\nLike if I want to check if there isn't a wall, I can just put NOT in front of it.\nAlso, if I want to verify two conditions at the same time, I can use AND to see if both consitions are met, and OR to see if at least one of them is met.\nSuper useful!",
+        "fr": "Hey regardez, il y a quelques nouveaux blocs dans la section opérateur! Eh bien, je pense qu'ils devraient combiner et changer de condition.\nComme si je veux vérifier s'il n'y a pas de mur, je peux juste mettre NOT devant.\nDe plus, si je veux vérifier deux conditions en même temps, je peux utiliser AND pour voir si les deux conditions sont remplies, et OR pour voir si au moins l'une d'elles est remplie.\nSuper utile!"
+    },
+
+    "If_For_Op_outro-1.0": {
+        "en": "Phew, that was hard! I'm glad we made it through.\nHey, more data on the terminal, let me decypher it...\n\"Day 54: Subject escaped, experiment failed, computational brain stopped functioning\"\nYikes, am I the only one who's getting the creeps?",
+        "fr": "Phew, c'était dur! Je suis content que nous ayons réussi.\nHey, plus de données sur le terminal, laissez-moi le décrypter...\n\"Jour 54: Le sujet s'est échappé, l'expérience a échoué, le cerveau informatique a cessé de fonctionner\"\nYikes, suis-je le seul qui a les frissons?"
+    },
+
+    "If_For_While-intro-1.0": {
+        "en": "Oh oh, something new again! It's WHILE!\nWell this one has been due for a while, it's kinda like putting and IF in FOR.\nYou know, instead of the number counting down until 0, it get out of the loop when the condition is true anymore.\nThis will defnitely come in handy!",
+        "fr": "Oh oh, quelque chose de nouveau encore! C'est WHILE!\nEh bien, celui-ci était dû depuis un certain temps, c'est un peu comme mettre un IF dans FOR.\nVous savez, au lieu du nombre qui compte jusqu'à 0, il sort de la boucle lorsque la condition n'est plus vraie.\nCela sera certainement utile!"
+    },
+
     "If_For_While_Op-intro-1.0": {
         "fr": "Aïe... ce couloir contient... brouilleurs qui perturbent nos comm...uni...cations ! \nLà c'est un peu mieux, mais nous ne pourrons pas utiliser toutes nos actions. Nous avons quand même réussi à vous envoyer le strict minimum à savoir une boucle qui s'arrête l'orsqu'un capteur n'est plus valide. Vous disposez donc de cette boucle ainsi qu'un capteur qui vous indique si le robot se trouve sur la case d'un téléporteur.", 
         "en": "Ouch... this corridor contains... jamming devices that disrupt our comm...uni...cations! \nHere it's a little better, but we won't be able to use all our actions. We have still managed to send you the minimum, namely a loop that stops when a sensor is no longer valid. You therefore have this loop as well as a sensor that tells you if the robot is on the teleporter square."
@@ -183,7 +218,6 @@
         "en": "What's going on here? \nApparently a new security system is blocking the view of our satellite... We will have to advance blindly. \nWait, we are receiving information... \n... \nOk! Our intelligence service tells us that you need to advance 11 squares and turn right every time you meet a wall. They also sent you a sensor that will tell you if a wall is on the square just in front of the robot as well as a block to test the sensor. They should be useful to you.",
         "img": "ifWall.png"
     },
-
 
     "If_For_While_Op-pool-2.0": {
         "fr": "Nous avons encore des problèmes de communication mais nous avons tout de même réussi à vous envoyer quelques commandes supplémentaires. Désolé de ne pouvoir faire plus !",

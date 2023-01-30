@@ -7,7 +7,7 @@ using System.IO;
 
 [Serializable]
 public class GameData {
-	public string path = "/StreamingAssets/Levels/";
+	public string path = Application.streamingAssetsPath + Path.PathSeparator + "Levels" +Path.PathSeparator;
 	public string mode = "OLD"; //OLD / Homemade
 	public Level level;
 	public int ending = 0;
@@ -30,9 +30,9 @@ public class GameData {
 	public Node Tree;
 	//public List<Level> homemadeList;
 
-	public List<(string,float,string,float, int, int)> dialogMessage; //list of (dialogText, dialogHeight, imageName, imageHeight, camX, camY)
-	public Hashtable actionBlockLimit; //Is block available in library?
-	public Hashtable score;
+	public List<(string,float,string,float, int, int)> dialogMessage = new List<(string, float, string, float, int, int)>(); //list of (dialogText, dialogHeight, imageName, imageHeight, camX, camY)
+	public Hashtable actionBlockLimit = new Hashtable(); //Is block available in library?
+	public Hashtable score = new Hashtable();
 
 	public string scoreKey = "score";
 	public int totalStep;
