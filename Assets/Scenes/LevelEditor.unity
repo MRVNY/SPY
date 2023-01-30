@@ -331,22 +331,22 @@ MonoBehaviour:
   Forward: 10
   TurnLeft: 10
   TurnRight: 10
-  Wait: 0
+  Wait: 5
   Activate: 10
-  TurnBack: 0
-  If: 0
-  IfElse: 0
-  For: 0
-  While: 0
-  Forever: 0
-  AndOperator: 0
-  OrOperator: 0
-  NotOperator: 0
-  Wall: 0
-  Enemie: 0
-  RedArea: 0
-  FieldGate: 0
-  Terminal: 0
+  TurnBack: 5
+  If: 5
+  IfElse: 5
+  For: 5
+  While: 5
+  Forever: 5
+  AndOperator: 5
+  OrOperator: 5
+  NotOperator: 5
+  Wall: 5
+  Enemie: 5
+  RedArea: 5
+  FieldGate: 5
+  Terminal: 5
   Exit: 0
   TwoStars: 0
   ThreeStars: 10000

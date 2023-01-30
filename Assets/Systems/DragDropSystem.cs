@@ -375,7 +375,7 @@ public class DragDropSystem : FSystem
 		if (!Pause && Global.GD.dragDropEnabled && doubleClick() && !itemDragged)
 		{
 			// if no drop zone used, try to get the last
-			if (lastDropZoneUsed == null)
+			if (lastDropZoneUsed == null && f_dropArea.Count > 0)
 				lastDropZoneUsed = f_dropArea.getAt(f_dropArea.Count-1);
 			// be sure the lastDropZone is defined
 			if (lastDropZoneUsed != null)
