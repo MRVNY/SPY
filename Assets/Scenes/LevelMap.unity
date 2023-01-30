@@ -261,6 +261,7 @@ MonoBehaviour:
   LockedBase: {fileID: 11400000, guid: 4101f904d781644cca0d7692f4ca266b, type: 2}
   Base: {fileID: 11400000, guid: 422976f1e44f73b47a489ad7acf38239, type: 2}
   Castle: {fileID: 11400000, guid: c65ea141d68fe494d937fe7f00eddb3a, type: 2}
+  LockedCastle: {fileID: 11400000, guid: bbd9cb5f7b6e7424a9f04a01e77fc332, type: 2}
   Road: {fileID: 11400000, guid: 6842c9e91af91714cabc364f2ce29a99, type: 2}
   Split: {fileID: 11400000, guid: a413e4160eb9ca64dbd5e490144c3a56, type: 2}
   Merge: {fileID: 11400000, guid: 005381eb98b90f24bb06061cefab3076, type: 2}

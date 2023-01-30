@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Threading;
+using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 
 
@@ -55,8 +56,8 @@ public class SendStatements : FSystem {
         // Do not use callbacks because in case in the same frame actions are removed on a GO and another component is added in another system, family will not trigger again callback because component will not be processed
         foreach (GameObject go in f_actionForLRS)
         {
-          
-            GBL_Interface.playerName = Global.GD.player;
+            if (Global.GD == null) GBL_Interface.playerName = "Studennt";
+            else GBL_Interface.playerName = Global.GD.player;
             ActionPerformedForLRS[] listAP = go.GetComponents<ActionPerformedForLRS>();
             int nb = listAP.Length;
             ActionPerformedForLRS ap;

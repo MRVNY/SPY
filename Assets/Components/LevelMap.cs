@@ -18,6 +18,7 @@ public class LevelMap : MonoBehaviour
     public Tile LockedBase;
     public Tile Base;
     public Tile Castle;
+    public Tile LockedCastle;
     public Tile Road;
     public Tile Split;
     public Tile Merge;

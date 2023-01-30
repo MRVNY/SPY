@@ -153,7 +153,6 @@ public class TreeManager : FSystem
 			{
 
 				if (File.Exists(lvl) && lvl.EndsWith(".xml") && !lvl.EndsWith("Scenario.xml")){
-					Debug.Log(lvl);
 					XDocument doc = XDocument.Load(lvl);
 					string[] levelInfo = Path.GetFileNameWithoutExtension(lvl).Split("-");
 					XElement competenceInfo = doc.Element("level").Element("blockLimits");
@@ -191,15 +190,15 @@ public class TreeManager : FSystem
 
 							if (competenceInfo != null)
 							{
-								Debug.Log("notnull");
+								//Debug.Log("notnull");
 								foreach (XElement element in competenceInfo.Elements())
 								{
-									Debug.Log("child");
+									//Debug.Log("child");
 									//Debug.Log(element.Attribute("limit").Value);
 									if (element.Attribute("limit").Value != "1")
 									{
 										string block_name = element.Attribute("blockType").Value;
-										Debug.Log(block_name);
+										//Debug.Log(block_name);
 										if (("If" == block_name) | ("IfElse" == block_name))
 											level.Competence_lv["If"] = 1;
 										else if ("While" == block_name) level.Competence_lv["While"] = 1;
@@ -207,7 +206,7 @@ public class TreeManager : FSystem
 										else if (("AndOperator" == block_name) | ("OrOperator" == block_name) |
 										         ("NotOperator" == block_name)) level.Competence_lv["Operator"] = 1;
 										else break;
-										Debug.Log(level.Competence_lv);
+										//ebug.Log(level.Competence_lv);
 									}
 								}
 							}
@@ -235,32 +234,28 @@ public class TreeManager : FSystem
 		{
 			for(int i=0; i<node.introLevels.Count-1; i++)
 			{
-				node.introLevels[i].next.Add(node.introLevels[i + 1]);
+				if(!node.introLevels[i].next.Contains(node.introLevels[i + 1])) node.introLevels[i].next.Add(node.introLevels[i + 1]);
 			}
 
 			if (node.trainingLevels.Count > 0)
 			{
-				node.introLevels.Last().next.Add(node.trainingLevels[0]);
+				if(!node.introLevels.Last().next.Contains(node.trainingLevels[0])) node.introLevels.Last().next.Add(node.trainingLevels[0]);
 				for (int i = 0; i < node.trainingLevels.Count - 1; i++)
 				{
-					node.trainingLevels[i].next.Add(node.trainingLevels[i + 1]);
+					if(!node.trainingLevels[i].next.Contains(node.trainingLevels[i + 1])) node.trainingLevels[i].next.Add(node.trainingLevels[i + 1]);
 				}
 
-				node.trainingLevels.Last().next.Add(node.outroLevels[0]);
+				if(!node.trainingLevels.Last().next.Contains(node.outroLevels[0])) node.trainingLevels.Last().next.Add(node.outroLevels[0]);
 			}
 
 			for(int i=0; i<node.outroLevels.Count-1; i++)
 			{
-				node.outroLevels[i].next.Add(node.outroLevels[i + 1]);
+				if(!node.outroLevels[i].next.Contains(node.outroLevels[i + 1])) node.outroLevels[i].next.Add(node.outroLevels[i + 1]);
 			}
 			
 			foreach (var next in node.nextNodes)
 			{
-				if (next.introLevels.Count==0)
-				{
-					Debug.Log(next.introLevels[0]);
-				}
-				node.outroLevels.Last().next.Add(next.introLevels[0]);
+				if(!node.outroLevels.Last().next.Contains(next.introLevels[0])) node.outroLevels.Last().next.Add(next.introLevels[0]);
 				LinkLevels(next);
 			}
 		}

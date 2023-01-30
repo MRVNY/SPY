@@ -136,27 +136,38 @@ public class LevelMapSystem : FSystem
 
 	private void ConstructRoad(Node node, Vector3Int pos, int split)
 	{
+		if(LM.Map.GetTile(pos)==LM.LockedBase) return;
 		foreach (var lvl in node.introLevels)
 			pos = RoadFoward(pos, lvl);
 		foreach (var lvl in node.trainingLevels)
 			pos = RoadFoward(pos, lvl);
 		foreach (var lvl in node.outroLevels)
 			pos = RoadFoward(pos, lvl);
-
+		
 		switch (node.nextNodes.Count)
 		{
 			case 1:
+				if (node.introLevels.First().name == "If_For-intro-1")
+				{
+					Debug.Log(node.introLevels.First().next);
+				}
 				if (pos.x > 0) pos = RoadMerge(pos, split);
 				if(LM.Map.GetTile(pos)!=LM.Base) ConstructRoad(node.nextNodes[0], pos, 0);
 				break;
 			case 2:
+				if (node.introLevels.First().name == "If_For-intro-1")
+				{
+					Debug.Log(node.introLevels.First().next);
+				}
 				(Vector3Int,Vector3Int) upAndDown = RoadSplit(pos);
 				ConstructRoad(node.nextNodes[0], upAndDown.Item1, 1);
 				ConstructRoad(node.nextNodes[1], upAndDown.Item2, -1);
 				break;
 			default: break;
 		}
+		if(Global.GD.level==null) Global.GD.level = Global.GD.Tree.introLevels.First();
 	}
+	
 	private void LoadLevels()
 	{
 		int x = 0;
@@ -190,12 +201,19 @@ public class LevelMapSystem : FSystem
 				pos += Vector3Int.right;
 			}
 			
-			if (lvl == lvl.node.outroLevels.Last() && (lvl.node.introLevels.First().score > 0 || lvl.node == Global.GD.Tree))
+			if (lvl == lvl.node.outroLevels.Last())
 			{
-				LM.Map.SetTile(pos, LM.Castle);
-				if(lvl.score > 0)
-					foreach (var next in lvl.next)
-						next.active = true;
+				if (lvl.node.introLevels.First().score > 0 || lvl.node == Global.GD.Tree)
+				{
+					LM.Map.SetTile(pos, LM.Castle);
+					if(lvl.score > 0)
+						foreach (var next in lvl.next)
+							next.active = true;
+				}
+				else
+				{
+					LM.Map.SetTile(pos, LM.LockedCastle);
+				}
 			}
 			else
 			{

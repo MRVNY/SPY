@@ -205,19 +205,14 @@ public class TitleScreenSystem : FSystem {
 		Global.GD.level = level;
 		SendStatements.Globals.start = DateTime.Now;
 		Debug.Log("lauche level");
-		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
-		//watch.Start();
-		//SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
+        SendStatements.instance.SendLevel(level.name);
 		GameStateManager.SaveGD();
 		GameObjectManager.loadScene("GameScene");
 	}
 
 	public async void launchLevelMap()
 	{
-		//SendStatements.Globals.start = DateTime.Now;
-		//Debug.Log("lauche level");
-		//SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
-		SendStatements.instance.SendBeginGame();
+        SendStatements.instance.SendBeginGame();
 		if(buildingTree!=null) await buildingTree;
 		//GameStateManager.SaveGD();
 		GameObjectManager.loadScene("LevelMap");
