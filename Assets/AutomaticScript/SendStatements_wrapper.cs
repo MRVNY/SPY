@@ -23,11 +23,6 @@ public class SendStatements_wrapper : BaseWrapper
 		MainLoop.callAppropriateSystemMethod (system, "SendLevel", lv);
 	}
 
-	public void WinLevel(System.Int32 score)
-	{
-		MainLoop.callAppropriateSystemMethod (system, "WinLevel", score);
-	}
-
 	public void SendRestart()
 	{
 		MainLoop.callAppropriateSystemMethod (system, "SendRestart", null);
@@ -51,6 +46,11 @@ public class SendStatements_wrapper : BaseWrapper
 	public void SendQuitGame()
 	{
 		MainLoop.callAppropriateSystemMethod (system, "SendQuitGame", null);
+	}
+
+	public void ResetData()
+	{
+		MainLoop.callAppropriateSystemMethod (system, "ResetData", null);
 	}
 
 }
