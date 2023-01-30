@@ -59,7 +59,8 @@ public class LevelGenerator : FSystem {
 			}
 			else
 			{
-				doc.Load(Global.GD.path + Global.GD.level.node.name + Path.DirectorySeparatorChar + Global.GD.level.name + ".xml");
+				if(Global.GD.mode == "Homemade") doc.Load(Global.GD.path + "Homemade" + Path.DirectorySeparatorChar + Global.GD.level.name + ".xml");
+				else doc.Load(Global.GD.path + Global.GD.level.node.name + Path.DirectorySeparatorChar + Global.GD.level.name + ".xml");
 				XmlToLevel(doc);
 				levelName.text = Global.GD.level.name;
 			}
