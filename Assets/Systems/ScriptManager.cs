@@ -48,7 +48,7 @@ public class ScriptManager : FSystem {
 
 		doc.Save(LevelEditorSystem.xmlPath);
 		
-		GameObjectManager.loadScene("MainScene");
+		GameObjectManager.loadScene("GameScene");
 	}
 
 	public void DeleteLevel()

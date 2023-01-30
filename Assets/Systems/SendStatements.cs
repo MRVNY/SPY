@@ -20,6 +20,7 @@ public class SendStatements : FSystem {
         public static string lv;
         public static String st_lv;
         public static DateTime start;
+        public static int nb_lv_completed;
     }
 
     private Family f_actionForLRS = FamilyManager.getFamily(new AllOfComponents(typeof(ActionPerformedForLRS)));
@@ -45,7 +46,7 @@ public class SendStatements : FSystem {
 
         string sessionID = Environment.MachineName + "-" + DateTime.Now.ToString("yyyy.MM.dd.hh.mm.ss");
         //Generate player name unique to each playing session (computer name + date + hour)
-        GBL_Interface.playerName = "test";//String.Format("{0:X}", sessionID.GetHashCode());
+        GBL_Interface.playerName = Global.GD.player;//String.Format("{0:X}", sessionID.GetHashCode());
         GBL_Interface.userUUID = GBL_Interface.playerName;
     }
 
@@ -54,6 +55,8 @@ public class SendStatements : FSystem {
         // Do not use callbacks because in case in the same frame actions are removed on a GO and another component is added in another system, family will not trigger again callback because component will not be processed
         foreach (GameObject go in f_actionForLRS)
         {
+          
+            GBL_Interface.playerName = Global.GD.player;
             ActionPerformedForLRS[] listAP = go.GetComponents<ActionPerformedForLRS>();
             int nb = listAP.Length;
             ActionPerformedForLRS ap;
@@ -109,9 +112,9 @@ public class SendStatements : FSystem {
         // if (lv==0)
         //   lv=Globals.lv+1;
         Globals.lv=lv;
-				Debug.Log(GBL_Interface.playerName + " try " +lv);
-        Globals.st_lv=lv;
-
+				Debug.Log(GBL_Interface.playerName + " try level " +lv.ToString());
+        Globals.st_lv="level "+lv.ToString();
+        SendStatements.Globals.start = DateTime.Now;
         GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
         {
             verb = "commence",
@@ -123,9 +126,10 @@ public class SendStatements : FSystem {
         });
         }
 
-    public void WinLevel(int score)//, int duration)
+    public void WinLevel(int score, int nb, int code_length, int execution_length)//, int duration)
     {
       TimeSpan duration = DateTime.Now-Globals.start;
+
       GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
       {
           verb = "reussit",
@@ -134,7 +138,10 @@ public class SendStatements : FSystem {
           {
             { "lv", Globals.lv},
             { "score", score.ToString() },
-            { "duration", duration.TotalSeconds.ToString()}
+            { "duration", duration.TotalSeconds.ToString()},
+            { "nb_lv_completed", nb.ToString()},
+            { "code_length", code_length.ToString()},
+            { "execution_length", execution_length.ToString()}
           }
       });
       Debug.Log(Global.GD.score);
@@ -198,6 +205,16 @@ public class SendStatements : FSystem {
 				{
 						verb = "quitte",
 						objectType = "serious-game"
+				});
+		}
+    public void ResetData()
+		{
+				Debug.Log(GBL_Interface.playerName + "Reinitialise donnees personnels");
+
+				GameObjectManager.addComponent<ActionPerformedForLRS>(MainLoop.instance.gameObject, new
+				{
+						verb = "reinitialise",
+						objectType = "donnee_personnel"
 				});
 		}
 

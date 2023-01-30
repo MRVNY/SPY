@@ -14,13 +14,13 @@ public class GameData {
 	public string player = "Student";
 	public static List<string> ListComp = new List<string>()
                     {
-												"If",
+	                    "If",
                         "IfElse",
                         "While",
                         "For",
                         "AndOperator",
-												"OrOperator",
-												"NotOperator"
+	                    "OrOperator",
+	                    "NotOperator"
                     };
 	public static List<string> CompStudent = new List<string>();
 	public Hashtable levelNameList = new Hashtable();

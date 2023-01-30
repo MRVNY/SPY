@@ -318,7 +318,8 @@ public class UISystem : FSystem {
 					actions+=" "+(child.gameObject).ToString();
 					GameObjectManager.bind(child.gameObject);
 				}
-				//SendStatements.instance.SendActions(actions);
+				
+				if(SendStatements.instance != null) SendStatements.instance.SendActions(actions);
 				// On développe le panneau au cas où il aurait été réduit
 				robot.GetComponent<ScriptRef>().executablePanel.transform.Find("Header").Find("Toggle").GetComponent<Toggle>().isOn = true;
 			}

@@ -124,14 +124,19 @@ public class EndGameManager : FSystem {
 		else if (f_requireEndPanel.First().GetComponent<NewEnd>().endType == NewEnd.Win)
 		{
 			int score = (10000 / (Global.GD.totalActionBlocUsed + 1) + 5000 / (Global.GD.totalStep + 1) + 6000 / (Global.GD.totalExecute + 1) + 5000 * Global.GD.totalCoin);
-			//SendStatements.instance.WinLevel(score);
-			//if (Global.GD.levelScore==null)
+
+			Debug.Log(Global.GD.score[Global.GD.scoreKey]==null);
+			Debug.Log("before"+SendStatements.Globals.nb_lv_completed);
+
+			SendStatements.Globals.nb_lv_completed=SendStatements.Globals.nb_lv_completed+1;
+			Debug.Log("number"+SendStatements.Globals.nb_lv_completed);
+
 			if (Global.GD.score[Global.GD.scoreKey]==null)
 			{
-				Debug.Log("null");
-				Debug.Log(Global.GD.level.Competence_lv["For"]);
+
+				//SendStatements.instance.WinLevel(score,SendStatements.Globals.nb_lv_completed);
 				foreach(DictionaryEntry s in Global.GD.level.Competence_lv){
-					Debug.Log(s.Key);
+					Debug.Log("after");
 					if (Global.GD.compCounter[s.Key]==null){
 						Global.GD.compCounter[s.Key]=1;
 						Debug.Log("Learned");
@@ -145,9 +150,6 @@ public class EndGameManager : FSystem {
 					}
 				}
 			}
-			else{
-				Debug.Log(Global.GD.levelScore);
-			}
 			//Global.GD
 			Transform verticalCanvas = endPanel.transform.Find("VerticalCanvas");
 			GameObjectManager.setGameObjectState(verticalCanvas.Find("ScoreCanvas").gameObject, true);
@@ -156,6 +158,11 @@ public class EndGameManager : FSystem {
 				+ "\nExecution length" + Global.GD.totalStep + "/" + Global.GD.level.bestExec;
 			setScoreStars(score, verticalCanvas.Find("ScoreCanvas"));
 
+
+
+			SendStatements.instance.WinLevel(score,SendStatements.Globals.nb_lv_completed,Global.GD.totalActionBlocUsed,Global.GD.totalStep);
+
+
 			endPanel.GetComponent<AudioSource>().clip = Resources.Load("Sound/VictorySound") as AudioClip;
 			endPanel.GetComponent<AudioSource>().loop = false;
 			endPanel.GetComponent<AudioSource>().Play();
@@ -163,9 +170,9 @@ public class EndGameManager : FSystem {
 			GameObjectManager.setGameObjectState(Rewind, false);
 			GameObjectManager.setGameObjectState(Menu, true);
 			GameObjectManager.setGameObjectState(Next, true);
-			
+
 			VisualNovelSystem.Instance.endLevelConvo();
-			
+
 			//Check if next level exists in campaign
 			// if (Global.GD.level.next.Count)
 			// {

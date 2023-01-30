@@ -551,7 +551,7 @@ public class ParamCompetenceSystem : FSystem
 				string folder = level[level.Length - 2];
 				// Global.GD.level.name = (folder, ((List<string>)Global.GD.treeLevelList[folder]).IndexOf(levelSelected));
 			}
-			GameObjectManager.loadScene("MainScene");
+			GameObjectManager.loadScene("GameScene");
 		}
 		else // Sinon on signale qu'aucune comp?tence n'est selectionn?e ou qu'aucun niveau n'est disponible
         {

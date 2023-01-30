@@ -39,6 +39,8 @@ public class TitleScreenSystem : FSystem {
 
 	protected override void onStart()
 	{
+		SendStatements.Globals.nb_lv_completed=0;
+
 		if (funcParam == null)
         {
             GameObject funcData = UnityEngine.Object.Instantiate(prefabFuncData);
@@ -202,7 +204,8 @@ public class TitleScreenSystem : FSystem {
 		Global.GD.mode = mode;
 		Global.GD.level = level;
 		SendStatements.Globals.start = DateTime.Now;
-		//SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
+		Debug.Log("lauche level");
+		SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
 		//watch.Start();
 		//SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
 		GameStateManager.SaveGD();
@@ -211,6 +214,10 @@ public class TitleScreenSystem : FSystem {
 
 	public async void launchLevelMap()
 	{
+		//SendStatements.Globals.start = DateTime.Now;
+		//Debug.Log("lauche level");
+		//SendStatements.instance.SendLevel(int.Parse(level.name.Replace("Niveau", "")));
+		SendStatements.instance.SendBeginGame();
 		if(buildingTree!=null) await buildingTree;
 		//GameStateManager.SaveGD();
 		GameObjectManager.loadScene("LevelMap");
@@ -321,6 +328,7 @@ public class TitleScreenSystem : FSystem {
 
 	public void clearSaves()
 	{
+		//SendStatements.instance.ResetData();
 		GameStateManager.DeleteAllSaveFiles();
 		Global.GD = null;
 	}
@@ -339,6 +347,7 @@ public class TitleScreenSystem : FSystem {
 
 	// See Quitter button in editor
 	public void quitGame(){
+		SendStatements.instance.SendQuitGame();
 		Application.Quit();
 	}
 }

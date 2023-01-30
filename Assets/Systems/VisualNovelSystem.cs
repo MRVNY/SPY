@@ -249,7 +249,7 @@ public class VisualNovelSystem : FSystem
 			await writing;
 			VN.dialog.text = toWrite[0];
 			
-			if (convoTree[node]!=null && convoTree[node]["options"] != null && toWrite.Count==1) skipButton.enabled = false;
+			if (convoTree[node]==null || convoTree[node]["options"] != null && toWrite.Count==1) skipButton.enabled = false;
 		}
 	}
 
